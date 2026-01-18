@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.eventia.demo.dto.EventoInsertDTO;
 import com.eventia.demo.entidades.Ayuntamiento;
 import com.eventia.demo.entidades.Evento;
 import com.eventia.demo.repositories.AyuntamientoRepository;
 import com.eventia.demo.repositories.EventoRepository;
+import com.eventia.demo.dto.eventos.EventoInsertDTO;
 import com.eventia.demo.dto.eventos.EventoUpdateDTO;
 
 @Service
@@ -52,7 +52,8 @@ public class EventoService {
 		e.setCategoria(dto.getCategoria());
 		e.setPrecio(dto.getPrecio());
 		e.setFechaInicio(dto.getFecha_inicio());
-		e.setProvincia(dto.getUbicacion());
+		e.setProvincia(dto.getProvincia());
+		e.setLocalidad(dto.getLocalidad());
 		return eventoRepo.save(e);
 	}
 

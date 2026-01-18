@@ -1,12 +1,22 @@
-package com.eventia.demo.dto;
+package com.eventia.demo.dto.usuarios;
 
-public class UsuarioInsertDTO {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public class UsuarioUpdateDTO {
+
+	public enum TipoUsuario {
+		publico, artista, ayuntamiento
+	}
+
 	private String nombre;
 	private String email;
 	private String password;
-	private String tipo_usuario;
+	
+	@Schema(description = "Tipo_usuario", example = "publico, artista o ayuntamiento", allowableValues = { "publico",
+			"artista", "ayuntamiento" })
+	private TipoUsuario tipo_usuario;
 
-	public UsuarioInsertDTO(String nombre, String email, String password, String tipo_usuario) {
+	public UsuarioUpdateDTO(String nombre, String email, String password, TipoUsuario tipo_usuario) {
 		super();
 		this.nombre = nombre;
 		this.email = email;
@@ -14,7 +24,7 @@ public class UsuarioInsertDTO {
 		this.tipo_usuario = tipo_usuario;
 	}
 
-	public UsuarioInsertDTO() {
+	public UsuarioUpdateDTO() {
 		super();
 	}
 
@@ -42,11 +52,11 @@ public class UsuarioInsertDTO {
 		this.password = password;
 	}
 
-	public String getTipo_usuario() {
+	public TipoUsuario getTipo_usuario() {
 		return tipo_usuario;
 	}
 
-	public void setTipo_usuario(String tipo_usuario) {
+	public void setTipo_usuario(TipoUsuario tipo_usuario) {
 		this.tipo_usuario = tipo_usuario;
 	}
 

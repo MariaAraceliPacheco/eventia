@@ -1,4 +1,4 @@
-package com.eventia.demo.dto;
+package com.eventia.demo.dto.eventos;
 
 import java.math.BigDecimal;
 import java.sql.Date;

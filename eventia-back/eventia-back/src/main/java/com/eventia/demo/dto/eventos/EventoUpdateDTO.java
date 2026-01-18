@@ -2,31 +2,46 @@ package com.eventia.demo.dto.eventos;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.Time;
 
 public class EventoUpdateDTO {
 	private String nombre_evento;
 	private String descripcion;
 	private BigDecimal precio;
 	private Date fecha_inicio;
-	private Time hora;
-	private String ubicacion;
+	private String localidad;
+	private String provincia;
 	private String categoria;
 
-	public EventoUpdateDTO(String nombre_evento, String categoria, String descripcion, BigDecimal precio,
-			Date fecha_inicio, Date fecha_fin, Time hora, String ubicacion) {
+	public EventoUpdateDTO(String nombre_evento, String descripcion, BigDecimal precio, Date fecha_inicio,
+			String localidad, String provincia, String categoria) {
 		super();
 		this.nombre_evento = nombre_evento;
 		this.descripcion = descripcion;
 		this.precio = precio;
 		this.fecha_inicio = fecha_inicio;
-		this.hora = hora;
-		this.ubicacion = ubicacion;
+		this.localidad = localidad;
+		this.provincia = provincia;
 		this.categoria = categoria;
 	}
 
 	public EventoUpdateDTO() {
 		super();
+	}
+
+	public String getLocalidad() {
+		return localidad;
+	}
+
+	public void setLocalidad(String localidad) {
+		this.localidad = localidad;
+	}
+
+	public String getProvincia() {
+		return provincia;
+	}
+
+	public void setProvincia(String provincia) {
+		this.provincia = provincia;
 	}
 
 	public String getNombre_evento() {
@@ -61,22 +76,6 @@ public class EventoUpdateDTO {
 		this.fecha_inicio = fecha_inicio;
 	}
 
-	public Time getHora() {
-		return hora;
-	}
-
-	public void setHora(Time hora) {
-		this.hora = hora;
-	}
-
-	public String getUbicacion() {
-		return ubicacion;
-	}
-
-	public void setUbicacion(String ubicacion) {
-		this.ubicacion = ubicacion;
-	}
-
 	public String getCategoria() {
 		return categoria;
 	}
@@ -84,6 +83,5 @@ public class EventoUpdateDTO {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
-	
 
 }

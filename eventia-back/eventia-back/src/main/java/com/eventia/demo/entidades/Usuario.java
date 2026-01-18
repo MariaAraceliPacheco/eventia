@@ -1,9 +1,13 @@
 package com.eventia.demo.entidades;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import java.util.Date;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 /**
@@ -22,7 +26,7 @@ public class Usuario implements Serializable {
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="fecha_registro")
-	private Date fechaRegistro;
+	private LocalDateTime fechaRegistro;
 
 	private String nombre;
 
@@ -33,14 +37,17 @@ public class Usuario implements Serializable {
 
 	//bi-directional many-to-one association to Artista
 	@OneToMany(mappedBy="usuario")
+	@JsonIgnore
 	private List<Artista> artistas;
 
 	//bi-directional many-to-one association to Ayuntamiento
 	@OneToMany(mappedBy="usuario")
+	@JsonIgnore
 	private List<Ayuntamiento> ayuntamientos;
 
 	//bi-directional many-to-one association to Publico
 	@OneToMany(mappedBy="usuario")
+	@JsonIgnore
 	private List<Publico> publicos;
 
 	public Usuario() {
@@ -62,11 +69,11 @@ public class Usuario implements Serializable {
 		this.email = email;
 	}
 
-	public Date getFechaRegistro() {
+	public LocalDateTime getFechaRegistro() {
 		return this.fechaRegistro;
 	}
 
-	public void setFechaRegistro(Date fechaRegistro) {
+	public void setFechaRegistro(LocalDateTime fechaRegistro) {
 		this.fechaRegistro = fechaRegistro;
 	}
 

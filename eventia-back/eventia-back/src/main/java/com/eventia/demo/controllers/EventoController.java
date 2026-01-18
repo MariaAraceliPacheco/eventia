@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eventia.demo.dto.EventoInsertDTO;
+import com.eventia.demo.dto.eventos.EventoInsertDTO;
 import com.eventia.demo.dto.eventos.EventoUpdateDTO;
 import com.eventia.demo.entidades.Evento;
 import com.eventia.demo.services.EventoService;
