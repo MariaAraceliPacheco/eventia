@@ -1,17 +1,33 @@
 package com.eventia.demo.dto.publico;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class PublicoInsertDTO {
+
+	public enum GustosMusicales {
+		rock, pop, reggaeton, metal
+	}
+
+	public enum TipoEventosFavoritos {
+		festivales, ferias, conciertos, otro
+	}
 
 	private int id_usuario;
 	private String comunidad_autonoma;
 	private String provincia;
 	private String localidad;
-	private String gustos_musicales;
-	private String tipo_eventos_favoritos;
+
+	@Schema(description = "Gustos musicales", example = "rock, pop, reggaeton o metal", allowableValues = { "rock",
+			"pop", "reggaeton", "metal" })
+	private GustosMusicales gustos_musicales;
+
+	@Schema(description = "Tipo de eventos favoritos", example = "festivales, ferias, conciertos o otro", allowableValues = {
+			"festivales", "ferias", "conciertos", "otro" })
+	private TipoEventosFavoritos tipo_eventos_favoritos;
 	private boolean notificaciones;
 
 	public PublicoInsertDTO(int id_usuario, String comunidad_autonoma, String provincia, String localidad,
-			String gustos_musicales, String tipo_eventos_favoritos, boolean notificaciones) {
+			GustosMusicales gustos_musicales, TipoEventosFavoritos tipo_eventos_favoritos, boolean notificaciones) {
 		super();
 		this.id_usuario = id_usuario;
 		this.comunidad_autonoma = comunidad_autonoma;
@@ -58,19 +74,19 @@ public class PublicoInsertDTO {
 		this.localidad = localidad;
 	}
 
-	public String getGustos_musicales() {
+	public GustosMusicales getGustos_musicales() {
 		return gustos_musicales;
 	}
 
-	public void setGustos_musicales(String gustos_musicales) {
+	public void setGustos_musicales(GustosMusicales gustos_musicales) {
 		this.gustos_musicales = gustos_musicales;
 	}
 
-	public String getTipo_eventos_favoritos() {
+	public TipoEventosFavoritos getTipo_eventos_favoritos() {
 		return tipo_eventos_favoritos;
 	}
 
-	public void setTipo_eventos_favoritos(String tipo_eventos_favoritos) {
+	public void setTipo_eventos_favoritos(TipoEventosFavoritos tipo_eventos_favoritos) {
 		this.tipo_eventos_favoritos = tipo_eventos_favoritos;
 	}
 

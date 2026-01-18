@@ -4,23 +4,24 @@ import java.io.Serializable;
 import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * The persistent class for the publico database table.
  * 
  */
 @Entity
-@NamedQuery(name="Publico.findAll", query="SELECT p FROM Publico p")
+@NamedQuery(name = "Publico.findAll", query = "SELECT p FROM Publico p")
 public class Publico implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	private int id;
 
-	@Column(name="comunidad_autonoma")
+	@Column(name = "comunidad_autonoma")
 	private String comunidadAutonoma;
 
-	@Column(name="gustos_musicales")
+	@Column(name = "gustos_musicales")
 	private String gustosMusicales;
 
 	private String localidad;
@@ -29,16 +30,18 @@ public class Publico implements Serializable {
 
 	private String provincia;
 
-	@Column(name="tipo_eventos_favoritos")
+	@Column(name = "tipo_eventos_favoritos")
 	private String tipoEventosFavoritos;
 
-	//bi-directional many-to-one association to Entrada
-	@OneToMany(mappedBy="publico")
+	// bi-directional many-to-one association to Entrada
+	@OneToMany(mappedBy = "publico")
+	@JsonIgnore
 	private List<Entrada> entradas;
 
-	//bi-directional many-to-one association to Usuario
+	// bi-directional many-to-one association to Usuario
 	@ManyToOne
-	@JoinColumn(name="id_usuario")
+	@JoinColumn(name = "id_usuario") // aqui no se le pondria el JsonIgnore porque es obligatorio que publico esté
+										// formado por un usuario
 	private Usuario usuario;
 
 	public Publico() {

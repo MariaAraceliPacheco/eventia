@@ -34,14 +34,14 @@ public class PublicoService {
 
 	public Publico crear(PublicoInsertDTO dto) {
 		Usuario user = usuarioRepo.findById(dto.getId_usuario())
-				.orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 		Publico a = new Publico();
 		a.setUsuario(user);
 		a.setComunidadAutonoma(dto.getComunidad_autonoma());
 		a.setProvincia(dto.getProvincia());
 		a.setLocalidad(dto.getLocalidad());
-		a.setGustosMusicales(dto.getGustos_musicales());
-		a.setTipoEventosFavoritos(dto.getTipo_eventos_favoritos());
+		a.setGustosMusicales(dto.getGustos_musicales().name());
+		a.setTipoEventosFavoritos(dto.getTipo_eventos_favoritos().name());
 		a.setNotificaciones(dto.isNotificaciones());
 		return repository.save(a);
 	}
@@ -51,8 +51,8 @@ public class PublicoService {
 		a.setComunidadAutonoma(dto.getComunidad_autonoma());
 		a.setProvincia(dto.getProvincia());
 		a.setLocalidad(dto.getLocalidad());
-		a.setGustosMusicales(dto.getGustos_musicales());
-		a.setTipoEventosFavoritos(dto.getTipo_eventos_favoritos());
+		a.setGustosMusicales(dto.getGustos_musicales().name());
+		a.setTipoEventosFavoritos(dto.getTipo_eventos_favoritos().name());
 		a.setNotificaciones(dto.isNotificaciones());
 		return repository.save(a);
 	}
