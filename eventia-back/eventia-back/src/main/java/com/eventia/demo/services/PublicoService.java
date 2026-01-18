@@ -58,8 +58,10 @@ public class PublicoService {
 	}
 
 	public void eliminar(int id) {
+		Publico a = obtenerPorId(id);
 		if (!repository.existsById(id))
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		repository.deleteById(id);
+		usuarioRepo.deleteById(a.getUsuario().getId());
 	}
 }

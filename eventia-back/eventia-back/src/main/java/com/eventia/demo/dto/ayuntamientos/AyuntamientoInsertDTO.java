@@ -4,19 +4,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 public class AyuntamientoInsertDTO {
 	public enum TipoEvento {
-		CONCIERTOS, FERIAS, FESTIVALES, OTRO
+		conciertos, ferias, festivales, otro
 	}
 
 	public enum Frecuencia {
-		OCASIONALMENTE, VARIAS_VECES_AL_ANO, MENSUALMENTE
+		ocasionalmente, varias_veces_al_año, mensualmente
 	}
 
 	public enum TipoEspacio {
-		PLAZA_PUBLICA, AUDITORIO, RECINTO_CERRADO, OTRO
+		plaza_publica, auditorio, recinto_cerrado, otro
 	}
 
 	public enum TipoFacturacion {
-		CORREO, PLATAFORMA
+		correo, plataforma
 	}
 
 	private Integer idUsuario;
@@ -28,21 +28,22 @@ public class AyuntamientoInsertDTO {
 	private String telefono;
 	private String emailContacto;
 
-	@Schema(description = "Tipo de evento", example = "CONCIERTOS", allowableValues = { "CONCIERTOS", "FERIAS",
-			"FESTIVALES", "OTRO" })
+	@Schema(description = "Tipo de evento", example = "conciertos, ferias, festivales u otro", allowableValues = {
+			"conciertos", "ferias", "festivales", "otro" })
 	private TipoEvento tipoEvento;
 
-	@Schema(description = "Frecuencia del evento", example = "VARIAS_VECES_AL_ANO", allowableValues = {
-			"OCASIONALMENTE", "VARIAS_VECES_AL_ANO", "MENSUALMENTE" })
+	@Schema(description = "Frecuencia del evento", example = "ocasionalmente, varias_veces_al_año o mensualmente", allowableValues = {
+			"ocasionalmente", "varias_veces_al_año", "mensualmente" })
 	private Frecuencia frecuencia;
 
-	@Schema(description = "Tipo de espacio", example = "AUDITORIO", allowableValues = { "PLAZA_PUBLICA", "AUDITORIO",
-			"RECINTO_CERRADO", "OTRO" })
+	@Schema(description = "Tipo de espacio", example = "plaza_publica, auditorio, recinto_cerrado u otro", allowableValues = {
+			"plaza_publica", "auditorio", "recinto_cerrado", "otro" })
 	private TipoEspacio tipoEspacio;
 
 	private String opcionesAccesibilidad;
 
-	@Schema(description = "Tipo de facturación", example = "CORREO", allowableValues = { "CORREO", "PLATAFORMA" })
+	@Schema(description = "Tipo de facturación", example = "correo o plataforma", allowableValues = { "correo",
+			"plataforma" })
 	private TipoFacturacion tipoFacturacion;
 
 	private String logisticaPropia;
