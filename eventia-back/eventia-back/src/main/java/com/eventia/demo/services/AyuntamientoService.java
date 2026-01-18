@@ -55,7 +55,7 @@ public class AyuntamientoService {
 	}
 
 	public Ayuntamiento modificar(int id, AyuntamientoUpdateDTO dto) {
-		Ayuntamiento ayuntamiento = obtenerPorId(dto.getId());
+		Ayuntamiento ayuntamiento = obtenerPorId(id);
 
 		ayuntamiento.setNombreInstitucion(dto.getNombreInstitucion());
 		ayuntamiento.setImagen(dto.getImagen());
@@ -75,8 +75,10 @@ public class AyuntamientoService {
 	}
 
 	public void eliminar(int id) {
+		Ayuntamiento a = obtenerPorId(id);
 		if (!repository.existsById(id))
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		repository.deleteById(id);
+		usuarioRepo.deleteById(a.getUsuario().getId());
 	}
 }

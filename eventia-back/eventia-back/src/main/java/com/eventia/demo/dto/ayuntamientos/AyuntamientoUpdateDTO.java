@@ -1,24 +1,25 @@
 package com.eventia.demo.dto.ayuntamientos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class AyuntamientoUpdateDTO {
 
 	public enum TipoEvento {
-		CONCIERTOS, FERIAS, FESTIVALES, OTRO
+		conciertos, ferias, festivales, otro
 	}
 
 	public enum Frecuencia {
-		OCASIONALMENTE, VARIAS_VECES_AL_ANO, MENSUALMENTE
+		ocasionalmente, varias_veces_al_año, mensualmente
 	}
 
 	public enum TipoEspacio {
-		PLAZA_PUBLICA, AUDITORIO, RECINTO_CERRADO, OTRO
+		plaza_publica, auditorio, recinto_cerrado, otro
 	}
 
 	public enum TipoFacturacion {
-		CORREO, PLATAFORMA
+		correo, plataforma
 	}
 
-	private Integer id; // ID del ayuntamiento a actualizar
 	private String nombreInstitucion;
 	private String imagen;
 	private String comunidadAutonoma;
@@ -26,19 +27,30 @@ public class AyuntamientoUpdateDTO {
 	private String provincia;
 	private String telefono;
 	private String emailContacto;
-	private TipoEvento tipoEvento; // conciertos, ferias, festivales, otro
-	private Frecuencia frecuencia; // ocasionalmente, varias veces al año, mensualmente
-	private TipoEspacio tipoEspacio; // plaza pública, auditorio, recinto cerrado, otro
+
+	@Schema(description = "Tipo de evento", example = "conciertos, ferias, festivales u otro", allowableValues = {
+			"conciertos", "ferias", "festivales", "otro" })
+	private TipoEvento tipoEvento;
+
+	@Schema(description = "Frecuencia del evento", example = "ocasionalmente, varias_veces_al_año o mensualmente", allowableValues = {
+			"ocasionalmente", "varias_veces_al_año", "mensualmente" })
+	private Frecuencia frecuencia;
+
+	@Schema(description = "Tipo de espacio", example = "plaza_publica, auditorio, recinto_cerrado u otro", allowableValues = {
+			"plaza_publica", "auditorio", "recinto_cerrado", "otro" })
+	private TipoEspacio tipoEspacio;
+
 	private String opcionesAccesibilidad;
-	private TipoFacturacion tipoFacturacion; // correo, plataforma
+
+	@Schema(description = "Tipo de facturación", example = "correo o plataforma", allowableValues = { "correo",
+			"plataforma" })
+	private TipoFacturacion tipoFacturacion;
 	private String logisticaPropia;
 
-	public AyuntamientoUpdateDTO(Integer id, String nombreInstitucion, String imagen, String comunidadAutonoma,
-			String localidad, String provincia, String telefono, String emailContacto, TipoEvento tipoEvento,
-			Frecuencia frecuencia, TipoEspacio tipoEspacio, String opcionesAccesibilidad,
-			TipoFacturacion tipoFacturacion, String logisticaPropia) {
-		super();
-		this.id = id;
+	public AyuntamientoUpdateDTO(String nombreInstitucion, String imagen, String comunidadAutonoma, String localidad,
+			String provincia, String telefono, String emailContacto, TipoEvento tipoEvento, Frecuencia frecuencia,
+			TipoEspacio tipoEspacio, String opcionesAccesibilidad, TipoFacturacion tipoFacturacion,
+			String logisticaPropia) {
 		this.nombreInstitucion = nombreInstitucion;
 		this.imagen = imagen;
 		this.comunidadAutonoma = comunidadAutonoma;
@@ -56,14 +68,6 @@ public class AyuntamientoUpdateDTO {
 
 	public AyuntamientoUpdateDTO() {
 		super();
-	}
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
 	}
 
 	public String getNombreInstitucion() {
