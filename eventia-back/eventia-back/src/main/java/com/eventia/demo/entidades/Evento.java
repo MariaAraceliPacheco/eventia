@@ -3,6 +3,7 @@ package com.eventia.demo.entidades;
 import java.io.Serializable;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -24,9 +25,8 @@ public class Evento implements Serializable {
 	@Column(name = "descripcion", columnDefinition = "TEXT")
 	private String descripcion;
 
-	@Temporal(TemporalType.DATE)
 	@Column(name="fecha_inicio")
-	private Date fechaInicio;
+	private LocalDateTime fechaInicio;
 
 	private String localidad;
 
@@ -77,11 +77,11 @@ public class Evento implements Serializable {
 		this.descripcion = descripcion;
 	}
 
-	public Date getFechaInicio() {
+	public LocalDateTime getFechaInicio() {
 		return this.fechaInicio;
 	}
 
-	public void setFechaInicio(Date fechaInicio) {
+	public void setFechaInicio(LocalDateTime fechaInicio) {
 		this.fechaInicio = fechaInicio;
 	}
 

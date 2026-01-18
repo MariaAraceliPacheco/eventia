@@ -1,7 +1,7 @@
 package com.eventia.demo.dto.eventos;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -15,10 +15,10 @@ public class EventoInsertDTO {
 	private String provincia;
 	private BigDecimal precio;
 	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date fecha_inicio;
+	private LocalDateTime fecha_inicio;
 
 	public EventoInsertDTO(int id_ayuntamiento, String nombre_evento, String descripcion, String categoria,
-			String localidad, String provincia, BigDecimal precio, Date fecha_inicio) {
+			String localidad, String provincia, BigDecimal precio, LocalDateTime fecha_inicio) {
 		super();
 		this.id_ayuntamiento = id_ayuntamiento;
 		this.nombre_evento = nombre_evento;
@@ -90,11 +90,11 @@ public class EventoInsertDTO {
 		this.precio = precio;
 	}
 
-	public Date getFecha_inicio() {
+	public LocalDateTime getFecha_inicio() {
 		return fecha_inicio;
 	}
 
-	public void setFecha_inicio(Date fecha_inicio) {
+	public void setFecha_inicio(LocalDateTime fecha_inicio) {
 		this.fecha_inicio = fecha_inicio;
 	}
 

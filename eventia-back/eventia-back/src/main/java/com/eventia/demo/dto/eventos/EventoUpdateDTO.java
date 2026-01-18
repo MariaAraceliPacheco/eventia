@@ -1,18 +1,26 @@
 package com.eventia.demo.dto.eventos;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 
 public class EventoUpdateDTO {
 	private String nombre_evento;
 	private String descripcion;
 	private BigDecimal precio;
-	private Date fecha_inicio;
+
+	@Schema(description = "Fecha y hora del evento", example = "2026-01-18T19:30")
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm")
+	private LocalDateTime fecha_inicio;
+	
 	private String localidad;
 	private String provincia;
 	private String categoria;
 
-	public EventoUpdateDTO(String nombre_evento, String descripcion, BigDecimal precio, Date fecha_inicio,
+	public EventoUpdateDTO(String nombre_evento, String descripcion, BigDecimal precio, LocalDateTime fecha_inicio,
 			String localidad, String provincia, String categoria) {
 		super();
 		this.nombre_evento = nombre_evento;
@@ -68,11 +76,11 @@ public class EventoUpdateDTO {
 		this.precio = precio;
 	}
 
-	public Date getFecha_inicio() {
+	public LocalDateTime getFecha_inicio() {
 		return fecha_inicio;
 	}
 
-	public void setFecha_inicio(Date fecha_inicio) {
+	public void setFecha_inicio(LocalDateTime fecha_inicio) {
 		this.fecha_inicio = fecha_inicio;
 	}
 
