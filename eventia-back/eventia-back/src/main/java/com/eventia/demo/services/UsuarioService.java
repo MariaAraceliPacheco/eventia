@@ -2,7 +2,9 @@ package com.eventia.demo.services;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -14,7 +16,10 @@ import com.eventia.demo.repositories.UsuarioRepository;
 @Service
 public class UsuarioService {
 	private final UsuarioRepository usuarioRepo;
-
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	public UsuarioService(UsuarioRepository usuarioRepo) {
 		this.usuarioRepo = usuarioRepo;
 	}
@@ -24,7 +29,7 @@ public class UsuarioService {
 		u.setNombre(dto.getNombre());
 		u.setEmail(dto.getEmail());
 		u.setFechaRegistro(dto.getFecha_Registro());
-		u.setPassword(dto.getPassword());
+		u.setPassword(passwordEncoder.encode(dto.getPassword()));
 		u.setTipoUsuario(dto.getTipo_usuario().name());
 		return usuarioRepo.save(u);
 	}
