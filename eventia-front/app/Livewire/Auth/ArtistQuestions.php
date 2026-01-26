@@ -30,6 +30,6 @@ class ArtistQuestions extends Component
     public function submit()
     {
         // Logic to save artist profile will go here
-        return redirect()->route('dashboard');
+        return redirect()->route('artist.area');
     }
 }

@@ -27,5 +27,12 @@ Route::get('/preguntas-ayuntamiento', TownHallQuestions::class)->name('town-hall
 Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
 Route::get('/crear-evento', CreateEvent::class)->name('town-hall.create-event');
 
+// Artist Routes
+Route::get('/area-artista', \App\Livewire\Artist\AreaArtista::class)->name('artist.area');
+
+// Public Routes
+Route::get('/area-publico', \App\Livewire\Public\AreaPublico::class)->name('public.area');
+Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
+
 Route::view('/dashboard', 'dashboard')->name('dashboard');
 Route::view('/profile', 'profile')->name('profile.edit');

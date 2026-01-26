@@ -82,6 +82,6 @@ class UserQuestions extends Component
     public function submit()
     {
         // Logic to save preferences will go here
-        return redirect()->route('dashboard');
+        return redirect()->route('public.area');
     }
 }
