@@ -84,11 +84,8 @@
                                 <option value="">Selecciona uno</option>
                                 <option value="rock">Rock</option>
                                 <option value="pop">Pop</option>
-                                <option value="indie">Indie</option>
+                                <option value="reggaeton">Reggaeton</option>
                                 <option value="metal">Metal</option>
-                                <option value="jazz">Jazz</option>
-                                <option value="urbano">Urbano</option>
-                                <option value="otro">Otro</option>
                             </select>
                         </div>
                     </div>

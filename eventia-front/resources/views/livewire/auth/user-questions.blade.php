@@ -41,11 +41,8 @@
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-32">
                             <option value="pop">Pop</option>
                             <option value="rock">Rock</option>
-                            <option value="indie">Indie</option>
-                            <option value="electronica">Electrónica</option>
                             <option value="reggaeton">Reggaeton</option>
-                            <option value="jazz">Jazz</option>
-                            <option value="clasica">Clásica</option>
+                            <option value="metal">Metal</option>
                         </select>
                         <p class="mt-1 text-xs text-text-secondary">Mantén pulsado Ctrl (o Cmd) para seleccionar varios</p>
                     </div>
@@ -56,10 +53,10 @@
                     <label class="block text-sm font-medium text-text-main">Tipo de eventos preferidos</label>
                     <select wire:model="eventTypes" multiple
                         class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-32">
-                        <option value="conciertos">Conciertos</option>
                         <option value="festivales">Festivales</option>
-                        <option value="teatro">Teatro</option>
-                        <option value="monologos">Monólogos</option>
+                        <option value="ferias">Ferias</option>
+                        <option value="conciertos">Conciertos</option>
+                        <option value="otro">Otro</option>
                     </select>
                 </div>
 

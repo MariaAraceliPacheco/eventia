@@ -29,6 +29,10 @@ class RoleSelection extends Component
         if ($this->selectedRole === 'artista') {
             return redirect()->route('artist-questions');
         }
+
+        if ($this->selectedRole === 'ayuntamiento') {
+            return redirect()->route('town-hall-questions');
+        }
         
         // Handle other roles or default
         return redirect()->route('dashboard');
