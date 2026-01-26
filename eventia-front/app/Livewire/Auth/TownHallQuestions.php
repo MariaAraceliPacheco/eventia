@@ -97,6 +97,6 @@ class TownHallQuestions extends Component
     public function submit()
     {
         // Logic to save town hall profile will go here
-        return redirect()->route('dashboard');
+        return redirect()->route('town-hall.area');
     }
 }
