@@ -99,7 +99,7 @@
                     <h4 class="text-xl font-bold text-text-main font-heading mb-1">Organizado por Ayuntamiento de Madrid</h4>
                     <p class="text-sm text-text-secondary leading-relaxed">Institución comprometida con la cultura y el ocio seguro. Gestionamos los espacios más icónicos de la ciudad para eventos de primer nivel.</p>
                 </div>
-                <button class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-bold text-text-main hover:bg-gray-50 transition-colors">Ver perfil</button>
+                <a href="{{ route('public.town-hall-profile', ['id' => 1]) }}" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-bold text-text-main hover:bg-gray-50 transition-colors">Ver perfil</a>
             </div>
         </div>
 

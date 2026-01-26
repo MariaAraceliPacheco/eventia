@@ -14,6 +14,7 @@ use App\Livewire\Auth\TownHallQuestions;
 use App\Livewire\TownHall\AreaAyuntamiento;
 use App\Livewire\TownHall\CreateEvent;
 use App\Livewire\Public\EventDetail;
+use App\Livewire\Public\TownHallProfile;
 
 Route::get('/', HomePage::class);
 
@@ -24,8 +25,9 @@ Route::get('/preguntas-usuario', UserQuestions::class)->name('user-questions');
 Route::get('/preguntas-artista', ArtistQuestions::class)->name('artist-questions');
 Route::get('/preguntas-ayuntamiento', TownHallQuestions::class)->name('town-hall-questions');
 
-// Event Details
+// Event Details & Public Profiles
 Route::get('/evento/{id}', EventDetail::class)->name('public.event-detail');
+Route::get('/ayuntamiento/{id}', TownHallProfile::class)->name('public.town-hall-profile');
 
 // Town Hall Routes
 Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
