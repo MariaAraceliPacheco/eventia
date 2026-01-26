@@ -24,8 +24,8 @@
 
                     <!-- Featured Events List -->
                     <div class="space-y-4 h-[550px] overflow-y-auto pr-3 custom-scrollbar">
-                        @foreach(['Festival de Verano 2026', 'Concierto Acústico: Indie Night', 'Feria de Tecnología & Ocio', 'Metal Bash: Open Air', 'Gastro-Fest: Sabores del Mundo'] as $event)
-                        <div class="group relative bg-gray-50 rounded-2xl p-5 border border-transparent hover:border-primary/30 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 cursor-pointer overflow-hidden">
+                        @foreach(['Festival de Verano 2026', 'Concierto Acústico: Indie Night', 'Feria de Tecnología & Ocio', 'Metal Bash: Open Air', 'Gastro-Fest: Sabores del Mundo'] as $index => $event)
+                        <a href="{{ route('public.event-detail', ['id' => $index + 1]) }}" class="block group relative bg-gray-50 rounded-2xl p-5 border border-transparent hover:border-primary/30 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 cursor-pointer overflow-hidden">
                             <div class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-150"></div>
                             
                             <div class="flex items-center gap-5 relative">
@@ -50,7 +50,7 @@
                                     <span class="text-lg font-black text-primary">Desde 25€</span>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                         @endforeach
                     </div>
                 </div>
@@ -97,16 +97,18 @@
                             En el carrito
                         </h4>
                         <div class="space-y-3 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
-                            @foreach(['Rock Night', 'Tour Museos'] as $item)
-                            <div class="p-4 bg-accent/5 border border-accent/10 rounded-2xl flex items-center justify-between">
+                            @foreach(['Rock Night' => 'R1', 'Tour Museos' => 'T1'] as $label => $id)
+                            <div class="p-4 {{ in_array($id, $selectedTickets) ? 'bg-primary/5 border-primary shadow-md' : 'bg-accent/5 border-accent/10' }} border rounded-2xl flex items-center justify-between transition-all">
                                 <div class="flex items-center gap-4">
                                     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm">🛒</div>
                                     <div>
-                                        <h5 class="text-sm font-bold text-text-main">{{ $item }}</h5>
-                                        <p class="text-[11px] text-accent">Pendiente de pago</p>
+                                        <h5 class="text-sm font-bold text-text-main">{{ $label }}</h5>
+                                        <p class="text-[11px] {{ in_array($id, $selectedTickets) ? 'text-primary' : 'text-accent' }}">{{ in_array($id, $selectedTickets) ? 'Seleccionada' : 'Pendiente de pago' }}</p>
                                     </div>
                                 </div>
-                                <button class="p-1 px-3 bg-accent text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition-opacity">Pagar</button>
+                                <button wire:click="toggleSelection('{{ $id }}')" class="p-1 px-3 {{ in_array($id, $selectedTickets) ? 'bg-primary' : 'bg-accent' }} text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition-all">
+                                    {{ in_array($id, $selectedTickets) ? 'Deseleccionar' : 'Seleccionar' }}
+                                </button>
                             </div>
                             @endforeach
                         </div>
@@ -114,12 +116,15 @@
                 </div>
 
                 <!-- Final Button -->
-                <a href="{{ route('public.buy-ticket') }}" class="w-full mt-10 inline-flex items-center justify-center gap-3 bg-gradient-to-r from-primary via-secondary to-accent text-white font-bold py-5 rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/40 transition-all transform hover:-translate-y-1 group">
+                <button 
+                    wire:click="goToPurchase" 
+                    @if(count($selectedTickets) === 0) disabled @endif
+                    class="w-full mt-10 inline-flex items-center justify-center gap-3 {{ count($selectedTickets) > 0 ? 'bg-gradient-to-r from-primary via-secondary to-accent shadow-primary/20 hover:shadow-primary/40' : 'bg-gray-200 cursor-not-allowed opacity-50' }} text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform {{ count($selectedTickets) > 0 ? 'hover:-translate-y-1' : '' }} group">
                     <span>Ir a Comprar Entradas</span>
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                </a>
+                </button>
             </div>
         </div>
     </div>
