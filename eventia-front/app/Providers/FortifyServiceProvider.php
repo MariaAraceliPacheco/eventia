@@ -26,6 +26,11 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\RegisterResponse::class,
+            \App\Http\Responses\RegisterResponse::class
+        );
+
         $this->configureActions();
         $this->configureViews();
         $this->configureRateLimiting();
