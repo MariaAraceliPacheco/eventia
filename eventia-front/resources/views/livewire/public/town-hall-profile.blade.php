@@ -68,21 +68,21 @@
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @foreach(['Feria de Verano', 'Concierto en la Plaza', 'Festival Gastronómico', 'Exhibición Arte Urbano'] as $event)
-                        <div class="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all group">
+                        @foreach(['Feria de Verano' => 1, 'Concierto en la Plaza' => 2, 'Festival Gastronómico' => 3, 'Exhibición Arte Urbano' => 4] as $name => $id)
+                        <a href="{{ route('public.event-detail', ['id' => $id]) }}" class="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all group">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">📅</div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">{{ $event }}</h4>
+                                    <h4 class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">{{ $name }}</h4>
                                     <p class="text-[10px] text-text-secondary font-medium">12 Ago 2026 • Municipal</p>
                                 </div>
                             </div>
-                            <button class="p-2 text-text-secondary hover:text-primary transition-colors">
+                            <div class="p-2 text-text-secondary group-hover:text-primary transition-colors">
                                 <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                                 </svg>
-                            </button>
-                        </div>
+                            </div>
+                        </a>
                         @endforeach
                     </div>
                 </div>

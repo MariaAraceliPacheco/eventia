@@ -72,15 +72,15 @@
                     </div>
                     
                     <div class="space-y-3">
-                        @foreach(['Feria de Verano', 'Concierto en la Plaza', 'Festival Gastronómico'] as $event)
+                        @foreach(['Feria de Verano' => 1, 'Concierto en la Plaza' => 2, 'Festival Gastronómico' => 3] as $name => $id)
                         <div class="flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:bg-white hover:shadow-md transition-all group">
-                            <div class="flex items-center gap-4">
+                            <a href="{{ route('public.event-detail', ['id' => $id]) }}" class="flex items-center gap-4 flex-1">
                                 <div class="w-2 h-8 bg-secondary rounded-full"></div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-text-main">{{ $event }}</h4>
+                                    <h4 class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">{{ $name }}</h4>
                                     <p class="text-xs text-text-secondary">12 Ago 2026 • Auditorio Municipal</p>
                                 </div>
-                            </div>
+                            </a>
                             <div class="flex gap-2">
                                 <button class="p-2 text-text-secondary hover:text-primary transition-colors bg-white rounded-lg shadow-sm">
                                     <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
