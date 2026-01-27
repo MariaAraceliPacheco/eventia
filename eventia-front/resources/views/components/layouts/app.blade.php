@@ -27,7 +27,7 @@
                         <x-nav-link href="#">Explorar</x-nav-link>
                         <x-nav-link href="{{ route('public.artist-list') }}">Artistas</x-nav-link>
                         <x-nav-link href="{{ route('public.town-hall-list') }}">Ayuntamientos</x-nav-link>
-                        <x-nav-link href="#pricing">Planes</x-nav-link>
+                        <x-nav-link href="/#pricing">Planes</x-nav-link>
                         <x-nav-link href="#">Ayuda</x-nav-link>
                     </nav>
 

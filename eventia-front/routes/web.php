@@ -17,7 +17,6 @@ use App\Livewire\Public\EventDetail;
 use App\Livewire\Public\TownHallProfile;
 use App\Livewire\Public\TownHallList;
 use App\Livewire\Public\ArtistList;
-
 Route::get('/', HomePage::class);
 
 Route::get('/login', Login::class)->name('login');
