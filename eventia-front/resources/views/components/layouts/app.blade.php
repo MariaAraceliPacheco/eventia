@@ -46,11 +46,26 @@
 
                     @auth
                         <div class="flex flex-col items-end">
-                            <span class="text-sm font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
+                            @if(auth()->user()->tipo_usuario == 'publico')
+                                <a href="{{ route('public.area') }}">
+                                    <span style="font-size: 16px;"
+                                        class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
+                                </a>
+                            @elseif(auth()->user()->tipo_usuario == 'artista')
+                                <a href="{{ route('artist.area') }}">
+                                    <span style="font-size: 16px;"
+                                        class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
+                                </a>
+                            @elseif(auth()->user()->tipo_usuario == 'ayuntamiento')
+                                <a href="{{ route('town-hall.area') }}">
+                                    <span style="font-size: 16px;"
+                                        class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
+                                </a>
+                            @endif
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <button type="submit"
-                                    class="text-[10px] text-text-secondary hover:text-primary transition font-medium">
+                                <button type="submit" style="cursor: pointer; font-size: 12px;"
+                                    class="text-text-secondary hover:text-primary transition font-medium">
                                     Cerrar sesión
                                 </button>
                             </form>
