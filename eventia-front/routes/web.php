@@ -45,6 +45,7 @@ Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('publ
 
 Route::view('/dashboard', 'dashboard')->name('dashboard');
 Route::view('/profile', 'profile')->name('profile.edit');
+Route::view('/admin', 'admin.vistaAdmin')->name('admin.vistaAdmin');
 
 Route::post('/logout', function () {
     Auth::logout();
