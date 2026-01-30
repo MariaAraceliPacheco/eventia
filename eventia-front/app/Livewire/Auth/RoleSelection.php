@@ -22,8 +22,12 @@ class RoleSelection extends Component
 
     public function submit()
     {
+        $user = auth()->user();
+        $user->tipo_usuario = $this->selectedRole;
+        $user->save();
+
         if ($this->selectedRole === 'publico') {
-             return redirect()->route('user-questions');
+            return redirect()->route('user-questions');
         }
 
         if ($this->selectedRole === 'artista') {
@@ -33,7 +37,7 @@ class RoleSelection extends Component
         if ($this->selectedRole === 'ayuntamiento') {
             return redirect()->route('town-hall-questions');
         }
-        
+
         // Handle other roles or default
         return redirect()->route('dashboard');
     }

@@ -20,14 +20,19 @@ class CreateNewUser implements CreatesNewUsers
     public function create(array $input): User
     {
         Validator::make($input, [
-            ...$this->profileRules(),
+            'nombre' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:usuarios,email'],
             'password' => $this->passwordRules(),
+            'tipo_usuario' => ['required', 'string', 'max:255'],
         ])->validate();
 
         return User::create([
-            'name' => $input['name'],
+            'nombre' => $input['nombre'],
             'email' => $input['email'],
             'password' => $input['password'],
+            'tipo_usuario' => $input['tipo_usuario']
+            //la fecha de registro se pondrá automaticamente porque 
+            // se lo hemos especificado en el modelo User.php
         ]);
     }
 }
