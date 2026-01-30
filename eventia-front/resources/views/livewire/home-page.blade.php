@@ -242,7 +242,7 @@
                         Público
                     </button>
                     <button wire:click="setPlan('artistas')"
-                        class="w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'artistas' ? 'text-primary' : 'text-text-secondary hover:text-text-main' }}">
+                        class="w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'artistas' ? 'text-secondary' : 'text-text-secondary hover:text-text-main' }}">
                         Artistas
                     </button>
                     <button wire:click="setPlan('ayuntamientos')"

@@ -19,6 +19,11 @@ class LoginResponse implements LoginResponseContract
         $user = auth()->user();
 
         //si quiere json me devuelve json, si no me redirige a la vista que quiero
+        /*wantsJson devuelve true si el cliente quiere recibir un json
+        Devuelve false si espera una redireccion a HTML
+        Laravel lo determina mirando el header HTTP Accept que manda el cliente
+        Es decir, si el login viene de un servicio/API (angular o fetch/axios), devuelve un json
+         */
         return $request->wantsJson()
             ? response()->json(['two_factor' => false])
             : redirect()->intended($this->getRedirectPath($user));
