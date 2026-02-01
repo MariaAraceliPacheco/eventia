@@ -1,15 +1,17 @@
-<div class="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gradient-to-b from-background to-white py-12 px-4 sm:px-6 lg:px-8">
+<div
+    class="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gradient-to-b from-background to-white py-12 px-4 sm:px-6 lg:px-8">
     <!-- Card -->
     <div class="w-full max-w-3xl bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100/50 relative">
-        
+
         <!-- Decorative Elements -->
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-accent"></div>
-        
+
         <div class="p-8 sm:p-10">
             <!-- Header -->
             <div class="flex items-center justify-between mb-8">
-                 <!-- Eventia Logo (Small) -->
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary text-white font-bold text-2xl shadow-lg shadow-primary/30">
+                <!-- Eventia Logo (Small) -->
+                <div
+                    class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary text-white font-bold text-2xl shadow-lg shadow-primary/30">
                     E
                 </div>
                 <div class="text-right">
@@ -20,7 +22,7 @@
 
             <!-- Form -->
             <form wire:submit.prevent="submit" class="space-y-8">
-                
+
                 <!-- Section: Datos Básicos -->
                 <div class="space-y-6">
                     <div class="flex items-center gap-3">
@@ -31,37 +33,47 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Name -->
                         <div class="space-y-1">
-                            <label for="name" class="block text-sm font-medium text-text-main">Nombre del Ayuntamiento</label>
-                            <input type="text" wire:model="name" id="name" required
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                            <label for="nombre_institucion" class="block text-sm font-medium text-text-main">Nombre del
+                                Ayuntamiento</label>
+                            <input type="text" wire:model="nombre_institucion" id="nombre_institucion" required
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                                 placeholder="Ej: Ayto. de Madrid">
+                            @error('nombre_institucion') <span
+                            class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
                         <!-- Profile Image Upload -->
                         <div class="space-y-1">
-                            <label for="profileImg" class="block text-sm font-medium text-text-main">Cargar imagen de perfil</label>
+                            <label for="profileImg" class="block text-sm font-medium text-text-main">Cargar imagen de
+                                perfil</label>
                             <div class="flex items-center gap-4">
-                                <label class="cursor-pointer bg-gray-50 border border-gray-200 hover:border-primary/50 hover:bg-primary/5 rounded-xl px-4 py-3 flex-1 transition-all text-sm text-text-secondary flex items-center justify-center gap-2">
+                                <label
+                                    class="cursor-pointer bg-gray-50 border border-gray-200 hover:border-primary/50 hover:bg-primary/5 rounded-xl px-4 py-3 flex-1 transition-all text-sm text-text-secondary flex items-center justify-center gap-2">
                                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                     </svg>
                                     <span>Seleccionar imagen</span>
-                                    <input type="file" wire:model="profileImg" id="profileImg" class="hidden" accept="image/*">
+                                    <input type="file" wire:model="imagen" id="imagen" class="hidden" accept="image/*">
                                 </label>
-                                @if ($profileImg)
+                                @if ($imagen)
                                     <div class="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden border border-gray-200">
-                                        <img src="{{ $profileImg->temporaryUrl() }}" class="w-full h-full object-cover">
+                                        <img src="{{ $imagen->temporaryUrl() }}" class="w-full h-full object-cover">
                                     </div>
                                 @endif
                             </div>
+                            @error('imagen') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="space-y-1">
-                        <label for="phone" class="block text-sm font-medium text-text-main">Teléfono de contacto</label>
-                        <input type="tel" wire:model="phone" id="phone"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                        <label for="telefono" class="block text-sm font-medium text-text-main">Teléfono de
+                            contacto</label>
+                        <input type="tel" wire:model="telefono" id="telefono"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                             placeholder="600 000 000">
+                        @error('telefono') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Location Grid -->
@@ -69,8 +81,8 @@
                         <div class="space-y-1">
                             <label class="block text-sm font-medium text-text-main">Comunidad autónoma</label>
                             <div class="relative">
-                                <input list="regions-list" wire:model.live="region" 
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                                <input list="regions-list" wire:model.live="comunidad_autonoma"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                                     placeholder="Buscar...">
                                 <datalist id="regions-list">
                                     @foreach(array_keys($regions_data) as $region_name)
@@ -78,12 +90,14 @@
                                     @endforeach
                                 </datalist>
                             </div>
+                            @error('comunidad_autonoma') <span
+                            class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
                         <div class="space-y-1">
                             <label class="block text-sm font-medium text-text-main">Provincia</label>
                             <div class="relative">
-                                <input list="provinces-list" wire:model.live="province" 
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                                <input list="provinces-list" wire:model.live="provincia"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                                     placeholder="Buscar...">
                                 <datalist id="provinces-list">
                                     @foreach($this->provinces as $province_name)
@@ -91,14 +105,18 @@
                                     @endforeach
                                 </datalist>
                             </div>
+                            @error('provincia') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="space-y-1">
-                        <label for="town" class="block text-sm font-medium text-text-main">Localidad</label>
-                        <input type="text" wire:model="town" id="town" 
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                        <label for="localidad" class="block text-sm font-medium text-text-main">Localidad</label>
+                        <input type="text" wire:model="localidad" id="localidad"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                             placeholder="Escribe tu ciudad o pueblo">
+                        @error('localidad') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -110,38 +128,50 @@
                     </div>
 
                     <div class="space-y-4">
-                        <label class="block text-sm font-medium text-text-main">¿Qué tipos de eventos organizáis habitualmente?</label>
+                        <label class="block text-sm font-medium text-text-main">¿Qué tipo de evento organizáis
+                            habitualmente?</label>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
                             @foreach(['Festivales', 'Ferias', 'Conciertos', 'Otro'] as $type)
-                            <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-secondary/5 hover:border-secondary/30 transition-all">
-                                <input type="checkbox" wire:model="eventTypes" value="{{ strtolower($type) }}" class="rounded border-gray-300 text-secondary focus:ring-secondary uppercase-none">
-                                <span class="text-sm text-text-main font-medium">{{ $type }}</span>
-                            </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-secondary/5 hover:border-secondary/30 transition-all">
+                                    <input type="radio" wire:model="tipo_evento" value="{{ strtolower($type) }}"
+                                        class="rounded-full border-gray-300 text-secondary focus:ring-secondary uppercase-none">
+                                    <span class="text-sm text-text-main font-medium">{{ $type }}</span>
+                                </label>
                             @endforeach
                         </div>
+                        @error('tipo_evento') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="space-y-1">
                         <label class="block text-sm font-medium text-text-main">Frecuencia de eventos</label>
-                        <select wire:model="frequency" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all cursor-pointer">
+                        <select wire:model="frecuencia"
+                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all cursor-pointer">
                             <option value="">Selecciona una</option>
-                            <option value="ocasional">Ocasionalmente</option>
-                            <option value="varias_año">Varias veces al año</option>
-                            <option value="mensual">Mensualmente</option>
-                            <option value="semanal">Semanalmente</option>
+                            <option value="ocasionalmente">Ocasionalmente</option>
+                            <option value="varias_veces_al_año">Varias veces al año</option>
+                            <option value="mensualmente">Mensualmente</option>
                         </select>
+                        @error('frecuencia') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <div class="space-y-4">
-                        <label class="block text-sm font-medium text-text-main">¿En qué tipos de espacios suelen realizarse?</label>
+                        <label class="block text-sm font-medium text-text-main">¿En qué tipo de espacio suelen
+                            realizarse?</label>
                         <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-                            @foreach(['Plaza pública', 'Auditorio', 'Recinto cerrado', 'Parque', 'Estadio'] as $space)
-                            <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-secondary/5 hover:border-secondary/30 transition-all">
-                                <input type="checkbox" wire:model="spaces" value="{{ strtolower($space) }}" class="rounded border-gray-300 text-secondary focus:ring-secondary">
-                                <span class="text-sm text-text-main font-medium">{{ $space }}</span>
-                            </label>
+                            @foreach(['plaza_publica', 'auditorio', 'recinto_cerrado', 'otro'] as $space)
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-secondary/5 hover:border-secondary/30 transition-all">
+                                    <input type="radio" wire:model="tipo_espacio" value="{{ strtolower($space) }}"
+                                        class="rounded-full border-gray-300 text-secondary focus:ring-secondary">
+                                    <span class="text-sm text-text-main font-medium">{{ $space }}</span>
+                                </label>
                             @endforeach
                         </div>
+                        @error('tipo_espacio') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -153,15 +183,20 @@
                     </div>
 
                     <div class="space-y-4">
-                        <label class="block text-sm font-medium text-text-main">Incluir opciones de accesibilidad en los eventos:</label>
+                        <label class="block text-sm font-medium text-text-main">Opción de accesibilidad
+                            principal:</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             @foreach(['Entradas adaptadas', 'Transporte accesible', 'Zonas de descanso', 'Intérprete de signos'] as $opt)
-                            <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-accent/5 hover:border-accent/30 transition-all">
-                                <input type="checkbox" wire:model="accessibilityOptions" value="{{ strtolower($opt) }}" class="rounded border-gray-300 text-accent focus:ring-accent">
-                                <span class="text-sm text-text-main font-medium">{{ $opt }}</span>
-                            </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-accent/5 hover:border-accent/30 transition-all">
+                                    <input type="radio" wire:model="opciones_accesibilidad" value="{{ strtolower($opt) }}"
+                                        class="rounded-full border-gray-300 text-accent focus:ring-accent">
+                                    <span class="text-sm text-text-main font-medium">{{ $opt }}</span>
+                                </label>
                             @endforeach
                         </div>
+                        @error('opciones_accesibilidad') <span
+                        class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                     </div>
                 </div>
 
@@ -173,21 +208,30 @@
                     </div>
 
                     <div class="space-y-1">
-                        <label class="block text-sm font-medium text-text-main">¿Cómo preferís recibir facturas y contratos?</label>
+                        <label class="block text-sm font-medium text-text-main">¿Cómo preferís recibir facturas y
+                            contratos?</label>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
-                            <div wire:click="$set('billingPreference', 'platform')" class="cursor-pointer flex items-center gap-3 p-4 rounded-xl border {{ $billingPreference === 'platform' ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 bg-gray-50' }} transition-all">
-                                <div class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
-                                    @if($billingPreference === 'platform') <div class="w-2 h-2 rounded-full bg-primary"></div> @endif
+                            <div wire:click="$set('tipo_facturacion', 'plataforma')"
+                                class="cursor-pointer flex items-center gap-3 p-4 rounded-xl border {{ $tipo_facturacion === 'plataforma' ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 bg-gray-50' }} transition-all">
+                                <div
+                                    class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
+                                    @if($tipo_facturacion === 'plataforma')
+                                    <div class="w-2 h-2 rounded-full bg-primary"></div> @endif
                                 </div>
                                 <span class="text-sm font-medium">Desde la plataforma</span>
                             </div>
-                            <div wire:click="$set('billingPreference', 'email')" class="cursor-pointer flex items-center gap-3 p-4 rounded-xl border {{ $billingPreference === 'email' ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 bg-gray-50' }} transition-all">
-                                <div class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
-                                    @if($billingPreference === 'email') <div class="w-2 h-2 rounded-full bg-primary"></div> @endif
+                            <div wire:click="$set('tipo_facturacion', 'correo')"
+                                class="cursor-pointer flex items-center gap-3 p-4 rounded-xl border {{ $tipo_facturacion === 'correo' ? 'border-primary bg-primary/5 ring-1 ring-primary' : 'border-gray-100 bg-gray-50' }} transition-all">
+                                <div
+                                    class="w-4 h-4 rounded-full border-2 border-primary flex items-center justify-center">
+                                    @if($tipo_facturacion === 'correo')
+                                    <div class="w-2 h-2 rounded-full bg-primary"></div> @endif
                                 </div>
                                 <span class="text-sm font-medium">Por correo electrónico</span>
                             </div>
                         </div>
+                        @error('tipo_facturacion') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
@@ -199,20 +243,26 @@
                     </div>
 
                     <div class="space-y-4">
-                        <label class="block text-sm font-medium text-text-main">¿Disponéis de infraestructura técnica propia?</label>
+                        <label class="block text-sm font-medium text-text-main">¿Disponéis de infraestructura técnica
+                            propia principal?</label>
                         <div class="grid grid-cols-2 gap-4">
                             @foreach(['Sonido', 'Iluminación', 'Escenario', 'Personal seguridad', 'Backstage'] as $infra)
-                            <label class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-secondary/5 hover:border-secondary/30 transition-all">
-                                <input type="checkbox" wire:model="technicalInfrastructure" value="{{ strtolower($infra) }}" class="rounded border-gray-300 text-secondary focus:ring-secondary">
-                                <span class="text-sm text-text-main font-medium">{{ $infra }}</span>
-                            </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100 cursor-pointer hover:bg-secondary/5 hover:border-secondary/30 transition-all">
+                                    <input type="radio" wire:model="logistica_propia" value="{{ strtolower($infra) }}"
+                                        class="rounded-full border-gray-300 text-secondary focus:ring-secondary">
+                                    <span class="text-sm text-text-main font-medium">{{ $infra }}</span>
+                                </label>
                             @endforeach
                         </div>
+                        @error('logistica_propia') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="w-full bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary/30 flex items-center justify-center transform hover:-translate-y-0.5 mt-8">
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-primary via-secondary to-accent hover:opacity-90 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary/30 flex items-center justify-center transform hover:-translate-y-0.5 mt-8">
                     Crear perfil de Ayuntamiento
                 </button>
             </form>

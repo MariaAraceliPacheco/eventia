@@ -26,6 +26,13 @@
             </div>
 
             <!-- Form -->
+            <!-- Cuando se envia el formulario, se envia mediante metodo post al nombre de ruta publico.store
+                ese nombre está definido en web.php
+                Esto hace que se llame al metodo store de la clase PublicoController 
+                
+                EN este caso no usamos el metodo store de PublicoController, 
+                si no que usamos el metodo submit de Livewire
+                -->
             <form wire:submit.prevent="submit" method="POST" action="{{ route('publico.store') }}" class="space-y-6">
 
                 @csrf

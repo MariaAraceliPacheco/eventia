@@ -10,32 +10,51 @@ class AyuntamientoController extends Controller
 
     public function store(Request $request)
     {
-        //se obtiene el usuario que ha iniciado sesion, para asi poder acceder a su id
+        // se obtiene el usuario que ha iniciado sesion
         $user = auth()->user();
 
-        //validacion de los campos del formulario
+        // validacion de los campos del formulario
         $validated = $request->validate([
-            'nombre_institucion' => 'required',
-            'imagen' => 'required',
-            'comunidad_autonoma' => 'required',
-            'localidad' => 'required',
-            'provincia' => 'required',
-            'telefono' => 'required',
-            'email_contacto' => 'required',
-            'tipo_evento' => 'required|in:' . implode(',', Ayuntamiento::TIPO_EVENTO),
-            'frecuencia' => 'required|in:' . implode(',', Ayuntamiento::FRECUENCIA),
-            'tipo_espacio' => 'required|in:' . implode(',', Ayuntamiento::TIPO_ESPACIO),
+            'nombre_institucion' => 'required|string',
+            'imagen' => 'required', // Se asume que viene la ruta de la imagen
+            'comunidad_autonoma' => 'required|string',
+            'localidad' => 'required|string',
+            'provincia' => 'required|string',
+            'telefono' => 'required|string',
+            'email_contacto' => 'required|email',
+            'tipo_evento' => 'required',
+            'frecuencia' => 'required',
+            'tipo_espacio' => 'required',
             'opciones_accesibilidad' => 'sometimes',
-            'tipo_facturacion' => 'required|in:' . implode(',', Ayuntamiento::TIPO_FACTURACION),
+            'tipo_facturacion' => 'required',
             'logistica_propia' => 'sometimes',
         ]);
 
-        Ayuntamiento::create([
-            'user_id' => $user->id,
-            ...$validated, //otra forma de crear el usuario poniendo todos 
-            // los campos obligatorios que ha puesto
-        ]);
+        self::createProfile($validated, $user->id);
 
         return redirect()->route('town-hall.area')->with('success', 'Perfil creado correctamente');
+    }
+
+    /**
+     * Lógica compartida para crear el perfil de ayuntamiento.
+     */
+    public static function createProfile(array $data, int $userId)
+    {
+        return Ayuntamiento::create([
+            'id_usuario' => $userId,
+            'nombre_institucion' => $data['nombre_institucion'],
+            'imagen' => $data['imagen'],
+            'comunidad_autonoma' => $data['comunidad_autonoma'],
+            'localidad' => $data['localidad'],
+            'provincia' => $data['provincia'],
+            'telefono' => $data['telefono'],
+            'email_contacto' => $data['email_contacto'] ?? auth()->user()->email,
+            'tipo_evento' => $data['tipo_evento'],
+            'frecuencia' => $data['frecuencia'],
+            'tipo_espacio' => $data['tipo_espacio'],
+            'opciones_accesibilidad' => $data['opciones_accesibilidad'] ?? null,
+            'tipo_facturacion' => $data['tipo_facturacion'],
+            'logistica_propia' => $data['logistica_propia'] ?? null,
+        ]);
     }
 }

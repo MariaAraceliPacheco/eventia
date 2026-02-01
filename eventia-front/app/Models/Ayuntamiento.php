@@ -32,6 +32,10 @@ class Ayuntamiento extends Model
         'logistica_propia'
     ];
 
+    protected $casts = [
+        // No array casts needed if they are strings/enums in DB
+    ];
+
     public $timestamps = false;
 
     public function usuario()

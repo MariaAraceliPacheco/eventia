@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Http\Controllers\PublicoController;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\Publico;
@@ -82,23 +83,15 @@ class UserQuestions extends Component
     public function submit()
     {
         $validated = $this->validate([
-            'comunidad_autonoma' => 'required',
-            'provincia' => 'required',
-            'localidad' => 'required',
+            'comunidad_autonoma' => 'required|string',
+            'provincia' => 'required|string',
+            'localidad' => 'required|string',
             'gustos_musicales' => 'required|string',
             'tipo_eventos_favoritos' => 'required|string',
             'notificaciones' => 'boolean',
         ]);
 
-        Publico::create([
-            'id_usuario' => auth()->id(),
-            'comunidad_autonoma' => $this->comunidad_autonoma,
-            'provincia' => $this->provincia,
-            'localidad' => $this->localidad,
-            'gustos_musicales' => $this->gustos_musicales,
-            'tipo_eventos_favoritos' => $this->tipo_eventos_favoritos,
-            'notificaciones' => $this->notificaciones,
-        ]);
+        PublicoController::createProfile($validated, auth()->id());
 
         return redirect()->route('public.area')->with('success', '¡Perfil creado con éxito!');
     }

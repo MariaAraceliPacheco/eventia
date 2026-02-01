@@ -5,32 +5,33 @@ namespace App\Livewire\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use App\Http\Controllers\AyuntamientoController;
 
 class TownHallQuestions extends Component
 {
     use WithFileUploads;
 
     // Basic Data
-    public $name = '';
-    public $profileImg;
-    public $phone = '';
-    public $region = '';
-    public $province = '';
-    public $town = '';
+    public $nombre_institucion = '';
+    public $imagen;
+    public $telefono = '';
+    public $comunidad_autonoma = '';
+    public $provincia = '';
+    public $localidad = '';
 
     // Events
-    public $eventTypes = [];
-    public $frequency = '';
-    public $spaces = [];
+    public $tipo_evento = '';
+    public $frecuencia = '';
+    public $tipo_espacio = '';
 
     // Accessibility
-    public $accessibilityOptions = [];
+    public $opciones_accesibilidad = '';
 
     // Billing
-    public $billingPreference = 'platform';
+    public $tipo_facturacion = 'plataforma';
 
     // Resources
-    public $technicalInfrastructure = [];
+    public $logistica_propia = '';
 
     public $regions_data = [
         'Andalucía' => ['Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'],
@@ -54,20 +55,20 @@ class TownHallQuestions extends Component
         'Melilla' => ['Melilla'],
     ];
 
-    public function updatedRegion()
+    public function updatedComunidadAutonoma()
     {
         $provincesInRegion = $this->provinces;
-        if ($this->province && !in_array($this->province, $provincesInRegion)) {
-            $this->province = '';
+        if ($this->provincia && !in_array($this->provincia, $provincesInRegion)) {
+            $this->provincia = '';
         }
     }
 
-    public function updatedProvince()
+    public function updatedProvincia()
     {
-        if ($this->province) {
+        if ($this->provincia) {
             foreach ($this->regions_data as $region => $provinces) {
-                if (in_array($this->province, $provinces)) {
-                    $this->region = $region;
+                if (in_array($this->provincia, $provinces)) {
+                    $this->comunidad_autonoma = $region;
                     break;
                 }
             }
@@ -76,8 +77,8 @@ class TownHallQuestions extends Component
 
     public function getProvincesProperty()
     {
-        if ($this->region) {
-            return $this->regions_data[$this->region] ?? [];
+        if ($this->comunidad_autonoma) {
+            return $this->regions_data[$this->comunidad_autonoma] ?? [];
         }
 
         $all = [];
@@ -96,7 +97,29 @@ class TownHallQuestions extends Component
 
     public function submit()
     {
-        // Logic to save town hall profile will go here
-        return redirect()->route('town-hall.area');
+        $validated = $this->validate([
+            'nombre_institucion' => 'required|string',
+            'telefono' => 'required|string',
+            'comunidad_autonoma' => 'required|string',
+            'provincia' => 'required|string',
+            'localidad' => 'required|string',
+            'tipo_evento' => 'required|string',
+            'frecuencia' => 'required|string',
+            'tipo_espacio' => 'required|string',
+            'opciones_accesibilidad' => 'string',
+            'tipo_facturacion' => 'required|string',
+            'logistica_propia' => 'string',
+        ]);
+
+        // Handle Image Upload
+        if ($this->imagen) {
+            $validated['imagen'] = $this->imagen->store('profiles/ayuntamientos', 'public');
+        } else {
+            $validated['imagen'] = null;
+        }
+
+        AyuntamientoController::createProfile($validated, auth()->id());
+
+        return redirect()->route('town-hall.area')->with('success', '¡Perfil de Ayuntamiento creado con éxito!');
     }
 }
