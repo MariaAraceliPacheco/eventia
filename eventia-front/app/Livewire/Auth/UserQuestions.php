@@ -4,16 +4,16 @@ namespace App\Livewire\Auth;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use App\Models\Publico;
 
 class UserQuestions extends Component
 {
-    public $name = '';
-    public $musicPreferences = [];
-    public $eventTypes = [];
-    public $region = '';
-    public $province = '';
-    public $town = '';
-    public $wantsAlerts = false;
+    public $gustos_musicales = '';
+    public $tipo_eventos_favoritos = '';
+    public $comunidad_autonoma = '';
+    public $provincia = '';
+    public $localidad = '';
+    public $notificaciones = false;
 
     public $regions_data = [
         'Andalucía' => ['Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'],
@@ -41,17 +41,17 @@ class UserQuestions extends Component
     {
         // Only clear if the province doesn't belong to the new region
         $provincesInRegion = $this->provinces;
-        if ($this->province && !in_array($this->province, $provincesInRegion)) {
-            $this->province = '';
+        if ($this->provincia && !in_array($this->provincia, $provincesInRegion)) {
+            $this->provincia = '';
         }
     }
 
     public function updatedProvince()
     {
-        if ($this->province) {
+        if ($this->provincia) {
             foreach ($this->regions_data as $region => $provinces) {
-                if (in_array($this->province, $provinces)) {
-                    $this->region = $region;
+                if (in_array($this->provincia, $provinces)) {
+                    $this->comunidad_autonoma = $region;
                     break;
                 }
             }
@@ -60,8 +60,8 @@ class UserQuestions extends Component
 
     public function getProvincesProperty()
     {
-        if ($this->region) {
-            return $this->regions_data[$this->region] ?? [];
+        if ($this->comunidad_autonoma) {
+            return $this->regions_data[$this->comunidad_autonoma] ?? [];
         }
 
         // Return all provinces sorted if no region is selected
@@ -81,7 +81,25 @@ class UserQuestions extends Component
 
     public function submit()
     {
-        // Logic to save preferences will go here
-        return redirect()->route('public.area');
+        $validated = $this->validate([
+            'comunidad_autonoma' => 'required',
+            'provincia' => 'required',
+            'localidad' => 'required',
+            'gustos_musicales' => 'required|string',
+            'tipo_eventos_favoritos' => 'required|string',
+            'notificaciones' => 'boolean',
+        ]);
+
+        Publico::create([
+            'id_usuario' => auth()->id(),
+            'comunidad_autonoma' => $this->comunidad_autonoma,
+            'provincia' => $this->provincia,
+            'localidad' => $this->localidad,
+            'gustos_musicales' => $this->gustos_musicales,
+            'tipo_eventos_favoritos' => $this->tipo_eventos_favoritos,
+            'notificaciones' => $this->notificaciones,
+        ]);
+
+        return redirect()->route('public.area')->with('success', '¡Perfil creado con éxito!');
     }
 }

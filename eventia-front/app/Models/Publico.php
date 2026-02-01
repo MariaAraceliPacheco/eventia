@@ -12,7 +12,7 @@ class Publico extends Model
     protected $table = 'publicos';
     const GUSTOS_MUSICALES = ['rock', 'pop', 'reggaeton', 'metal'];
     const TIPO_EVENTOS_FAVORITOS = ['festivales', 'ferias', 'conciertos', 'otro'];
-    
+
     protected $fillable = [
         'id_usuario',
         'comunidad_autonoma',
@@ -23,9 +23,14 @@ class Publico extends Model
         'notificaciones'
     ];
 
+    protected $casts = [
+        'notificaciones' => 'boolean',
+    ];
+
     public $timestamps = false;
 
-    public function usuario() {
+    public function usuario()
+    {
         //esto sirve para que el ayuntamiento tenga un usuario asignado
         //es como una relacion
         return $this->belongsTo(User::class);

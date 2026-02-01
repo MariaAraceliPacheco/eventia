@@ -1,15 +1,17 @@
-<div class="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gradient-to-b from-background to-white py-12 px-4 sm:px-6 lg:px-8">
+<div
+    class="flex items-center justify-center min-h-[calc(100vh-80px)] bg-gradient-to-b from-background to-white py-12 px-4 sm:px-6 lg:px-8">
     <!-- Card -->
     <div class="w-full max-w-2xl bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100/50 relative">
-        
+
         <!-- Decorative Elements -->
         <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-accent"></div>
-        
+
         <div class="p-8 sm:p-10">
             <!-- Header -->
             <div class="flex items-center justify-between mb-8">
-                 <!-- Eventia Logo (Small) -->
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary text-white font-bold text-2xl shadow-lg shadow-primary/30">
+                <!-- Eventia Logo (Small) -->
+                <div
+                    class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-primary to-secondary text-white font-bold text-2xl shadow-lg shadow-primary/30">
                     E
                 </div>
                 <div class="text-right">
@@ -24,40 +26,38 @@
             </div>
 
             <!-- Form -->
-            <form wire:submit.prevent="submit" class="space-y-6">
-                <!-- Name -->
-                <div class="space-y-1">
-                    <label for="name" class="block text-sm font-medium text-text-main">Nombre</label>
-                    <input type="text" wire:model="name" id="name" 
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
-                        placeholder="¿Cómo te llamas?">
-                </div>
+            <form wire:submit.prevent="submit" method="POST" action="{{ route('publico.store') }}" class="space-y-6">
 
+                @csrf
                 <!-- Music Preferences -->
                 <div class="space-y-1">
                     <label class="block text-sm font-medium text-text-main">Preferencias musicales</label>
                     <div class="relative">
-                        <select wire:model="musicPreferences" multiple
+                        <select wire:model="gustos_musicales"
                             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-32">
                             <option value="pop">Pop</option>
                             <option value="rock">Rock</option>
                             <option value="reggaeton">Reggaeton</option>
                             <option value="metal">Metal</option>
                         </select>
-                        <p class="mt-1 text-xs text-text-secondary">Mantén pulsado Ctrl (o Cmd) para seleccionar varios</p>
+                        <p class="mt-1 text-xs text-text-secondary">Selecciona tu género favorito</p>
                     </div>
+                    @error('gustos_musicales') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Event Types -->
                 <div class="space-y-1">
                     <label class="block text-sm font-medium text-text-main">Tipo de eventos preferidos</label>
-                    <select wire:model="eventTypes" multiple
+                    <select wire:model="tipo_eventos_favoritos"
                         class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-32">
                         <option value="festivales">Festivales</option>
                         <option value="ferias">Ferias</option>
                         <option value="conciertos">Conciertos</option>
                         <option value="otro">Otro</option>
                     </select>
+                    @error('tipo_eventos_favoritos') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <!-- Location Grid -->
@@ -65,8 +65,8 @@
                     <div class="space-y-1">
                         <label class="block text-sm font-medium text-text-main">Comunidad autónoma</label>
                         <div class="relative">
-                            <input list="regions-list" wire:model.live="region" 
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                            <input list="regions-list" wire:model.live="comunidad_autonoma"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                                 placeholder="Escribe para buscar...">
                             <datalist id="regions-list">
                                 @foreach(array_keys($regions_data) as $region_name)
@@ -74,12 +74,14 @@
                                 @endforeach
                             </datalist>
                         </div>
+                        @error('comunidad_autonoma') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="space-y-1">
                         <label class="block text-sm font-medium text-text-main">Provincia</label>
                         <div class="relative">
-                            <input list="provinces-list" wire:model.live="province" 
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                            <input list="provinces-list" wire:model.live="provincia"
+                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                                 placeholder="Escribe para buscar...">
                             <datalist id="provinces-list">
                                 @foreach($this->provinces as $province_name)
@@ -87,15 +89,18 @@
                                 @endforeach
                             </datalist>
                         </div>
+                        @error('provincia') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
 
                 <!-- Locality -->
                 <div class="space-y-1">
-                    <label for="town" class="block text-sm font-medium text-text-main">Localidad</label>
-                    <input type="text" wire:model="town" id="town" 
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                    <label for="localidad" class="block text-sm font-medium text-text-main">Localidad</label>
+                    <input type="text" wire:model="localidad" id="localidad"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all"
                         placeholder="Tu ciudad o pueblo">
+                    @error('localidad') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
 
                 <!-- Alerts Toggle -->
@@ -103,7 +108,8 @@
                     <div class="flex items-center gap-3">
                         <div class="p-2 bg-white rounded-lg shadow-sm">
                             <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                             </svg>
                         </div>
                         <div>
@@ -112,13 +118,16 @@
                         </div>
                     </div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" wire:model="wantsAlerts" class="sr-only peer">
-                        <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none ring-0 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                        <input type="checkbox" wire:model="notificaciones" class="sr-only peer">
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none ring-0 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary">
+                        </div>
                     </label>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/40 flex items-center justify-center transform hover:-translate-y-0.5">
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-4 rounded-xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/40 flex items-center justify-center transform hover:-translate-y-0.5">
                     Crear perfil
                 </button>
             </form>

@@ -17,6 +17,8 @@ use App\Livewire\Public\EventDetail;
 use App\Livewire\Public\TownHallProfile;
 use App\Livewire\Public\TownHallList;
 use App\Livewire\Public\ArtistList;
+use App\Http\Controllers\PublicoController;
+
 Route::get('/', HomePage::class);
 
 Route::get('/login', Login::class)->name('login');
@@ -53,3 +55,7 @@ Route::post('/logout', function () {
     request()->session()->regenerateToken();
     return redirect('/');
 })->name('logout');
+
+//para poder acceder al metodo para crear el perfil de publico, será necesario crear una ruta 
+//post que llame al metodo store del controlador PublicoController
+Route::post('/publico', [PublicoController::class, 'store'])->name('publico.store');
