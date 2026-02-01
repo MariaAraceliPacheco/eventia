@@ -16,24 +16,40 @@ class ArtistaController extends Controller
 
         //validacion de los campos del formulario
         $validated = $request->validate([
-            'nombre_artistico' => 'required',
+            'nombre_artistico' => 'required|string',
             'tipo' => 'required|in:' . implode(',', Artista::TIPO),
             'genero_musical' => 'required|in:' . implode(',', Artista::GENERO_MUSICAL),
-            'descripcion' => 'required',
-            'precio_referencia' => 'required',
-            'telefono' => 'required',
+            'descripcion' => 'required|string',
+            'precio_referencia' => 'required|string',
+            'telefono' => 'required|string',
             'equipo_propio' => 'sometimes|boolean',
-            'num_integrantes' => 'required',
+            'num_integrantes' => 'required|integer',
             'img_logo' => 'required',
             'recibir_facturas' => 'required|in:' . implode(',', Artista::RECIBIR_FACTURAS),
         ]);
 
-        Artista::create([
-            'user_id' => $user->id,
-            ...$validated, //otra forma de crear el usuario poniendo todos 
-            // los campos obligatorios que ha puesto
-        ]);
+        self::createProfile($validated, $user->id);
 
         return redirect()->route('artist.area')->with('success', 'Perfil creado correctamente');
+    }
+
+    /**
+     * Lógica compartida para crear el perfil de artista.
+     */
+    public static function createProfile(array $data, int $userId)
+    {
+        return Artista::create([
+            'id_usuario' => $userId,
+            'nombre_artistico' => $data['nombre_artistico'],
+            'tipo' => $data['tipo'],
+            'genero_musical' => $data['genero_musical'],
+            'descripcion' => $data['descripcion'],
+            'precio_referencia' => $data['precio_referencia'],
+            'telefono' => $data['telefono'],
+            'equipo_propio' => $data['equipo_propio'] ?? false,
+            'num_integrantes' => $data['num_integrantes'] ?? 1,
+            'img_logo' => $data['img_logo'],
+            'recibir_facturas' => $data['recibir_facturas'],
+        ]);
     }
 }

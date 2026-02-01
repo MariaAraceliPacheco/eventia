@@ -5,21 +5,23 @@ namespace App\Livewire\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
+use App\Http\Controllers\ArtistaController;
+use App\Models\Artista;
 
 class ArtistQuestions extends Component
 {
     use WithFileUploads;
 
-    public $name = '';
-    public $logo;
-    public $description = '';
-    public $type = 'solista'; // solista or banda
-    public $genre = '';
-    public $memberCount = 1;
-    public $phone = '';
-    public $referencePrice = '';
-    public $hasTechnicalEquipment = false;
-    public $billingPreference = 'platform'; // platform or email
+    public $nombre_artistico = '';
+    public $img_logo;
+    public $descripcion = '';
+    public $tipo = 'solista'; // solista or banda
+    public $genero_musical = '';
+    public $num_integrantes = 1;
+    public $telefono = '';
+    public $precio_referencia = '';
+    public $equipo_propio = false;
+    public $recibir_facturas = 'plataforma'; // plataforma or correo
 
     #[Layout('components.layouts.app')]
     public function render()
@@ -29,7 +31,27 @@ class ArtistQuestions extends Component
 
     public function submit()
     {
-        // Logic to save artist profile will go here
-        return redirect()->route('artist.area');
+        $validated = $this->validate([
+            'nombre_artistico' => 'required|string',
+            'descripcion' => 'required|string',
+            'tipo' => 'required|in:' . implode(',', Artista::TIPO),
+            'genero_musical' => 'required|in:' . implode(',', Artista::GENERO_MUSICAL),
+            'num_integrantes' => 'required|integer|min:1',
+            'telefono' => 'required|string',
+            'precio_referencia' => 'required|string',
+            'equipo_propio' => 'boolean',
+            'recibir_facturas' => 'required|in:' . implode(',', Artista::RECIBIR_FACTURAS),
+        ]);
+
+        // Handle Logo Upload
+        if ($this->img_logo) {
+            $validated['img_logo'] = $this->img_logo->store('profiles/artistas', 'public');
+        } else {
+            $validated['img_logo'] = null;
+        }
+
+        ArtistaController::createProfile($validated, auth()->id());
+
+        return redirect()->route('artist.area')->with('success', '¡Perfil de Artista creado con éxito!');
     }
 }
