@@ -69,6 +69,14 @@ class User extends Authenticatable
     }
 
     public function perfilArtista() {
-        return $this->hasOne(Artista::class, 'id_usuario');
+        //aqui es como si se preguntara
+        //dato ESTE usuario... cual es su artista?
+        //y la respuesta es la columna de la tabla artista que tenga el mismo id_usuario
+        return $this->hasOne(Artista::class, //modelo padre
+         'id_usuario', //FK en artistas
+         'id'); //PK en users
+        //es como si se dijera:
+        //un usuario tiene un artista donde artistas.id_usuario = usuarios.id
+        //y un artista tiene un usuario donde usuarios.id = artistas.id_usuario
     }
 }

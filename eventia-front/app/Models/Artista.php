@@ -34,8 +34,10 @@ class Artista extends Model
 
     public function usuario()
     {
-        //esto sirve para que el ayuntamiento tenga un usuario asignado
+        //esto sirve para que el artista tenga un usuario asignado
         //es como una relacion
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, //modelo padre
+         'id_usuario', //FK en artistas
+         'id'); //PK en users
     }
 }
