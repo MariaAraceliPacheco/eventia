@@ -17,6 +17,7 @@ use App\Livewire\Public\EventDetail;
 use App\Livewire\Public\TownHallProfile;
 use App\Livewire\Public\TownHallList;
 use App\Livewire\Public\ArtistList;
+use App\Livewire\Admin\Admin;
 use App\Http\Controllers\PublicoController;
 
 Route::get('/', HomePage::class);
@@ -45,9 +46,11 @@ Route::get('/area-artista', \App\Livewire\Artist\AreaArtista::class)->name('arti
 Route::get('/area-publico', \App\Livewire\Public\AreaPublico::class)->name('public.area');
 Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
 
+// Admin Routes
+Route::get('/admin', Admin::class)->name('admin.vistaAdmin');
+
 Route::view('/dashboard', 'dashboard')->name('dashboard');
 Route::view('/profile', 'profile')->name('profile.edit');
-Route::view('/admin', 'admin.vistaAdmin')->name('admin.vistaAdmin');
 
 Route::post('/logout', function () {
     Auth::logout();
