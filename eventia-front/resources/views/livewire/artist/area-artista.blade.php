@@ -107,6 +107,7 @@
                                     Referencia</span>
                                 <span class="text-xl font-bold text-text-main"> {{ $artista->precio_referencia }} <small
                                         class="text-xs font-normal text-text-secondary">/ sesión</small></span>
+                                        
                             </div>
                         </div>
                     </div>

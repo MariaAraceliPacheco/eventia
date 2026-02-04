@@ -79,4 +79,8 @@ class User extends Authenticatable
         //un usuario tiene un artista donde artistas.id_usuario = usuarios.id
         //y un artista tiene un usuario donde usuarios.id = artistas.id_usuario
     }
+
+    public function perfilAyuntamiento() {
+        return $this->hasOne(Ayuntamiento::class, 'id_usuario', 'id');
+    }
 }

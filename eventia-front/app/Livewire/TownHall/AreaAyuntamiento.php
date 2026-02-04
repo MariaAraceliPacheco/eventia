@@ -9,6 +9,14 @@ class AreaAyuntamiento extends Component
 {
     public $searchArtist = '';
     
+    public $user;
+    public $ayuntamiento;
+
+    public function mount() {
+        $this->user = auth()->user();
+        $this->ayuntamiento = $this->user->perfilAyuntamiento;
+    }
+
     #[Layout('components.layouts.app')]
     public function render()
     {
