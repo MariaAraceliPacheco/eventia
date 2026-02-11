@@ -101,6 +101,35 @@
                 </div>
                 <a href="{{ route('public.town-hall-profile', ['id' => 1]) }}" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-bold text-text-main hover:bg-gray-50 transition-colors">Ver perfil</a>
             </div>
+
+            <!-- Artists Participating -->
+            <div class="bg-white rounded-[40px] shadow-sm border border-gray-100 p-10 space-y-6">
+                <div class="flex items-center gap-4">
+                    <div class="h-8 w-1.5 bg-secondary rounded-full"></div>
+                    <h3 class="text-2xl font-bold text-text-main font-heading">Artistas Participantes</h3>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach([
+                        ['name' => 'Los Rockeros', 'genre' => 'Rock', 'id' => 1],
+                        ['name' => 'DJ Spark', 'genre' => 'Electrónica', 'id' => 2],
+                        ['name' => 'Voz de Angel', 'genre' => 'Pop', 'id' => 3]
+                    ] as $artist)
+                    <a href="{{ route('public.artist-profile', ['id' => $artist['id']]) }}" class="flex items-center gap-4 p-5 bg-gray-50 border border-gray-100 rounded-2xl hover:bg-white hover:shadow-lg hover:-translate-y-1 transition-all group">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center text-secondary font-bold text-xl group-hover:scale-110 transition-transform">
+                            {{ substr($artist['name'], 0, 1) }}
+                        </div>
+                        <div class="flex-1">
+                            <h4 class="text-sm font-bold text-text-main group-hover:text-secondary transition-colors">{{ $artist['name'] }}</h4>
+                            <p class="text-xs text-text-secondary">{{ $artist['genre'] }}</p>
+                        </div>
+                        <svg class="w-5 h-5 text-gray-300 group-hover:text-secondary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                    </a>
+                    @endforeach
+                </div>
+            </div>
         </div>
 
         <!-- Right Section: Chat IA -->

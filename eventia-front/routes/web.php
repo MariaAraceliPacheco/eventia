@@ -34,6 +34,7 @@ Route::get('/evento/{id}', EventDetail::class)->name('public.event-detail');
 Route::get('/ayuntamiento/{id}', TownHallProfile::class)->name('public.town-hall-profile');
 Route::get('/ayuntamientos', TownHallList::class)->name('public.town-hall-list');
 Route::get('/artistas', ArtistList::class)->name('public.artist-list');
+Route::get('/artista/{id}', \App\Livewire\Public\ArtistProfile::class)->name('public.artist-profile');
 
 // Town Hall Routes
 Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
@@ -45,6 +46,7 @@ Route::get('/area-artista', \App\Livewire\Artist\AreaArtista::class)->name('arti
 // Public Routes
 Route::get('/area-publico', \App\Livewire\Public\AreaPublico::class)->name('public.area');
 Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
+Route::get('/pago', \App\Livewire\Public\PaymentCheckout::class)->name('public.payment-checkout');
 
 // Admin Routes
 Route::get('/admin', Admin::class)->name('admin.vistaAdmin');

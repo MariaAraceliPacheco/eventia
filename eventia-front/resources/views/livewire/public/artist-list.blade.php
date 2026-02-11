@@ -74,7 +74,7 @@
 
                 <!-- Profile Button -->
                 <div class="mt-8">
-                     <a href="{{ route('artist.area') }}" class="w-full py-4 inline-flex items-center justify-center gap-3 bg-{{ $artist['color'] === 'secondary' ? 'text-main' : 'gray-50' }} {{ $artist['color'] === 'secondary' ? 'text-white' : 'text-text-main' }} font-black rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all group/btn">
+                     <a href="{{ route('public.artist-profile', ['id' => $artist['id']]) }}" class="w-full py-4 inline-flex items-center justify-center gap-3 bg-{{ $artist['color'] === 'secondary' ? 'text-main' : 'gray-50' }} {{ $artist['color'] === 'secondary' ? 'text-white' : 'text-text-main' }} font-black rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all group/btn">
                         <span>Ver Perfil de Artista</span>
                         <svg class="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />

@@ -90,11 +90,15 @@
                     
                     <div class="space-y-8 relative">
                         <h3 class="text-2xl font-bold font-heading">Resumen de compra</h3>
-                        
+                          
                         <div class="space-y-4">
                             <div class="flex items-center justify-between text-gray-400 text-sm">
                                 <span>Entrada {{ $category }}</span>
                                 <span class="font-bold text-white">{{ $quantity }}x</span>
+                            </div>
+                            <div class="flex items-center justify-between text-gray-400 text-sm">
+                                <span>Precio unitario</span>
+                                <span class="font-bold text-white">{{ number_format($subtotal / $quantity, 2) }}€</span>
                             </div>
                             <div class="flex items-center justify-between text-gray-400 text-sm italic">
                                 <span>Gastos de gestión</span>
@@ -103,7 +107,7 @@
                             <div class="border-t border-white/10 pt-6 flex items-center justify-between">
                                 <span class="text-xl font-bold">Total</span>
                                 <div class="text-right">
-                                    <span class="text-4xl font-black text-primary">45.00€</span>
+                                    <span class="text-4xl font-black text-primary">{{ number_format($total, 2) }}€</span>
                                     <p class="text-[10px] text-gray-500 mt-1 uppercase tracking-widest font-bold">IVA incluido</p>
                                 </div>
                             </div>

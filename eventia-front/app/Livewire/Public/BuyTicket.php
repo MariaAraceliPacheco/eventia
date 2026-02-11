@@ -9,16 +9,39 @@ class BuyTicket extends Component
 {
     public $quantity = 1;
     public $category = 'General';
+    
+    // Price map for each category
+    public $prices = [
+        'General' => 35,
+        'Pista' => 45,
+        'V.I.P.' => 120,
+        'Grada Lateral' => 30
+    ];
 
     #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('livewire.public.buy-ticket');
+        return view('livewire.public.buy-ticket', [
+            'subtotal' => $this->getSubtotal(),
+            'total' => $this->getTotal()
+        ]);
+    }
+
+    public function getSubtotal()
+    {
+        return $this->prices[$this->category] * $this->quantity;
+    }
+
+    public function getTotal()
+    {
+        return $this->getSubtotal() + 2.50; // Adding management fee
     }
 
     public function increment()
     {
-        $this->quantity++;
+        if ($this->quantity < 5) {
+            $this->quantity++;
+        }
     }
 
     public function decrement()
@@ -30,7 +53,12 @@ class BuyTicket extends Component
 
     public function buy()
     {
-        // Logic for purchase will go here
-        return redirect()->route('public.area');
+        // Redirect to payment checkout page with query parameters
+        return redirect()->to('/pago?' . http_build_query([
+            'category' => $this->category,
+            'quantity' => $this->quantity,
+            'price' => $this->prices[$this->category],
+            'total' => $this->getTotal()
+        ]));
     }
 }
