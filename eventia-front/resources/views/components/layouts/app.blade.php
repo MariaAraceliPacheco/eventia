@@ -30,7 +30,23 @@
                     <x-nav-link href="#">Explorar</x-nav-link>
                     <x-nav-link href="{{ route('public.artist-list') }}">Artistas</x-nav-link>
                     <x-nav-link href="{{ route('public.town-hall-list') }}">Ayuntamientos</x-nav-link>
-                    <x-nav-link href="/#pricing">Planes</x-nav-link>
+                    @php
+                        $planesUrl = '/';
+                        if (auth()->check()) {
+                            $tipo = auth()->user()->tipo_usuario;
+                            if ($tipo === 'artista') {
+                                $planesUrl .= '?type=artistas';
+                            } elseif ($tipo === 'ayuntamiento') {
+                                $planesUrl .= '?type=ayuntamientos';
+                            } else {
+                                $planesUrl .= '?type=publico';
+                            }
+                        } else {
+                            $planesUrl .= '?type=publico';
+                        }
+                        $planesUrl .= '#pricing';
+                    @endphp
+                    <x-nav-link href="{{ $planesUrl }}">Planes</x-nav-link>
                     <x-nav-link href="/#ayuda">Ayuda</x-nav-link>
                 </nav>
 
