@@ -16,16 +16,16 @@
                             <span class="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-[10px] font-black uppercase tracking-widest text-secondary">Evento Destacado</span>
                             <a href="{{ route('public.area') }}" class="text-xs font-bold text-white/80 hover:text-white transition-colors underline decoration-secondary/50">Ver más conciertos</a>
                         </div>
-                        <h1 class="text-4xl md:text-5xl font-black font-heading tracking-tight leading-tight">{{ $eventName }}</h1>
+                        <h1 class="text-4xl md:text-5xl font-black font-heading tracking-tight leading-tight">{{ $evento->nombre_evento }}</h1>
                         
                         <div class="flex flex-wrap items-center gap-6 justify-center md:justify-start">
                              <div class="flex items-center gap-2">
                                 <span class="p-2 bg-white/10 rounded-xl"><svg class="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></span>
-                                <span class="font-bold text-sm">Próximamente en Madrid</span>
+                                <span class="font-bold text-sm">{{ $evento->localidad }}, {{ $evento->provincia }}</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="p-2 bg-white/10 rounded-xl"><svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></span>
-                                <span class="font-bold text-sm">15 Ago 2026 • 21:00h</span>
+                                <span class="font-bold text-sm">{{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y • H:i\h') }}</span>
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,8 @@
         <!-- Left Section: Description, Map, Organizer -->
         <div class="lg:col-span-2 space-y-10">
             
-            <!-- Comprar Entradas Link -->
+            <!-- Comprar Entradas Link (Visible only to Public or Guests) -->
+            @if(!auth()->check() || auth()->user()->tipo_usuario === 'publico')
             <div class="flex items-center justify-between p-8 bg-gradient-to-r from-primary to-secondary rounded-[32px] text-white shadow-xl shadow-primary/20 group cursor-pointer hover:-translate-y-1 transition-all">
                 <div>
                     <h3 class="text-2xl font-black font-heading italic">¡No te quedes fuera!</h3>
@@ -58,6 +59,21 @@
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </a>
             </div>
+            @endif
+
+            <!-- Solicitar participación (Visible only to Artistas) -->
+            @if(auth()->check() && auth()->user()->tipo_usuario === 'artista')
+            <div class="flex items-center justify-between p-8 bg-gradient-to-r from-secondary to-accent rounded-[32px] text-white shadow-xl shadow-secondary/20 group cursor-pointer hover:-translate-y-1 transition-all">
+                <div>
+                    <h3 class="text-2xl font-black font-heading italic">¿Quieres actuar aquí?</h3>
+                    <p class="text-sm font-bold opacity-80">Envía tu propuesta al ayuntamiento para este evento</p>
+                </div>
+                <button class="bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                    Solicitar participación
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                </button>
+            </div>
+            @endif
 
             <!-- Description -->
             <div class="bg-white rounded-[40px] shadow-sm border border-gray-100 p-10 space-y-6">
@@ -66,8 +82,7 @@
                     <h3 class="text-2xl font-bold text-text-main font-heading">Descripción</h3>
                 </div>
                 <div class="text-text-secondary leading-relaxed space-y-4">
-                    <p>El Summer Indie Festival vuelve con más fuerza que nunca para celebrar su décima edición. Una noche inolvidable en la que bandas emergentes y leyendas del indie nacional se darán cita bajo el cielo de Madrid.</p>
-                    <p>Prepárate para disfrutar de más de 6 horas de música ininterrumpida, zonas gastronómicas exclusivas y experiencias inmersivas que elevarán tus sentidos.</p>
+                    {!! nl2br(e($evento->descripcion)) !!}
                 </div>
             </div>
 
@@ -86,8 +101,8 @@
                         <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg mb-3 animate-bounce">
                             <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
                         </div>
-                        <span class="font-bold text-text-main">Wanda Metropolitano</span>
-                        <span class="text-xs text-text-secondary italic">Av. de Luis Aragonés, 4, Madrid</span>
+                        <span class="font-bold text-text-main">{{ $evento->localidad }}</span>
+                        <span class="text-xs text-text-secondary italic">{{ $evento->provincia }}</span>
                     </div>
                 </div>
             </div>
@@ -96,10 +111,10 @@
             <div class="bg-white rounded-[40px] shadow-sm border border-gray-100 p-10 flex items-center gap-8 group hover:border-secondary/30 transition-all">
                 <div class="w-20 h-20 rounded-2xl bg-secondary/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">🏛️</div>
                 <div class="flex-1">
-                    <h4 class="text-xl font-bold text-text-main font-heading mb-1">Organizado por Ayuntamiento de Madrid</h4>
-                    <p class="text-sm text-text-secondary leading-relaxed">Institución comprometida con la cultura y el ocio seguro. Gestionamos los espacios más icónicos de la ciudad para eventos de primer nivel.</p>
+                    <h4 class="text-xl font-bold text-text-main font-heading mb-1">Organizado por {{ $evento->ayuntamiento->nombre_institucion }}</h4>
+                    <p class="text-sm text-text-secondary leading-relaxed">Ayuntamiento comprometido con la cultura en {{ $evento->localidad }}, {{ $evento->provincia }}.</p>
                 </div>
-                <a href="{{ route('public.town-hall-profile', ['id' => 1]) }}" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-bold text-text-main hover:bg-gray-50 transition-colors">Ver perfil</a>
+                <a href="{{ route('public.town-hall-profile', ['id' => $evento->id_ayuntamiento]) }}" class="px-6 py-3 border border-gray-200 rounded-xl text-sm font-bold text-text-main hover:bg-gray-50 transition-colors">Ver perfil</a>
             </div>
 
             <!-- Artists Participating -->
@@ -167,14 +182,28 @@
                 </div>
             </div>
             
+            @if(!auth()->check() || auth()->user()->tipo_usuario === 'publico')
             <div class="bg-white rounded-3xl p-6 border border-gray-100 flex items-center justify-between transition-all hover:shadow-lg">
                 <div class="flex items-center gap-4">
-                    <span class="text-lg font-black text-primary">35.00€</span>
-                    <span class="text-xs text-text-secondary font-bold">Entrada General</span>
+                    <span class="text-lg font-black text-primary">{{ number_format($evento->precio, 2) }}€</span>
+                    <span class="text-xs text-text-secondary font-bold">Precio Entrada</span>
                 </div>
                 <div class="h-6 w-px bg-gray-100"></div>
                 <div class="text-sm font-black text-secondary">Agotándose</div>
             </div>
+            @endif
+
+            @if(auth()->check() && auth()->user()->tipo_usuario === 'artista')
+            <div class="bg-white rounded-3xl p-6 border border-secondary/30 flex flex-col gap-4 transition-all hover:shadow-lg">
+                <div class="flex items-center justify-between">
+                    <span class="text-lg font-black text-secondary">Solicitud</span>
+                    <span class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">Abierto</span>
+                </div>
+                <button class="w-full py-4 bg-secondary text-white rounded-2xl font-black shadow-lg hover:bg-secondary-dark transition-all">
+                    Enviar propuesta
+                </button>
+            </div>
+            @endif
         </div>
     </div>
 

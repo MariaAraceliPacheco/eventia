@@ -36,23 +36,34 @@ Route::get('/ayuntamientos', TownHallList::class)->name('public.town-hall-list')
 Route::get('/artistas', ArtistList::class)->name('public.artist-list');
 Route::get('/artista/{id}', \App\Livewire\Public\ArtistProfile::class)->name('public.artist-profile');
 
-// Town Hall Routes
-Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
-Route::get('/crear-evento', CreateEvent::class)->name('town-hall.create-event');
+// Protected Routes
+Route::middleware(['auth'])->group(function () {
+    // Town Hall Area (Only ayuntamiento)
+    Route::middleware(['role:ayuntamiento'])->group(function () {
+        Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
+        Route::get('/crear-evento', CreateEvent::class)->name('town-hall.create-event');
+    });
 
-// Artist Routes
-Route::get('/area-artista', \App\Livewire\Artist\AreaArtista::class)->name('artist.area');
+    // Artist Area (Only artista)
+    Route::middleware(['role:artista'])->group(function () {
+        Route::get('/area-artista', \App\Livewire\Artist\AreaArtista::class)->name('artist.area');
+    });
 
-// Public Routes
-Route::get('/area-publico', \App\Livewire\Public\AreaPublico::class)->name('public.area');
-Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
-Route::get('/pago', \App\Livewire\Public\PaymentCheckout::class)->name('public.payment-checkout');
+    // Public Area (Only publico)
+    Route::middleware(['role:publico'])->group(function () {
+        Route::get('/area-publico', \App\Livewire\Public\AreaPublico::class)->name('public.area');
+        Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
+        Route::get('/pago', \App\Livewire\Public\PaymentCheckout::class)->name('public.payment-checkout');
+    });
+    
+    Route::view('/dashboard', 'dashboard')->name('dashboard');
+    Route::view('/profile', 'profile')->name('profile.edit');
 
-// Admin Routes
-Route::get('/admin', Admin::class)->name('admin.vistaAdmin');
-
-Route::view('/dashboard', 'dashboard')->name('dashboard');
-Route::view('/profile', 'profile')->name('profile.edit');
+    // Admin Area (Only admin)
+    Route::middleware(['role:admin'])->group(function () {
+        Route::get('/admin', Admin::class)->name('admin.vistaAdmin');
+    });
+});
 
 Route::post('/logout', function () {
     Auth::logout();

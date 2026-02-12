@@ -5,15 +5,15 @@ namespace App\Livewire\Public;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
+use App\Models\Evento;
+
 class EventDetail extends Component
 {
-    public $eventId;
-    public $eventName = 'Summer Indie Festival 2026';
+    public $evento;
     
     public function mount($id)
     {
-        $this->eventId = $id;
-        // In a real app, fetch event details by ID
+        $this->evento = Evento::with('ayuntamiento')->findOrFail($id);
     }
 
     #[Layout('components.layouts.app')]

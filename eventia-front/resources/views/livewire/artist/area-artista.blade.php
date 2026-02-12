@@ -22,10 +22,10 @@
                         </div>
                     </div>
 
-                    <!-- Events List (Placeholders) -->
+                    <!-- Events List (Real Data) -->
                     <div class="space-y-3 h-[450px] overflow-y-auto pr-2 custom-scrollbar">
-                        @foreach(['Feria de Abril', 'Concierto Rock Madrid', 'Festival Indie Valencia', 'Metal Night', 'Feria de Muestras'] as $event)
-                            <div
+                        @forelse($eventos as $evento)
+                            <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}"
                                 class="group flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all cursor-pointer">
                                 <div
                                     class="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center text-secondary font-bold overflow-hidden">
@@ -34,17 +34,23 @@
                                 <div class="flex-1">
                                     <h4
                                         class="text-sm font-bold text-text-main group-hover:text-secondary transition-colors">
-                                        {{ $event }}
+                                        {{ $evento->nombre_evento }}
                                     </h4>
-                                    <p class="text-xs text-text-secondary">Evento Destacado</p>
+                                    <p class="text-xs text-text-secondary">
+                                        {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} • {{ $evento->localidad }}
+                                    </p>
                                 </div>
                                 <svg class="w-4 h-4 text-gray-300 group-hover:text-secondary transition-colors" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5l7 7-7 7" />
                                 </svg>
+                            </a>
+                        @empty
+                            <div class="text-center py-10 text-gray-400 text-sm italic">
+                                No se encontraron eventos.
                             </div>
-                        @endforeach
+                        @endforelse
                     </div>
                 </div>
             </div>

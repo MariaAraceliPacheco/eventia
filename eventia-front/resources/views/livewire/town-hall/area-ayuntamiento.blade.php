@@ -22,28 +22,35 @@
                         </div>
                     </div>
 
-                    <!-- Artists List (Placeholders) -->
+                    <!-- Artists List (Real Data) -->
                     <div class="space-y-3 h-[400px] overflow-y-auto pr-2 custom-scrollbar">
-                        @foreach(['Los Rockeros', 'DJ Spark', 'Voz de Angel', 'Banda Municipal', 'Jazz Trio'] as $artist)
-                            <div
+                        @forelse($artistas as $artista)
+                            <a href="{{ route('public.artist-profile', ['id' => $artista->id]) }}"
                                 class="group flex items-center gap-4 p-3 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all cursor-pointer">
-                                <div
-                                    class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/10 to-secondary/10 flex items-center justify-center text-primary font-bold">
-                                    {{ substr($artist, 0, 1) }}
+                                <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
+                                    @if($artista->img_logo)
+                                        <img src="{{ asset('storage/' . $artista->img_logo) }}" alt="{{ $artista->nombre_artistico }}" class="w-full h-full object-cover">
+                                    @else
+                                        <span class="text-primary font-bold text-xl">{{ substr($artista->nombre_artistico, 0, 1) }}</span>
+                                    @endif
                                 </div>
                                 <div class="flex-1">
                                     <h4 class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
-                                        {{ $artist }}
+                                        {{ $artista->nombre_artistico }}
                                     </h4>
-                                    <p class="text-xs text-text-secondary">Destacado</p>
+                                    <p class="text-xs text-text-secondary">{{ $artista->genero_musical }}</p>
                                 </div>
                                 <svg class="w-4 h-4 text-gray-300 group-hover:text-primary transition-colors" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 5l7 7-7 7" />
                                 </svg>
+                            </a>
+                        @empty
+                            <div class="text-center py-10 text-gray-400 text-sm">
+                                No se encontraron artistas.
                             </div>
-                        @endforeach
+                        @endforelse
                     </div>
                 </div>
             </div>
@@ -101,29 +108,29 @@
                     </div>
 
                     <div class="space-y-3">
-                        @foreach(['Feria de Verano' => 1, 'Concierto en la Plaza' => 2, 'Festival Gastronómico' => 3] as $name => $id)
+                        @forelse($eventos as $evento)
                             <div
                                 class="flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:bg-white hover:shadow-md transition-all group">
-                                <a href="{{ route('public.event-detail', ['id' => $id]) }}"
+                                <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}"
                                     class="flex items-center gap-4 flex-1">
                                     <div class="w-2 h-8 bg-secondary rounded-full"></div>
                                     <div>
                                         <h4
                                             class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
-                                            {{ $name }}
+                                            {{ $evento->nombre_evento }}
                                         </h4>
-                                        <p class="text-xs text-text-secondary">12 Ago 2026 • Auditorio Municipal</p>
+                                        <p class="text-xs text-text-secondary">{{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} • {{ $evento->localidad }}</p>
                                     </div>
                                 </a>
                                 <div class="flex gap-2">
-                                    <button wire:click="editEvent({{ $id }}, '{{ $name }}', '12 Ago 2026', 'Auditorio Municipal')"
+                                    <button wire:click="editEvent({{ $evento->id }})"
                                         class="p-2 text-text-secondary hover:text-primary transition-colors bg-white rounded-lg shadow-sm">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                         </svg>
                                     </button>
-                                    <button wire:click="deleteEvent({{ $id }})"
+                                    <button wire:click="deleteEvent({{ $evento->id }})"
                                         wire:confirm="¿Estás seguro de que quieres eliminar este evento?"
                                         class="p-2 text-text-secondary hover:text-red-500 transition-colors bg-white rounded-lg shadow-sm">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -133,7 +140,11 @@
                                     </button>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="text-center py-10 text-gray-500">
+                                No tienes eventos creados aún.
+                            </div>
+                        @endforelse
                     </div>
 
                     <button wire:click="createEvent"

@@ -5,6 +5,9 @@ namespace App\Livewire\TownHall;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 
+use App\Models\Evento;
+use App\Models\Artista;
+
 class AreaAyuntamiento extends Component
 {
     public $searchArtist = '';
@@ -22,13 +25,27 @@ class AreaAyuntamiento extends Component
 
     public function mount() {
         $this->user = auth()->user();
+        if (!$this->user || !$this->user->perfilAyuntamiento) {
+            return redirect()->route('role-selection');
+        }
         $this->ayuntamiento = $this->user->perfilAyuntamiento;
     }
 
     #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('livewire.town-hall.area-ayuntamiento');
+        $eventos = $this->ayuntamiento->eventos()->orderBy('fecha_inicio', 'desc')->get();
+
+        $artistas = Artista::query()
+            ->when($this->searchArtist, function($query) {
+                $query->where('nombre_artistico', 'like', '%' . $this->searchArtist . '%');
+            })
+            ->get();
+
+        return view('livewire.town-hall.area-ayuntamiento', [
+            'eventos' => $eventos,
+            'artistas' => $artistas
+        ]);
     }
 
     public function createEvent()
@@ -36,22 +53,42 @@ class AreaAyuntamiento extends Component
         return redirect()->route('town-hall.create-event');
     }
     
-    public function editEvent($eventId, $name, $date, $location)
+    public function editEvent($eventId)
     {
-        $this->editingEventId = $eventId;
-        $this->editEventName = $name;
-        $this->editEventDate = $date;
-        $this->editEventLocation = $location;
-        $this->editEventDescription = 'Descripción del evento'; // This would come from database
-        $this->showEditModal = true;
+        $evento = Evento::find($eventId);
+        if ($evento) {
+            $this->editingEventId = $evento->id;
+            $this->editEventName = $evento->nombre_evento;
+            $this->editEventDate = $evento->fecha_inicio->format('Y-m-d');
+            $this->editEventLocation = $evento->localidad; // Mapping localidad to location input
+            $this->editEventDescription = $evento->descripcion;
+            $this->showEditModal = true;
+        }
     }
     
     public function saveEvent()
     {
-        // Here you would save the edited event to the database
-        // For now, just close the modal
+        $this->validate([
+            'editEventName' => 'required',
+            'editEventDate' => 'required|date',
+            'editEventLocation' => 'required',
+        ]);
+
+        if ($this->editingEventId) {
+            $evento = Evento::find($this->editingEventId);
+            if ($evento) {
+                $evento->update([
+                    'nombre_evento' => $this->editEventName,
+                    'fecha_inicio' => $this->editEventDate,
+                    'localidad' => $this->editEventLocation,
+                    'descripcion' => $this->editEventDescription,
+                ]);
+                session()->flash('message', 'Evento actualizado correctamente');
+            }
+        }
+
         $this->showEditModal = false;
-        session()->flash('message', 'Evento actualizado correctamente');
+        $this->resetEditForm();
     }
     
     public function cancelEdit()
@@ -62,8 +99,11 @@ class AreaAyuntamiento extends Component
     
     public function deleteEvent($eventId)
     {
-        // Here you would delete the event from the database
-        session()->flash('message', 'Evento eliminado correctamente');
+        $evento = Evento::find($eventId);
+        if ($evento) {
+            $evento->delete();
+            session()->flash('message', 'Evento eliminado correctamente');
+        }
     }
     
     private function resetEditForm()
