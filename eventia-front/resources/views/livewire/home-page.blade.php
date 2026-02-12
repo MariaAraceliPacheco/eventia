@@ -562,7 +562,7 @@
     </section>
 
     <!-- FAQ Section -->
-    <section class="bg-surface py-24 relative overflow-hidden">
+    <section id="ayuda" class="bg-surface py-24 relative overflow-hidden">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="text-center mb-12">
                 <h2 class="text-3xl md:text-4xl font-bold font-heading mb-4">Preguntas Frecuentes</h2>
