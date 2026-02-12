@@ -1,4 +1,21 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <!-- Profile Header -->
+    <div class="bg-white rounded-[32px] shadow-sm border border-gray-100/50 p-8 mb-10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center gap-6">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center text-3xl shadow-lg shadow-primary/20 text-white">
+                👤
+            </div>
+            <div>
+                <h2 class="text-3xl font-black text-text-main font-heading">{{ auth()->user()->name }}</h2>
+                <p class="text-text-secondary font-medium">Panel de Usuario • {{ $publico->localidad ?? 'Sin ubicación' }}</p>
+            </div>
+        </div>
+        <button wire:click="editProfile" class="px-6 py-3 bg-gray-50 text-text-secondary font-bold rounded-xl border border-gray-100 hover:bg-gray-100 transition-all flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+            Editar Perfil
+        </button>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
         
         <!-- Left Column: Info Eventos -->
@@ -144,4 +161,88 @@
         background: #d1d5db;
     }
     </style>
+
+    <!-- Edit Profile Modal -->
+    @if($showProfileModal)
+    <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <!-- Trick to center contents -->
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <!-- Modal panel, show/hide based on modal state. -->
+            <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                <div class="bg-white px-8 pt-8 pb-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil</h3>
+                        <button wire:click="cancelEdit" class="text-gray-400 hover:text-gray-500 transition-colors">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Comunidad Autónoma -->
+                        <div>
+                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad Autónoma</label>
+                            <select wire:model.live="comunidad_autonoma" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                <option value="">Selecciona una comunidad</option>
+                                @foreach(array_keys($regions_data) as $region)
+                                    <option value="{{ $region }}">{{ $region }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Provincia -->
+                        <div>
+                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
+                            <select wire:model.live="provincia" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                <option value="">Selecciona una provincia</option>
+                                @foreach($this->provinces as $prov)
+                                    <option value="{{ $prov }}">{{ $prov }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Localidad -->
+                        <div>
+                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
+                            <input type="text" wire:model="localidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" placeholder="Ej: Madrid">
+                        </div>
+
+                        <!-- Gustos Musicales -->
+                        <div>
+                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Gustos Musicales</label>
+                            <select wire:model="gustos_musicales" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                <option value="">¿Qué música te gusta?</option>
+                                @foreach(\App\Models\Publico::GUSTOS_MUSICALES as $gusto)
+                                    <option value="{{ $gusto }}">{{ ucfirst($gusto) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Tipo de Eventos -->
+                        <div>
+                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo de Eventos Favoritos</label>
+                            <select wire:model="tipo_eventos_favoritos" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                <option value="">¿A qué eventos sueles ir?</option>
+                                @foreach(\App\Models\Publico::TIPO_EVENTOS_FAVORITOS as $tipo)
+                                    <option value="{{ $tipo }}">{{ ucfirst($tipo) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Notificaciones -->
+                        <div class="flex items-center gap-3 bg-primary/5 p-4 rounded-2xl border border-primary/10">
+                            <input type="checkbox" wire:model="notificaciones" class="w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary">
+                            <label class="text-sm font-bold text-text-main">Recibir notificaciones de eventos similares</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
+                    <button wire:click="saveProfile" class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar Cambios</button>
+                    <button wire:click="cancelEdit" class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>

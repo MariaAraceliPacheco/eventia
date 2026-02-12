@@ -7,6 +7,7 @@ use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
 
 use App\Models\Evento;
+use App\Models\Artista;
 
 class CreateEvent extends Component
 {
@@ -14,7 +15,8 @@ class CreateEvent extends Component
 
     public $title = '';
     public $image;
-    public $invitedArtists = '';
+    public $invitedArtists = ''; // Legacy text field, keeping for now or replacing
+    public $selectedArtists = []; // IDs of selected artists
     public $price = '';
     public $date = '';
     public $category = '';
@@ -29,13 +31,22 @@ class CreateEvent extends Component
         }
     }
 
+    public function toggleArtist($id)
+    {
+        if (in_array($id, $this->selectedArtists)) {
+            $this->selectedArtists = array_diff($this->selectedArtists, [$id]);
+        } else {
+            $this->selectedArtists[] = $id;
+        }
+    }
+
     #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('livewire.town-hall.create-event');
+        return view('livewire.town-hall.create-event', [
+            'allArtists' => Artista::all()
+        ]);
     }
-
-
 
     public function submit()
     {
@@ -48,22 +59,26 @@ class CreateEvent extends Component
         ]);
 
         $description = $this->description;
-        if ($this->invitedArtists) {
-            $description .= "\n\nArtistas invitados: " . $this->invitedArtists;
-        }
+        // if ($this->invitedArtists) {
+        //     $description .= "\n\nArtistas invitados: " . $this->invitedArtists;
+        // }
 
-        Evento::create([
+        $evento = Evento::create([
             'id_ayuntamiento' => auth()->user()->perfilAyuntamiento->id,
             'nombre_evento' => $this->title,
             'fecha_inicio' => $this->date,
             'localidad' => $this->locality,
             'provincia' => $this->province,
-            'categoria' => $this->category,
+            'category' => $this->category, // Fix: component has $category, model has category
+            'categoria' => $this->category, // Assuming model field name is categoria from previous view
             'precio' => $this->price,
             'descripcion' => $description,
-            'estado' => 'ABIERTO', // Default status from DB enum
-            // 'imagen' => $this->image ? $this->image->store('eventos', 'public') : null, // Column missing in DB schema provided
+            'estado' => 'ABIERTO',
         ]);
+
+        if (!empty($this->selectedArtists)) {
+            $evento->artistas()->attach($this->selectedArtists);
+        }
 
         return redirect()->route('town-hall.area');
     }

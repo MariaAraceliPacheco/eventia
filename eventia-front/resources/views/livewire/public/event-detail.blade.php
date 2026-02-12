@@ -93,17 +93,22 @@
                         <div class="h-8 w-1.5 bg-primary rounded-full"></div>
                         <h3 class="text-2xl font-bold text-text-main font-heading">Ubicación</h3>
                     </div>
-                </div>
-                <!-- Placeholder for Map -->
-                <div class="h-80 bg-gray-100 flex items-center justify-center relative overflow-hidden">
-                    <div class="absolute inset-0 bg-[url('https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/-3.688,40.436,13,0/800x400?access_token=YOUR_TOKEN')] bg-cover bg-center grayscale group-hover:grayscale-0 transition-all duration-700"></div>
-                    <div class="relative z-10 bg-white/90 backdrop-blur p-6 rounded-3xl shadow-xl border border-gray-100 flex flex-col items-center">
-                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white shadow-lg mb-3 animate-bounce">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                        </div>
-                        <span class="font-bold text-text-main">{{ $evento->localidad }}</span>
-                        <span class="text-xs text-text-secondary italic">{{ $evento->provincia }}</span>
+                    <div class="flex items-center gap-2 text-sm text-text-secondary">
+                        <svg class="w-5 h-5 text-primary" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                        <span class="font-bold">{{ $evento->localidad }}, {{ $evento->provincia }}</span>
                     </div>
+                </div>
+                <!-- Google Maps Embed -->
+                <div class="h-96 relative overflow-hidden">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        frameborder="0" 
+                        style="border:0"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dZWTgaQzuU17R8&q={{ urlencode($evento->localidad . ', ' . $evento->provincia . ', España') }}&zoom=14"
+                        allowfullscreen>
+                    </iframe>
                 </div>
             </div>
 
@@ -125,24 +130,28 @@
                 </div>
                 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @foreach([
-                        ['name' => 'Los Rockeros', 'genre' => 'Rock', 'id' => 1],
-                        ['name' => 'DJ Spark', 'genre' => 'Electrónica', 'id' => 2],
-                        ['name' => 'Voz de Angel', 'genre' => 'Pop', 'id' => 3]
-                    ] as $artist)
-                    <a href="{{ route('public.artist-profile', ['id' => $artist['id']]) }}" class="flex items-center gap-4 p-5 bg-gray-50 border border-gray-100 rounded-2xl hover:bg-white hover:shadow-lg hover:-translate-y-1 transition-all group">
-                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center text-secondary font-bold text-xl group-hover:scale-110 transition-transform">
-                            {{ substr($artist['name'], 0, 1) }}
+                    @forelse($evento->artistas as $artist)
+                    <a href="{{ route('public.artist-profile', ['id' => $artist->id]) }}" class="flex items-center gap-4 p-5 bg-gray-50 border border-gray-100 rounded-2xl hover:bg-white hover:shadow-lg hover:-translate-y-1 transition-all group">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform shadow-sm">
+                            @if($artist->img_logo)
+                                <img src="{{ asset('storage/' . $artist->img_logo) }}" class="w-full h-full object-cover">
+                            @else
+                                <span class="text-secondary font-black text-xl uppercase">{{ substr($artist->nombre_artistico, 0, 1) }}</span>
+                            @endif
                         </div>
-                        <div class="flex-1">
-                            <h4 class="text-sm font-bold text-text-main group-hover:text-secondary transition-colors">{{ $artist['name'] }}</h4>
-                            <p class="text-xs text-text-secondary">{{ $artist['genre'] }}</p>
+                        <div class="flex-1 text-left">
+                            <h4 class="text-sm font-black text-text-main group-hover:text-secondary transition-colors">{{ $artist->nombre_artistico }}</h4>
+                            <p class="text-[10px] font-bold text-text-secondary uppercase tracking-widest">{{ $artist->genero_musical }}</p>
                         </div>
                         <svg class="w-5 h-5 text-gray-300 group-hover:text-secondary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                         </svg>
                     </a>
-                    @endforeach
+                    @empty
+                    <div class="col-span-2 py-8 text-center bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                        <p class="text-sm font-bold text-text-secondary italic">Por ahora no se han confirmado artistas invitados.</p>
+                    </div>
+                    @endforelse
                 </div>
             </div>
         </div>

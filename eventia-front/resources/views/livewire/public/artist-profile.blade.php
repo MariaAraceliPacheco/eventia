@@ -70,17 +70,17 @@
                             <div class="h-8 w-1.5 bg-accent rounded-full"></div>
                             <h3 class="text-2xl font-black text-text-main font-heading tracking-tight">Presentaciones Recientes</h3>
                         </div>
-                        <span class="text-xs font-bold text-accent bg-accent/10 px-4 py-1.5 rounded-full">Trayectoria</span>
+                        <span class="text-xs font-bold text-accent bg-accent/10 px-4 py-1.5 rounded-full">{{ $artist->eventos->count() }} Eventos</span>
                     </div>
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @foreach(['Concierto Acustico' => 1, 'Festival Rock 2025' => 2, 'Evento Privado' => 3, 'Sesión DJ Lounge' => 4] as $job => $eventId)
-                        <a href="{{ route('public.event-detail', ['id' => $eventId]) }}" class="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all group">
+                        @forelse($artist->eventos as $evento)
+                        <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}" class="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all group">
                             <div class="flex items-center gap-4">
                                 <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">🎵</div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-text-main group-hover:text-secondary transition-colors">{{ $job }}</h4>
-                                    <p class="text-[10px] text-text-secondary font-medium">Abierto • Verano 2026</p>
+                                    <h4 class="text-sm font-bold text-text-main group-hover:text-secondary transition-colors">{{ $evento->nombre_evento }}</h4>
+                                    <p class="text-[10px] text-text-secondary font-medium">{{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} • {{ $evento->localidad }}</p>
                                 </div>
                             </div>
                             <div class="p-2 text-text-secondary group-hover:text-secondary transition-colors">
@@ -89,7 +89,13 @@
                                 </svg>
                             </div>
                         </a>
-                        @endforeach
+                        @empty
+                        <div class="col-span-2 text-center py-10 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div class="text-4xl mb-3">🎭</div>
+                            <p class="text-sm font-bold text-text-secondary">Aún no hay eventos registrados</p>
+                            <p class="text-xs text-text-secondary mt-1">Este artista estará disponible próximamente en nuevos eventos.</p>
+                        </div>
+                        @endforelse
                     </div>
                 </div>
             </div>

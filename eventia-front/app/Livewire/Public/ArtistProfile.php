@@ -14,18 +14,8 @@ class ArtistProfile extends Component
     public function mount($id)
     {
         $this->artistId = $id;
-        // In a real app we would fetch by ID, but since TownHallProfile uses hardcoded data for now,
-        // and ArtistList also uses a static array, I'll mock some data or try to get it if available.
-        // For consistency with TownHallProfile, I'll use the ID to show something.
-        $this->artist = Artista::find($id) ?? (object)[
-            'nombre_artistico' => 'Artista Ejemplo',
-            'genero_musical' => 'Rock / Pop',
-            'tipo' => 'Grupo',
-            'descripcion' => 'Bienvenidos al perfil oficial de Artista Ejemplo. Una banda con trayectoria internacional que fusiona sonidos clásicos con toques modernos, creando una experiencia sonora inigualable para todo tipo de eventos.',
-            'precio_referencia' => '1.200€',
-            'img_logo' => null,
-            'color' => 'secondary'
-        ];
+        // Fetch artist with their events relationship
+        $this->artist = Artista::with('eventos')->findOrFail($id);
     }
 
     #[Layout('components.layouts.app')]

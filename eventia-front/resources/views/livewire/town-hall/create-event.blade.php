@@ -33,17 +33,45 @@
                             placeholder="Ej: Festival de Jazz 2026">
                     </div>
 
-                    <!-- Invited Artists -->
-                    <div class="space-y-1">
-                        <label class="block text-sm font-bold text-text-main">Artistas invitados</label>
-                        <div class="relative">
-                            <input type="text" wire:model="invitedArtists"
-                                class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
-                                placeholder="Añadir artistas...">
-                            <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none text-gray-400">
-                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-                            </div>
+                    <!-- Invited Artists Selection -->
+                    <div class="space-y-3">
+                        <label class="block text-sm font-bold text-text-main">Artistas invitados (Selecciona uno o varios)</label>
+                        <div class="space-y-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar bg-gray-50/50 p-4 rounded-[24px] border border-gray-100">
+                            @forelse($allArtists as $artist)
+                                <div class="flex items-center justify-between p-3 bg-white rounded-xl border {{ in_array($artist->id, $selectedArtists) ? 'border-primary ring-1 ring-primary/20 shadow-sm' : 'border-gray-100' }} transition-all">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-100">
+                                            @if($artist->img_logo)
+                                                <img src="{{ asset('storage/' . $artist->img_logo) }}" class="w-full h-full object-cover">
+                                            @else
+                                                <span class="text-xs font-black text-gray-400 uppercase">{{ substr($artist->nombre_artistico, 0, 1) }}</span>
+                                            @endif
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-sm font-bold text-text-main">{{ $artist->nombre_artistico }}</span>
+                                            <span class="text-[10px] text-text-secondary uppercase font-bold tracking-wider">{{ $artist->genero_musical }}</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" wire:click="toggleArtist({{ $artist->id }})" 
+                                        class="w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-sm {{ in_array($artist->id, $selectedArtists) ? 'bg-primary text-white scale-90' : 'bg-white text-gray-400 border border-gray-100 hover:border-primary hover:text-primary hover:bg-primary/5' }}">
+                                        @if(in_array($artist->id, $selectedArtists))
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                        @else
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                                        @endif
+                                    </button>
+                                </div>
+                            @empty
+                                <div class="text-center py-6">
+                                    <p class="text-xs font-bold text-text-secondary italic">No hay artistas disponibles en este momento.</p>
+                                </div>
+                            @endforelse
                         </div>
+                        @if(count($selectedArtists) > 0)
+                            <p class="text-[10px] font-black text-secondary uppercase tracking-widest px-2">
+                                {{ count($selectedArtists) }} {{ count($selectedArtists) == 1 ? 'artista seleccionado' : 'artistas seleccionados' }}
+                            </p>
+                        @endif
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">

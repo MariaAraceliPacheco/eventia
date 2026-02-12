@@ -13,7 +13,7 @@ class EventDetail extends Component
     
     public function mount($id)
     {
-        $this->evento = Evento::with('ayuntamiento')->findOrFail($id);
+        $this->evento = Evento::with(['ayuntamiento', 'artistas'])->findOrFail($id);
     }
 
     #[Layout('components.layouts.app')]

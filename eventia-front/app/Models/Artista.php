@@ -40,4 +40,9 @@ class Artista extends Model
          'id_usuario', //FK en artistas
          'id'); //PK en users
     }
+
+    public function eventos()
+    {
+        return $this->belongsToMany(Evento::class, 'artista_evento', 'id_artista', 'id_evento');
+    }
 }

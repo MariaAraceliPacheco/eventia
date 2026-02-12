@@ -33,4 +33,9 @@ class Evento extends Model
     {
         return $this->belongsTo(Ayuntamiento::class, 'id_ayuntamiento');
     }
+
+    public function artistas()
+    {
+        return $this->belongsToMany(Artista::class, 'artista_evento', 'id_evento', 'id_artista');
+    }
 }
