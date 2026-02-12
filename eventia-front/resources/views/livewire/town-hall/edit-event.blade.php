@@ -137,7 +137,7 @@
             <div class="flex items-center justify-end gap-4 mt-12 border-t border-gray-50 pt-8">
                 <a href="{{ route('town-hall.area') }}" class="px-8 py-4 text-sm font-bold text-text-secondary hover:text-text-main transition-colors">Cancelar</a>
                 <button type="submit" class="bg-gradient-to-r from-accent to-secondary text-white font-bold px-10 py-4 rounded-[20px] shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-all transform hover:-translate-y-1">
-                    {{ $eventId ? 'Guardar cambios' : 'Publicar evento' }}
+                    Publicar evento
                 </button>
             </div>
         </form>

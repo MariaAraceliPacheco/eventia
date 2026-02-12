@@ -219,67 +219,6 @@
         }
     </style>
 
-    <!-- Edit Event Modal -->
-    @if($showEditModal)
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-[30px] shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div class="p-8 space-y-6">
-                <!-- Modal Header -->
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-2xl font-bold text-text-main font-heading">Editar Evento</h3>
-                        <p class="text-sm text-text-secondary mt-1">Modifica los detalles del evento</p>
-                    </div>
-                    <button wire:click="cancelEdit" class="p-2 hover:bg-gray-100 rounded-xl transition-colors">
-                        <svg class="w-6 h-6 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <!-- Form Fields -->
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-bold text-text-main mb-2">Nombre del Evento</label>
-                        <input wire:model="editEventName" type="text"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-sm font-bold text-text-main mb-2">Fecha</label>
-                            <input wire:model="editEventDate" type="date"
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-text-main mb-2">Ubicación</label>
-                            <input wire:model="editEventLocation" type="text"
-                                class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-bold text-text-main mb-2">Descripción</label>
-                        <textarea wire:model="editEventDescription" rows="4"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all resize-none"></textarea>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="flex gap-4 pt-4">
-                    <button wire:click="cancelEdit"
-                        class="flex-1 px-6 py-3 bg-gray-100 text-text-main font-bold rounded-xl hover:bg-gray-200 transition-colors">
-                        Cancelar
-                    </button>
-                    <button wire:click="saveEvent"
-                        class="flex-1 px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all">
-                        Guardar Cambios
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endif
 
     <!-- Edit Profile Modal -->
     @if($showProfileModal)

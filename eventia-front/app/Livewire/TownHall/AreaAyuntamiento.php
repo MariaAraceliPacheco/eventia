@@ -58,11 +58,6 @@ class AreaAyuntamiento extends Component
 
     // Edit event modal properties
     public $showEditModal = false;
-    public $editingEventId = null;
-    public $editEventName = '';
-    public $editEventDate = '';
-    public $editEventLocation = '';
-    public $editEventDescription = '';
 
     public function mount() {
         $this->user = auth()->user();
@@ -96,41 +91,9 @@ class AreaAyuntamiento extends Component
     
     public function editEvent($eventId)
     {
-        $evento = Evento::find($eventId);
-        if ($evento) {
-            $this->editingEventId = $evento->id;
-            $this->editEventName = $evento->nombre_evento;
-            $this->editEventDate = $evento->fecha_inicio->format('Y-m-d');
-            $this->editEventLocation = $evento->localidad; // Mapping localidad to location input
-            $this->editEventDescription = $evento->descripcion;
-            $this->showEditModal = true;
-        }
+        return redirect()->route('town-hall.edit-event', ['id' => $eventId]);
     }
     
-    public function saveEvent()
-    {
-        $this->validate([
-            'editEventName' => 'required',
-            'editEventDate' => 'required|date',
-            'editEventLocation' => 'required',
-        ]);
-
-        if ($this->editingEventId) {
-            $evento = Evento::find($this->editingEventId);
-            if ($evento) {
-                $evento->update([
-                    'nombre_evento' => $this->editEventName,
-                    'fecha_inicio' => $this->editEventDate,
-                    'localidad' => $this->editEventLocation,
-                    'descripcion' => $this->editEventDescription,
-                ]);
-                session()->flash('message', 'Evento actualizado correctamente');
-            }
-        }
-
-        $this->showEditModal = false;
-        $this->resetEditForm();
-    }
     
     public function cancelEdit()
     {

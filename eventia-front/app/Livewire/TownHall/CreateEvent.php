@@ -13,6 +13,7 @@ class CreateEvent extends Component
 {
     use WithFileUploads;
 
+    public $eventId = null;
     public $title = '';
     public $image;
     public $invitedArtists = ''; // Legacy text field, keeping for now or replacing
@@ -24,10 +25,29 @@ class CreateEvent extends Component
     public $locality = '';
     public $province = '';
 
-    public function mount()
+    public function mount($id = null)
     {
         if (!auth()->user() || !auth()->user()->perfilAyuntamiento) {
             return redirect()->route('role-selection');
+        }
+
+        if ($id) {
+            $evento = Evento::with('artistas')->findOrFail($id);
+            
+            // Verify ownership
+            if ($evento->id_ayuntamiento !== auth()->user()->perfilAyuntamiento->id) {
+                return redirect()->route('town-hall.area');
+            }
+
+            $this->eventId = $evento->id;
+            $this->title = $evento->nombre_evento;
+            $this->date = \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d');
+            $this->locality = $evento->localidad;
+            $this->province = $evento->provincia;
+            $this->category = $evento->categoria ?? $evento->category;
+            $this->price = $evento->precio;
+            $this->description = $evento->descripcion;
+            $this->selectedArtists = $evento->artistas->pluck('id')->toArray();
         }
     }
 
@@ -55,29 +75,33 @@ class CreateEvent extends Component
             'date' => 'required|date',
             'locality' => 'required',
             'category' => 'required',
-            'price' => 'nullable|numeric',
+            'price' => 'nullable',
         ]);
 
-        $description = $this->description;
-        // if ($this->invitedArtists) {
-        //     $description .= "\n\nArtistas invitados: " . $this->invitedArtists;
-        // }
-
-        $evento = Evento::create([
+        $data = [
             'id_ayuntamiento' => auth()->user()->perfilAyuntamiento->id,
             'nombre_evento' => $this->title,
             'fecha_inicio' => $this->date,
             'localidad' => $this->locality,
             'provincia' => $this->province,
-            'category' => $this->category, // Fix: component has $category, model has category
-            'categoria' => $this->category, // Assuming model field name is categoria from previous view
+            'category' => $this->category,
+            'categoria' => $this->category,
             'precio' => $this->price,
-            'descripcion' => $description,
+            'descripcion' => $this->description,
             'estado' => 'ABIERTO',
-        ]);
+        ];
 
-        if (!empty($this->selectedArtists)) {
-            $evento->artistas()->attach($this->selectedArtists);
+        if ($this->eventId) {
+            $evento = Evento::findOrFail($this->eventId);
+            $evento->update($data);
+            $evento->artistas()->sync($this->selectedArtists);
+            session()->flash('message', 'Evento actualizado con éxito');
+        } else {
+            $evento = Evento::create($data);
+            if (!empty($this->selectedArtists)) {
+                $evento->artistas()->attach($this->selectedArtists);
+            }
+            session()->flash('message', 'Evento creado con éxito');
         }
 
         return redirect()->route('town-hall.area');

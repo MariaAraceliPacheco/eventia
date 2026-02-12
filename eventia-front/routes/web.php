@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware(['role:ayuntamiento'])->group(function () {
         Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
         Route::get('/crear-evento', CreateEvent::class)->name('town-hall.create-event');
+        Route::get('/editar-evento/{id}', CreateEvent::class)->name('town-hall.edit-event');
     });
 
     // Artist Area (Only artista)
