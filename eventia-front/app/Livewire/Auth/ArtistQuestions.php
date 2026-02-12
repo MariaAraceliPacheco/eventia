@@ -43,12 +43,8 @@ class ArtistQuestions extends Component
             'recibir_facturas' => 'required|in:' . implode(',', Artista::RECIBIR_FACTURAS),
         ]);
 
-        // Handle Logo Upload
-        if ($this->img_logo) {
-            $validated['img_logo'] = $this->img_logo->store('profiles/artistas', 'public');
-        } else {
-            $validated['img_logo'] = null;
-        }
+        // Pass logo file to controller logic
+        $validated['img_logo'] = $this->img_logo;
 
         ArtistaController::createProfile($validated, auth()->id());
 

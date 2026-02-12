@@ -27,11 +27,14 @@
                         @forelse($artistas as $artista)
                             <a href="{{ route('public.artist-profile', ['id' => $artista->id]) }}"
                                 class="group flex items-center gap-4 p-3 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all cursor-pointer">
-                                <div class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
+                                <div
+                                    class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
                                     @if($artista->img_logo)
-                                        <img src="{{ asset('storage/' . $artista->img_logo) }}" alt="{{ $artista->nombre_artistico }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset('profiles/artistas/' . $artista->img_logo) }}"
+                                            alt="{{ $artista->nombre_artistico }}" class="w-full h-full object-cover">
                                     @else
-                                        <span class="text-primary font-bold text-xl">{{ substr($artista->nombre_artistico, 0, 1) }}</span>
+                                        <span
+                                            class="text-primary font-bold text-xl">{{ substr($artista->nombre_artistico, 0, 1) }}</span>
                                     @endif
                                 </div>
                                 <div class="flex-1">
@@ -67,9 +70,9 @@
                     <div class="w-24 h-24 rounded-2xl bg-gradient-to-br from-primary to-secondary p-1">
                         <div class="w-full h-full rounded-[14px] bg-white flex items-center justify-center text-3xl">
                             @if($ayuntamiento->imagen)
-                                <img src="{{ asset('storage/' . $ayuntamiento->imagen) }}" 
-                                     alt="{{ $ayuntamiento->nombre_institucion }}"
-                                     class="w-full h-full object-cover rounded-[14px]">
+                                <img src="{{ asset('profiles/ayuntamientos/' . $ayuntamiento->imagen) }}"
+                                    alt="{{ $ayuntamiento->nombre_institucion }}"
+                                    class="w-full h-full object-cover rounded-[14px]">
                             @else
                                 <span class="text-4xl">🏛️</span>
                             @endif
@@ -126,7 +129,9 @@
                                             class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
                                             {{ $evento->nombre_evento }}
                                         </h4>
-                                        <p class="text-xs text-text-secondary">{{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} • {{ $evento->localidad }}</p>
+                                        <p class="text-xs text-text-secondary">
+                                            {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
+                                            {{ $evento->localidad }}</p>
                                     </div>
                                 </a>
                                 <div class="flex gap-2">
@@ -222,123 +227,164 @@
 
     <!-- Edit Profile Modal -->
     @if($showProfileModal)
-    <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <!-- Backdrop -->
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <!-- Backdrop -->
 
-            <!-- Trick to center contents -->
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <!-- Trick to center contents -->
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-            <!-- Modal Panel -->
-            <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                <div class="bg-white px-8 pt-8 pb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil de Ayuntamiento</h3>
-                        <button wire:click="cancelProfileEdit" class="text-gray-400 hover:text-gray-500 transition-colors">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Nombre Institución -->
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre de la Institución</label>
-                            <input type="text" wire:model="nombre_institucion" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                <!-- Modal Panel -->
+                <div
+                    class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                    <div class="bg-white px-8 pt-8 pb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil de
+                                Ayuntamiento</h3>
+                            <button wire:click="cancelProfileEdit"
+                                class="text-gray-400 hover:text-gray-500 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
 
-                        <!-- Imagen -->
-                        <div class="md:col-span-2">
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Imagen / Escudo</label>
-                            <div class="flex items-center gap-4">
-                                @if($editImagen)
-                                    <img src="{{ $editImagen->temporaryUrl() }}" class="w-20 h-20 rounded-xl object-cover border border-gray-200">
-                                @else
-                                    <img src="{{ asset('storage/' . $ayuntamiento->imagen) }}" class="w-20 h-20 rounded-xl object-cover border border-gray-200">
-                                @endif
-                                <input type="file" wire:model="editImagen" class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Nombre Institución -->
+                            <div class="md:col-span-2">
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre
+                                    de la Institución</label>
+                                <input type="text" wire:model="nombre_institucion"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Imagen -->
+                            <div class="md:col-span-2">
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Imagen
+                                    / Escudo</label>
+                                <div class="flex items-center gap-4">
+                                    @if($editImagen)
+                                        <img src="{{ $editImagen->temporaryUrl() }}"
+                                            class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+                                    @else
+                                        <img src="{{ asset('profiles/ayuntamientos/' . $ayuntamiento->imagen) }}"
+                                            class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+                                    @endif
+                                    <input type="file" wire:model="editImagen"
+                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                                </div>
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Teléfono</label>
+                                <input type="text" wire:model="telefono"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Comunidad Autónoma -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad
+                                    Autónoma</label>
+                                <select wire:model.live="comunidad_autonoma"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona una comunidad</option>
+                                    @foreach(array_keys($regions_data) as $region)
+                                        <option value="{{ $region }}">{{ $region }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Provincia -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
+                                <select wire:model.live="provincia"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona una provincia</option>
+                                    @foreach($this->provinces as $prov)
+                                        <option value="{{ $prov }}">{{ $prov }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Localidad -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
+                                <input type="text" wire:model="localidad"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Tipo Evento -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
+                                    de Eventos</label>
+                                <input type="text" wire:model="tipo_evento"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Frecuencia -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Frecuencia</label>
+                                <input type="text" wire:model="frecuencia"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Tipo Espacio -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
+                                    de Espacio</label>
+                                <input type="text" wire:model="tipo_espacio"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Accesibilidad -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Accesibilidad</label>
+                                <input type="text" wire:model="opciones_accesibilidad"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Facturación -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Facturación</label>
+                                <select wire:model="tipo_facturacion"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="plataforma">Plataforma</option>
+                                    <option value="externo">Externo</option>
+                                </select>
+                            </div>
+
+                            <!-- Logística -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Logística
+                                    Propia</label>
+                                <input type="text" wire:model="logistica_propia"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                             </div>
                         </div>
-
-                        <!-- Teléfono -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Teléfono</label>
-                            <input type="text" wire:model="telefono" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                        </div>
-
-                        <!-- Comunidad Autónoma -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad Autónoma</label>
-                            <select wire:model.live="comunidad_autonoma" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                <option value="">Selecciona una comunidad</option>
-                                @foreach(array_keys($regions_data) as $region)
-                                    <option value="{{ $region }}">{{ $region }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Provincia -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
-                            <select wire:model.live="provincia" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                <option value="">Selecciona una provincia</option>
-                                @foreach($this->provinces as $prov)
-                                    <option value="{{ $prov }}">{{ $prov }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Localidad -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
-                            <input type="text" wire:model="localidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                        </div>
-
-                        <!-- Tipo Evento -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo de Eventos</label>
-                            <input type="text" wire:model="tipo_evento" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                        </div>
-
-                        <!-- Frecuencia -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Frecuencia</label>
-                            <input type="text" wire:model="frecuencia" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                        </div>
-
-                        <!-- Tipo Espacio -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo de Espacio</label>
-                            <input type="text" wire:model="tipo_espacio" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                        </div>
-
-                        <!-- Accesibilidad -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Accesibilidad</label>
-                            <input type="text" wire:model="opciones_accesibilidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                        </div>
-
-                        <!-- Facturación -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Facturación</label>
-                            <select wire:model="tipo_facturacion" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                <option value="plataforma">Plataforma</option>
-                                <option value="externo">Externo</option>
-                            </select>
-                        </div>
-
-                        <!-- Logística -->
-                        <div>
-                            <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Logística Propia</label>
-                            <input type="text" wire:model="logistica_propia" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                        </div>
                     </div>
-                </div>
-                <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
-                    <button wire:click="saveProfile" class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar Cambios</button>
-                    <button wire:click="cancelProfileEdit" class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                    <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
+                        <button wire:click="saveProfile"
+                            class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
+                            Cambios</button>
+                        <button wire:click="cancelProfileEdit"
+                            class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
     @endif
 </div>

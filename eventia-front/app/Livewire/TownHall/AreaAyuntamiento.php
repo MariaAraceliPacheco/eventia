@@ -15,10 +15,10 @@ class AreaAyuntamiento extends Component
     use WithFileUploads;
 
     public $searchArtist = '';
-    
+
     public $user;
     public $ayuntamiento;
-    
+
     // Profile Edit Modal properties
     public $showProfileModal = false;
     public $nombre_institucion = '';
@@ -59,7 +59,8 @@ class AreaAyuntamiento extends Component
     // Edit event modal properties
     public $showEditModal = false;
 
-    public function mount() {
+    public function mount()
+    {
         $this->user = auth()->user();
         if (!$this->user || !$this->user->perfilAyuntamiento) {
             return redirect()->route('role-selection');
@@ -73,7 +74,7 @@ class AreaAyuntamiento extends Component
         $eventos = $this->ayuntamiento->eventos()->orderBy('fecha_inicio', 'desc')->get();
 
         $artistas = Artista::query()
-            ->when($this->searchArtist, function($query) {
+            ->when($this->searchArtist, function ($query) {
                 $query->where('nombre_artistico', 'like', '%' . $this->searchArtist . '%');
             })
             ->get();
@@ -88,19 +89,19 @@ class AreaAyuntamiento extends Component
     {
         return redirect()->route('town-hall.create-event');
     }
-    
+
     public function editEvent($eventId)
     {
         return redirect()->route('town-hall.edit-event', ['id' => $eventId]);
     }
-    
-    
+
+
     public function cancelEdit()
     {
         $this->showEditModal = false;
         $this->resetEditForm();
     }
-    
+
     public function deleteEvent($eventId)
     {
         $evento = Evento::find($eventId);
@@ -145,7 +146,7 @@ class AreaAyuntamiento extends Component
         ]);
 
         if ($this->editImagen) {
-            $validated['imagen'] = $this->editImagen->store('profiles/ayuntamientos', 'public');
+            $validated['imagen'] = \App\Http\Controllers\AyuntamientoController::handleImageUpload($this->editImagen);
         }
 
         if ($this->ayuntamiento) {
@@ -188,7 +189,7 @@ class AreaAyuntamiento extends Component
             }
         }
     }
-    
+
     private function resetEditForm()
     {
         $this->editingEventId = null;

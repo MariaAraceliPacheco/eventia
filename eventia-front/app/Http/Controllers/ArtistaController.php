@@ -24,9 +24,13 @@ class ArtistaController extends Controller
             'telefono' => 'required|string',
             'equipo_propio' => 'sometimes|boolean',
             'num_integrantes' => 'required|integer',
-            'img_logo' => 'required',
+            'img_logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'recibir_facturas' => 'required|in:' . implode(',', Artista::RECIBIR_FACTURAS),
         ]);
+
+        if ($request->hasFile('img_logo')) {
+            $validated['img_logo'] = self::handleImageUpload($request->file('img_logo'));
+        }
 
         self::createProfile($validated, $user->id);
 
@@ -38,6 +42,13 @@ class ArtistaController extends Controller
      */
     public static function createProfile(array $data, int $userId)
     {
+        $logoName = $data['img_logo'] ?? null;
+
+        // Si es un objeto de archivo, lo procesamos
+        if ($logoName instanceof \Illuminate\Http\UploadedFile || $logoName instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+            $logoName = self::handleImageUpload($logoName);
+        }
+
         return Artista::create([
             'id_usuario' => $userId,
             'nombre_artistico' => $data['nombre_artistico'],
@@ -48,8 +59,22 @@ class ArtistaController extends Controller
             'telefono' => $data['telefono'],
             'equipo_propio' => $data['equipo_propio'] ?? false,
             'num_integrantes' => $data['num_integrantes'] ?? 1,
-            'img_logo' => $data['img_logo'],
+            'img_logo' => $logoName,
             'recibir_facturas' => $data['recibir_facturas'],
         ]);
+    }
+
+    /**
+     * Procesa la subida del logo con el nombre personalizado.
+     */
+    public static function handleImageUpload($file)
+    {
+        if (!$file)
+            return null;
+
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('artistas', $filename, 'profiles');
+
+        return $filename;
     }
 }
