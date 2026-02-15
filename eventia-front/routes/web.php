@@ -50,9 +50,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/area-artista', \App\Livewire\Artist\AreaArtista::class)->name('artist.area');
     });
 
-    // Public Area (Only publico)
-    Route::middleware(['role:publico'])->group(function () {
-        Route::get('/area-publico', \App\Livewire\Public\AreaPublico::class)->name('public.area');
+    // Public Area (Only publico + admin for viewing)
+    Route::middleware(['role:publico,admin'])->group(function () {
+        Route::get('/area-publico/{id?}', \App\Livewire\Public\AreaPublico::class)->name('public.area');
         Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
         Route::get('/pago', \App\Livewire\Public\PaymentCheckout::class)->name('public.payment-checkout');
     });

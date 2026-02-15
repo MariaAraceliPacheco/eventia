@@ -45,6 +45,24 @@ class Admin extends Component
         session()->flash('message', 'Evento eliminado correctamente.');
     }
 
+    public function deletePublico($id) {
+        $publico = Publico::destroy($id);
+        $this->publicos = Publico::all();
+        session()->flash('message', 'Publico eliminado correctamente.');
+    }
+
+    public function deleteArtista($id) {
+        $artista = Artista::destroy($id);
+        $this->artistas = Artista::all();
+        session()->flash('message', 'Artista eliminado correctamente.');
+    }
+
+    public function deleteAyuntamiento($id) {
+        $ayuntamiento = Ayuntamiento::destroy($id);
+        $this->ayuntamientos = Ayuntamiento::all();
+        session()->flash('message', 'Ayuntamiento eliminado correctamente.');
+    }
+
     #[Layout('components.layouts.app')]
     public function render()
     {
@@ -55,4 +73,5 @@ class Admin extends Component
             'eventos' => $this->eventos,
         ]);
     }
+
 }
