@@ -33,9 +33,12 @@ class Admin extends Component
     public function mount()
     {
         $this->user = auth()->user();
-        $this->artistas = Artista::all();
-        $this->ayuntamientos = Ayuntamiento::all();
-        $this->publicos = Publico::all();
+
+        //se les pone el with para que a parte del artista, tambien devuelva su usuario al que hace referencia.
+        //Asi se obtendria el objeto entero por decirlo de alguna forma
+        $this->artistas = Artista::with('usuario')->get();
+        $this->ayuntamientos = Ayuntamiento::with('usuario')->get();
+        $this->publicos = Publico::with('usuario')->get();
         $this->eventos = Evento::all();
     }
 
@@ -47,7 +50,7 @@ class Admin extends Component
             $this->nombre_evento = $evento->nombre_evento;
             $this->descripcion = $evento->descripcion;
             // Aseguramos que la fecha tenga formato Y-m-d para inputs tipo date
-            $this->fecha_inicio = $evento->fecha_inicio ? $evento->fecha_inicio->format('Y-m-d') : null;
+            $this->fecha_inicio = $evento->fecha_inicio ? \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d') : null;
             $this->localidad = $evento->localidad;
             $this->provincia = $evento->provincia;
             $this->precio = $evento->precio;

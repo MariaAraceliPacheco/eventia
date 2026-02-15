@@ -236,7 +236,7 @@
                                     <span class="text-accent font-bold text-sm">U{{ $publico->id }}</span>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-text-main text-sm">Usuario #{{ $publico->id }}</h4>
+                                    <h4 class="font-bold text-text-main text-sm">#{{ $publico->id }} {{ $publico->usuario->nombre }}</h4>
                                     <p class="text-[10px] text-text-secondary uppercase font-bold tracking-wider">
                                         {{ $publico->comunidad_autonoma }} • {{ $publico->provincia }} •
                                         {{ $publico->localidad }}
@@ -316,7 +316,7 @@
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-text-main text-sm italic tracking-tight">
-                                        {{ $evento->nombre_evento }}
+                                      #{{ $evento->id }} - {{ $evento->nombre_evento }}
                                     </h4>
                                     <p class="text-[10px] text-primary font-bold tracking-widest uppercase">
                                         {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
