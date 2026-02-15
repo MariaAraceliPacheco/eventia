@@ -305,33 +305,37 @@
                 </div>
 
                 <div class="space-y-4">
-                    @for ($i = 0; $i < 4; $i++)
+                    @foreach($eventos as $evento)
                         <div
                             class="group flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 transition border border-transparent hover:border-gray-100">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 rounded-xl bg-gray-200 shadow-inner overflow-hidden relative">
-                                    <img src="https://picsum.photos/seed/event{{ $i }}/200" alt="event"
+                                    <img src="https://picsum.photos/seed/event{{ $evento->id }}/200" alt="event"
                                         class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-text-main text-sm italic tracking-tight">Mega Festival
-                                        #{{ $i + 1 }}</h4>
-                                    <p class="text-[10px] text-primary font-bold tracking-widest uppercase">Próximo: 12 Mar
-                                        2024</p>
+                                    <h4 class="font-bold text-text-main text-sm italic tracking-tight">
+                                        {{ $evento->nombre_evento }}</h4>
+                                    <p class="text-[10px] text-primary font-bold tracking-widest uppercase">
+                                        {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
+                                        {{ $evento->localidad }}
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button title="Ver detalle"
-                                    class="p-2 text-gray-400 hover:text-primary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    </svg>
-                                </button>
+                                <a href="{{ route('public.event-detail', $evento->id) }}">
+                                    <button title="Ver detalle"
+                                        class="p-2 text-gray-400 hover:text-primary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                </a>
                                 <button title="Modificar"
                                     class="p-2 text-gray-400 hover:text-secondary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -350,7 +354,7 @@
                                 </button>
                             </div>
                         </div>
-                    @endfor
+                    @endforeach
                 </div>
             </div>
         </div>

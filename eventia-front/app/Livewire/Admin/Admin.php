@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Models\Artista;
 use App\Models\Ayuntamiento;
+use App\Models\Evento;
 use App\Models\Publico;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
@@ -16,6 +17,7 @@ class Admin extends Component
     public $artistas = [];
     public $ayuntamientos = [];
     public $publicos = [];
+    public $eventos = [];
 
 
     //esta funcion sirve para obtener el usuario y el artista
@@ -25,6 +27,7 @@ class Admin extends Component
         $this->artistas = Artista::all();
         $this->ayuntamientos = Ayuntamiento::all();
         $this->publicos = Publico::all();
+        $this->eventos = Evento::all();
     }
 
 
@@ -35,6 +38,7 @@ class Admin extends Component
             'artistas' => $this->artistas,
             'ayuntamientos' => $this->ayuntamientos,
             'publicos' => $this->publicos,
+            'eventos' => $this->eventos,
         ]);
     }
 }
