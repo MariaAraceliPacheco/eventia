@@ -316,7 +316,8 @@
                                 </div>
                                 <div>
                                     <h4 class="font-bold text-text-main text-sm italic tracking-tight">
-                                        {{ $evento->nombre_evento }}</h4>
+                                        {{ $evento->nombre_evento }}
+                                    </h4>
                                     <p class="text-[10px] text-primary font-bold tracking-widest uppercase">
                                         {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
                                         {{ $evento->localidad }}
@@ -336,7 +337,7 @@
                                         </svg>
                                     </button>
                                 </a>
-                                <button title="Modificar"
+                                <button wire:click="editEvent({{ $evento->id }})" title="Modificar"
                                     class="p-2 text-gray-400 hover:text-secondary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -359,4 +360,97 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Event Modal -->
+    @if($showModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" role="dialog" aria-modal="true">
+            <!-- Backdrop -->
+            <div class="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity" wire:click="closeModal"></div>
+
+            <div class="flex min-h-full items-center justify-center p-4">
+                <div class="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl p-8 space-y-6">
+                    <!-- Close Button -->
+                    <button wire:click="closeModal" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+
+                    <h2 class="text-2xl font-bold font-heading text-text-main">Editar Evento</h2>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Nombre
+                                del Evento</label>
+                            <input type="text" wire:model="nombre_evento"
+                                class="w-full bg-gray-50 border-transparent focus:border-primary focus:ring-0 rounded-xl text-text-main font-bold">
+                            @error('nombre_evento') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div>
+                            <label
+                                class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Descripción</label>
+                            <textarea wire:model="descripcion" rows="3"
+                                class="w-full bg-gray-50 border-transparent focus:border-primary focus:ring-0 rounded-xl text-text-main text-sm"></textarea>
+                            @error('descripcion') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Fecha</label>
+                                <input type="date" wire:model="fecha_inicio"
+                                    class="w-full bg-gray-50 border-transparent focus:border-primary focus:ring-0 rounded-xl text-text-main text-sm">
+                                @error('fecha_inicio') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Precio
+                                    (€)</label>
+                                <input type="number" step="0.01" wire:model="precio"
+                                    class="w-full bg-gray-50 border-transparent focus:border-primary focus:ring-0 rounded-xl text-text-main text-sm">
+                                @error('precio') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Localidad</label>
+                                <input type="text" wire:model="localidad"
+                                    class="w-full bg-gray-50 border-transparent focus:border-primary focus:ring-0 rounded-xl text-text-main text-sm">
+                                @error('localidad') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-xs font-bold text-text-secondary uppercase tracking-wider mb-2">Provincia</label>
+                                <input type="text" wire:model="provincia"
+                                    class="w-full bg-gray-50 border-transparent focus:border-primary focus:ring-0 rounded-xl text-text-main text-sm">
+                                @error('provincia') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4">
+                        <button wire:click="closeModal"
+                            class="px-6 py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-50 transition">
+                            Cancelar
+                        </button>
+                        <button wire:click="updateEvent"
+                            class="px-6 py-3 rounded-xl font-bold text-white bg-primary hover:bg-primary-dark shadow-lg shadow-primary/20 transition">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    @if (session()->has('message'))
+        <div class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg font-bold animate-bounce"
+            x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
+            {{ session('message') }}
+        </div>
+    @endif
 </div>
