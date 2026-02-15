@@ -19,15 +19,6 @@ class Admin extends Component
     public $publicos = [];
     public $eventos = [];
 
-    // Propiedades para la edición de eventos
-    public $showModal = false;
-    public $editingEventId;
-    public $nombre_evento;
-    public $descripcion;
-    public $fecha_inicio;
-    public $localidad;
-    public $provincia;
-    public $precio;
 
     //esta funcion sirve para obtener el usuario y el artista
     public function mount()
@@ -44,60 +35,14 @@ class Admin extends Component
 
     public function editEvent($id)
     {
-        $evento = Evento::find($id);
-        if ($evento) {
-            $this->editingEventId = $evento->id;
-            $this->nombre_evento = $evento->nombre_evento;
-            $this->descripcion = $evento->descripcion;
-            // Aseguramos que la fecha tenga formato Y-m-d para inputs tipo date
-            $this->fecha_inicio = $evento->fecha_inicio ? \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d') : null;
-            $this->localidad = $evento->localidad;
-            $this->provincia = $evento->provincia;
-            $this->precio = $evento->precio;
-
-            $this->showModal = true;
-        }
+        return redirect()->route('town-hall.edit-event', ['id' => $id]);
     }
 
-    public function updateEvent()
+    public function deleteEvent($id)
     {
-        $this->validate([
-            'nombre_evento' => 'required|string|max:255',
-            'fecha_inicio' => 'required|date',
-            'localidad' => 'required|string|max:255',
-            'provincia' => 'required|string|max:255',
-            'precio' => 'required|numeric|min:0',
-        ]);
-
-        $evento = Evento::find($this->editingEventId);
-        if ($evento) {
-            $evento->update([
-                'nombre_evento' => $this->nombre_evento,
-                'descripcion' => $this->descripcion,
-                'fecha_inicio' => $this->fecha_inicio,
-                'localidad' => $this->localidad,
-                'provincia' => $this->provincia,
-                'precio' => $this->precio,
-            ]);
-
-            // Recargar la lista de eventos para reflejar cambios
-            $this->eventos = Evento::all();
-
-            $this->closeModal();
-            session()->flash('message', 'Evento actualizado correctamente.');
-        }
-    }
-
-    public function deleteEvent($id) {
         $evento = Evento::destroy($id);
         $this->eventos = Evento::all();
-         session()->flash('message', 'Evento eliminado correctamente.');
-    }
-
-    public function closeModal()
-    {
-        $this->showModal = false;
-        $this->reset(['editingEventId', 'nombre_evento', 'descripcion', 'fecha_inicio', 'localidad', 'provincia', 'precio']);
+        session()->flash('message', 'Evento eliminado correctamente.');
     }
 
     #[Layout('components.layouts.app')]

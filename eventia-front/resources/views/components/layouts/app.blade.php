@@ -93,6 +93,11 @@
                                     <span style="font-size: 16px;"
                                         class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
                                 </a>
+                                 @elseif(auth()->user()->tipo_usuario == 'admin')
+                                  <a href="{{ route('admin.vistaAdmin') }}">
+                                    <span style="font-size: 16px;"
+                                        class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
+                                </a>
                             @endif
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
