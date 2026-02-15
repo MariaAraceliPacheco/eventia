@@ -88,6 +88,12 @@ class Admin extends Component
         }
     }
 
+    public function deleteEvent($id) {
+        $evento = Evento::destroy($id);
+        $this->eventos = Evento::all();
+         session()->flash('message', 'Evento eliminado correctamente.');
+    }
+
     public function closeModal()
     {
         $this->showModal = false;
