@@ -23,6 +23,10 @@ class HomePage extends Component
 
     public function render()
     {
-        return view('livewire.home-page')->layout('components.layouts.app');
+        $recentEvents = \App\Models\Evento::orderBy('id', 'desc')->take(3)->get();
+
+        return view('livewire.home-page', [
+            'recentEvents' => $recentEvents
+        ])->layout('components.layouts.app');
     }
 }

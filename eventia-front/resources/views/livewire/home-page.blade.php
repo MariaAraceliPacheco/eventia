@@ -78,140 +78,55 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Event Card 1 -->
-                <div
-                    class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="{{ asset('images/featured-jazz.png') }}" alt="Jazz Festival"
-                            class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                        <div
-                            class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm">
-                            25€
-                        </div>
-                        <div
-                            class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-lg text-sm font-medium border border-white/20">
-                            12 Ago - Jazz Night
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold tracking-wider text-accent uppercase">Música</span>
-                            <div class="flex items-center text-text-secondary text-xs">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                </svg>
-                                Madrid, España
+                @foreach($recentEvents as $evento)
+                    <!-- Event Card -->
+                    <div
+                        class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100">
+                        <div class="relative h-64 overflow-hidden">
+                            <img src="{{ asset('images/featured-jazz.png') }}" alt="{{ $evento->nombre_evento }}"
+                                class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
+                            <div
+                                class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm">
+                                {{ $evento->precio }}€
+                            </div>
+                            <div
+                                class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-lg text-sm font-medium border border-white/20">
+                                {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M') }} - {{ $evento->categoria }}
                             </div>
                         </div>
-                        <h3 class="text-xl font-bold font-heading mb-3 group-hover:text-primary transition">Noches de
-                            Jazz en el Parque</h3>
-                        <p class="text-text-secondary text-sm mb-6 line-clamp-2">Disfruta de una velada inolvidable con
-                            los mejores artistas de jazz nacional e internacional al aire libre.</p>
-                        <button
-                            class="w-full py-3 bg-gray-50 text-text-main font-bold rounded-xl hover:bg-primary hover:text-white transition flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375Zm0 13.5c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
-                            </svg>
-                            Comprar Entradas
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Event Card 2 -->
-                <div
-                    class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="{{ asset('images/featured-indie.png') }}" alt="Indie Festival"
-                            class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                        <div
-                            class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm">
-                            45€
-                        </div>
-                        <div
-                            class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-lg text-sm font-medium border border-white/20">
-                            15 Sep - Indie Fest
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold tracking-wider text-accent uppercase">Festival</span>
-                            <div class="flex items-center text-text-secondary text-xs">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                                </svg>
-                                Barcelona, España
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-2">
+                                <span
+                                    class="text-xs font-bold tracking-wider text-accent uppercase">{{ $evento->categoria }}</span>
+                                <div class="flex items-center text-text-secondary text-xs">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                    </svg>
+                                    {{ $evento->localidad }}, {{ $evento->provincia }}
+                                </div>
                             </div>
-                        </div>
-                        <h3 class="text-xl font-bold font-heading mb-3 group-hover:text-primary transition">Indie Summer
-                            Fest 2026</h3>
-                        <p class="text-text-secondary text-sm mb-6 line-clamp-2">El festival alternativo más esperado
-                            del año. 3 días de música, arte y gastronomía junto al mar.</p>
-                        <button
-                            class="w-full py-3 bg-gray-50 text-text-main font-bold rounded-xl hover:bg-primary hover:text-white transition flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375Zm0 13.5c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
-                            </svg>
-                            Comprar Entradas
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Event Card 3 -->
-                <div
-                    class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100">
-                    <div class="relative h-64 overflow-hidden">
-                        <img src="{{ asset('images/hero-1.png') }}" alt="Rock Concert"
-                            class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-                        <div
-                            class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm">
-                            30€
-                        </div>
-                        <div
-                            class="absolute bottom-4 left-4 bg-black/50 backdrop-blur-md text-white px-3 py-1 rounded-lg text-sm font-medium border border-white/20">
-                            22 Oct - Rock Live
-                        </div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold tracking-wider text-accent uppercase">Rock</span>
-                            <div class="flex items-center text-text-secondary text-xs">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="w-4 h-4 mr-1">
+                            <h3 class="text-xl font-bold font-heading mb-3 group-hover:text-primary transition">
+                                {{ $evento->nombre_evento }}
+                            </h3>
+                            <p class="text-text-secondary text-sm mb-6 line-clamp-2">
+                                {{ $evento->descripcion }}
+                            </p>
+                            <a href="{{ route('public.event-detail', $evento->id) }}"
+                                class="w-full py-3 bg-gray-50 text-text-main font-bold rounded-xl hover:bg-primary hover:text-white transition flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                    stroke="currentColor" class="w-5 h-5">
                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375Zm0 13.5c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
                                 </svg>
-                                Valencia, España
-                            </div>
+                                Comprar Entradas
+                            </a>
                         </div>
-                        <h3 class="text-xl font-bold font-heading mb-3 group-hover:text-primary transition">Thunder Rock
-                            Night</h3>
-                        <p class="text-text-secondary text-sm mb-6 line-clamp-2">La noche de rock más potente de la
-                            ciudad. Bandas locales y gran cierre con artistas invitados.</p>
-                        <button
-                            class="w-full py-3 bg-gray-50 text-text-main font-bold rounded-xl hover:bg-primary hover:text-white transition flex items-center justify-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="w-5 h-5">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375Zm0 13.5c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
-                            </svg>
-                            Comprar Entradas
-                        </button>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </section>
