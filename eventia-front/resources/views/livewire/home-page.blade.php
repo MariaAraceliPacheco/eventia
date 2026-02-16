@@ -83,7 +83,7 @@
                     <div
                         class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100">
                         <div class="relative h-64 overflow-hidden">
-                            <img src="{{ asset('images/featured-jazz.png') }}" alt="{{ $evento->nombre_evento }}"
+                            <img src="{{ asset('storage/profiles/eventos/' . $evento->foto) }}" alt="{{ $evento->nombre_evento }}"
                                 class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                             <div
                                 class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm">

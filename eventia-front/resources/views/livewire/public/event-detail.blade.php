@@ -185,7 +185,7 @@
                             <div
                                 class="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform shadow-sm">
                                 @if($artist->img_logo)
-                                    <img src="{{ asset('storage/' . $artist->img_logo) }}" class="w-full h-full object-cover">
+                                    <img src="{{ asset('storage/profiles/artistas/' . $artist->img_logo) }}" class="w-full h-full object-cover">
                                 @else
                                     <span
                                         class="text-secondary font-black text-xl uppercase">{{ substr($artist->nombre_artistico, 0, 1) }}</span>
