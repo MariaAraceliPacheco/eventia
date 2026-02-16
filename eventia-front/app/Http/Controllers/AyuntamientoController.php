@@ -16,7 +16,7 @@ class AyuntamientoController extends Controller
         // validacion de los campos del formulario
         $validated = $request->validate([
             'nombre_institucion' => 'required|string',
-            'imagen' => 'required', // Se asume que viene la ruta de la imagen
+            'imagen' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
             'comunidad_autonoma' => 'required|string',
             'localidad' => 'required|string',
             'provincia' => 'required|string',
@@ -30,6 +30,10 @@ class AyuntamientoController extends Controller
             'logistica_propia' => 'sometimes',
         ]);
 
+        if ($request->hasFile('imagen')) {
+            $validated['imagen'] = self::handleImageUpload($request->file('imagen'));
+        }
+
         self::createProfile($validated, $user->id);
 
         return redirect()->route('town-hall.area')->with('success', 'Perfil creado correctamente');
@@ -40,10 +44,17 @@ class AyuntamientoController extends Controller
      */
     public static function createProfile(array $data, int $userId)
     {
+        $imageName = $data['imagen'] ?? null;
+
+        // Si es un objeto de archivo, lo procesamos
+        if ($imageName instanceof \Illuminate\Http\UploadedFile || $imageName instanceof \Livewire\Features\SupportFileUploads\TemporaryUploadedFile) {
+            $imageName = self::handleImageUpload($imageName);
+        }
+
         return Ayuntamiento::create([
             'id_usuario' => $userId,
             'nombre_institucion' => $data['nombre_institucion'],
-            'imagen' => $data['imagen'],
+            'imagen' => $imageName,
             'comunidad_autonoma' => $data['comunidad_autonoma'],
             'localidad' => $data['localidad'],
             'provincia' => $data['provincia'],
@@ -56,5 +67,19 @@ class AyuntamientoController extends Controller
             'tipo_facturacion' => $data['tipo_facturacion'],
             'logistica_propia' => $data['logistica_propia'] ?? null,
         ]);
+    }
+
+    /**
+     * Procesa la subida de la imagen con el nombre personalizado.
+     */
+    public static function handleImageUpload($file)
+    {
+        if (!$file)
+            return null;
+
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->storeAs('ayuntamientos', $filename, 'profiles');
+
+        return $filename;
     }
 }

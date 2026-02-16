@@ -33,6 +33,6 @@ class Publico extends Model
     {
         //esto sirve para que el ayuntamiento tenga un usuario asignado
         //es como una relacion
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'id_usuario', 'id');
     }
 }

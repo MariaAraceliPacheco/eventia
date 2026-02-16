@@ -18,7 +18,7 @@ class AreaPublico extends Component
     public $provincia = '';
     public $localidad = '';
     public $notificaciones = false;
-    
+
     public $user;
     public $publico;
 
@@ -44,10 +44,17 @@ class AreaPublico extends Component
         'Melilla' => ['Melilla'],
     ];
 
-    public function mount()
+    public function mount($id = null)
     {
-        $this->user = auth()->user();
-        $this->publico = $this->user->perfilPublico;
+        $authUser = auth()->user();
+
+        if ($id && $authUser->tipo_usuario === 'admin') {
+            $this->publico = \App\Models\Publico::with('usuario')->findOrFail($id);
+            $this->user = $this->publico->usuario;
+        } else {
+            $this->user = $authUser;
+            $this->publico = $this->user->perfilPublico;
+        }
     }
 
     public function editProfile()

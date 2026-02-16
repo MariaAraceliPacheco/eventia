@@ -6,10 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{ $title ?? 'Eventia' }}</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased text-text-main bg-background flex flex-col min-h-screen">
+<!-- 
+    Añadimos x-data="{ showSearch: false }" para gestionar el estado del modal de búsqueda global. 
+    Desde cualquier parte de la página podemos poner esta variable en true para abrir el buscador.
+-->
+
+<body class="font-sans antialiased text-text-main bg-background flex flex-col min-h-screen"
+    x-data="{ showSearch: false }">
     <header class="w-full bg-white/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-20 items-center">
@@ -52,13 +65,16 @@
 
                 <!-- Right Icons -->
                 <div class="flex items-center gap-4">
-                    <button class="text-text-secondary hover:text-primary transition">
+
+                    <!-- El enlace que activa el buscador global poniendo showSearch en true -->
+                    <a href="#" class="text-text-secondary hover:text-primary transition"
+                        @click.prevent="showSearch = true">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                         </svg>
-                    </button>
+                    </a>
 
                     @auth
                         <div class="flex flex-col items-end">
@@ -74,6 +90,11 @@
                                 </a>
                             @elseif(auth()->user()->tipo_usuario == 'ayuntamiento')
                                 <a href="{{ route('town-hall.area') }}">
+                                    <span style="font-size: 16px;"
+                                        class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
+                                </a>
+                                 @elseif(auth()->user()->tipo_usuario == 'admin')
+                                  <a href="{{ route('admin.vistaAdmin') }}">
                                     <span style="font-size: 16px;"
                                         class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
                                 </a>
@@ -172,6 +193,9 @@
             </div>
         </div>
     </footer>
+    @livewire('public.global-search')
+    @livewireScripts
+    @fluxScripts
 </body>
 
 </html>

@@ -39,7 +39,7 @@ Route::get('/artista/{id}', \App\Livewire\Public\ArtistProfile::class)->name('pu
 // Protected Routes
 Route::middleware(['auth'])->group(function () {
     // Town Hall Area (Only ayuntamiento)
-    Route::middleware(['role:ayuntamiento'])->group(function () {
+    Route::middleware(['role:ayuntamiento,admin'])->group(function () {
         Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
         Route::get('/crear-evento', CreateEvent::class)->name('town-hall.create-event');
         Route::get('/editar-evento/{id}', CreateEvent::class)->name('town-hall.edit-event');
@@ -50,13 +50,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/area-artista', \App\Livewire\Artist\AreaArtista::class)->name('artist.area');
     });
 
-    // Public Area (Only publico)
-    Route::middleware(['role:publico'])->group(function () {
-        Route::get('/area-publico', \App\Livewire\Public\AreaPublico::class)->name('public.area');
+    // Public Area (Only publico + admin for viewing)
+    Route::middleware(['role:publico,admin'])->group(function () {
+        Route::get('/area-publico/{id?}', \App\Livewire\Public\AreaPublico::class)->name('public.area');
         Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
         Route::get('/pago', \App\Livewire\Public\PaymentCheckout::class)->name('public.payment-checkout');
     });
-    
+
     Route::view('/dashboard', 'dashboard')->name('dashboard');
     Route::view('/profile', 'profile')->name('profile.edit');
 

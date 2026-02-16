@@ -101,7 +101,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button title="Eliminar"
+                                <button wire:click="deleteArtista({{ $artista->id }})" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -184,7 +184,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button title="Eliminar"
+                                <button wire:click="deleteAyuntamiento({{ $ayuntamiento->id }})" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -236,7 +236,9 @@
                                     <span class="text-accent font-bold text-sm">U{{ $publico->id }}</span>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-text-main text-sm">Usuario #{{ $publico->id }}</h4>
+                                    <h4 class="font-bold text-text-main text-sm">#{{ $publico->id }}
+                                        {{ $publico->usuario->nombre }}
+                                    </h4>
                                     <p class="text-[10px] text-text-secondary uppercase font-bold tracking-wider">
                                         {{ $publico->comunidad_autonoma }} • {{ $publico->provincia }} •
                                         {{ $publico->localidad }}
@@ -244,16 +246,18 @@
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button title="Ver detalle"
-                                    class="p-2 text-gray-400 hover:text-primary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    </svg>
-                                </button>
+                                <a href="{{ route('public.area', ['id' => $publico->id]) }}">
+                                    <button title="Ver detalle"
+                                        class="p-2 text-gray-400 hover:text-primary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                </a>
                                 <button title="Modificar"
                                     class="p-2 text-gray-400 hover:text-secondary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -262,7 +266,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button title="Eliminar"
+                                <button wire:click="deletePublico({{ $publico->id }})" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -305,34 +309,39 @@
                 </div>
 
                 <div class="space-y-4">
-                    @for ($i = 0; $i < 4; $i++)
+                    @foreach($eventos as $evento)
                         <div
                             class="group flex items-center justify-between p-3 rounded-2xl hover:bg-gray-50 transition border border-transparent hover:border-gray-100">
                             <div class="flex items-center gap-4">
                                 <div class="w-14 h-14 rounded-xl bg-gray-200 shadow-inner overflow-hidden relative">
-                                    <img src="https://picsum.photos/seed/event{{ $i }}/200" alt="event"
+                                    <img src="https://picsum.photos/seed/event{{ $evento->id }}/200" alt="event"
                                         class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                                 </div>
                                 <div>
-                                    <h4 class="font-bold text-text-main text-sm italic tracking-tight">Mega Festival
-                                        #{{ $i + 1 }}</h4>
-                                    <p class="text-[10px] text-primary font-bold tracking-widest uppercase">Próximo: 12 Mar
-                                        2024</p>
+                                    <h4 class="font-bold text-text-main text-sm italic tracking-tight">
+                                        #{{ $evento->id }} - {{ $evento->nombre_evento }}
+                                    </h4>
+                                    <p class="text-[10px] text-primary font-bold tracking-widest uppercase">
+                                        {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
+                                        {{ $evento->localidad }}
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button title="Ver detalle"
-                                    class="p-2 text-gray-400 hover:text-primary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                    </svg>
-                                </button>
-                                <button title="Modificar"
+                                <a href="{{ route('public.event-detail', $evento->id) }}">
+                                    <button title="Ver detalle"
+                                        class="p-2 text-gray-400 hover:text-primary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                </a>
+                                <button wire:click="editEvent({{ $evento->id }})" title="Modificar"
                                     class="p-2 text-gray-400 hover:text-secondary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -340,7 +349,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button title="Eliminar"
+                                <button wire:click="deleteEvent({{ $evento->id }})" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -350,9 +359,17 @@
                                 </button>
                             </div>
                         </div>
-                    @endfor
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
+
+
+    @if (session()->has('message'))
+        <div class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg font-bold animate-bounce"
+            x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
+            {{ session('message') }}
+        </div>
+    @endif
 </div>

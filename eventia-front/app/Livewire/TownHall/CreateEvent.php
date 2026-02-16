@@ -27,15 +27,16 @@ class CreateEvent extends Component
 
     public function mount($id = null)
     {
-        if (!auth()->user() || !auth()->user()->perfilAyuntamiento) {
+        $user = auth()->user();
+        if (!$user || (!$user->perfilAyuntamiento && $user->tipo_usuario !== 'admin')) {
             return redirect()->route('role-selection');
         }
 
         if ($id) {
             $evento = Evento::with('artistas')->findOrFail($id);
-            
-            // Verify ownership
-            if ($evento->id_ayuntamiento !== auth()->user()->perfilAyuntamiento->id) {
+
+            // Verify ownership (unless admin)
+            if ($user->tipo_usuario !== 'admin' && $evento->id_ayuntamiento !== $user->perfilAyuntamiento->id) {
                 return redirect()->route('town-hall.area');
             }
 
@@ -63,7 +64,9 @@ class CreateEvent extends Component
     #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('livewire.town-hall.create-event', [
+        $view = $this->eventId ? 'livewire.town-hall.edit-event' : 'livewire.town-hall.create-event';
+
+        return view($view, [
             'allArtists' => Artista::all()
         ]);
     }
@@ -79,7 +82,6 @@ class CreateEvent extends Component
         ]);
 
         $data = [
-            'id_ayuntamiento' => auth()->user()->perfilAyuntamiento->id,
             'nombre_evento' => $this->title,
             'fecha_inicio' => $this->date,
             'localidad' => $this->locality,
@@ -90,6 +92,11 @@ class CreateEvent extends Component
             'descripcion' => $this->description,
             'estado' => 'ABIERTO',
         ];
+
+        // Only set id_ayuntamiento for new events or if user is ayuntamiento
+        if (!$this->eventId && auth()->user()->perfilAyuntamiento) {
+            $data['id_ayuntamiento'] = auth()->user()->perfilAyuntamiento->id;
+        }
 
         if ($this->eventId) {
             $evento = Evento::findOrFail($this->eventId);
@@ -102,6 +109,10 @@ class CreateEvent extends Component
                 $evento->artistas()->attach($this->selectedArtists);
             }
             session()->flash('message', 'Evento creado con éxito');
+        }
+
+        if (auth()->user()->tipo_usuario === 'admin') {
+            return redirect()->route('admin.vistaAdmin');
         }
 
         return redirect()->route('town-hall.area');

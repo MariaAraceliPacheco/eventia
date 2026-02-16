@@ -111,12 +111,8 @@ class TownHallQuestions extends Component
             'logistica_propia' => 'string',
         ]);
 
-        // Handle Image Upload
-        if ($this->imagen) {
-            $validated['imagen'] = $this->imagen->store('profiles/ayuntamientos', 'public');
-        } else {
-            $validated['imagen'] = null;
-        }
+        // Pass image file to controller logic
+        $validated['imagen'] = $this->imagen;
 
         AyuntamientoController::createProfile($validated, auth()->id());
 

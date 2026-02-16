@@ -60,7 +60,7 @@ class AreaArtista extends Component
         ]);
 
         if ($this->editImgLogo) {
-            $validated['img_logo'] = $this->editImgLogo->store('profiles/artistas', 'public');
+            $validated['img_logo'] = \App\Http\Controllers\ArtistaController::handleImageUpload($this->editImgLogo);
         }
 
         if ($this->artista) {
@@ -92,7 +92,7 @@ class AreaArtista extends Component
     {
         // All events for the sidebar "Info Eventos"
         $eventos = Evento::query()
-            ->when($this->searchEvent, function($query) {
+            ->when($this->searchEvent, function ($query) {
                 $query->where('nombre_evento', 'like', '%' . $this->searchEvent . '%');
             })
             ->orderBy('fecha_inicio', 'desc')
