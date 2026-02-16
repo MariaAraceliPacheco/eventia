@@ -12,16 +12,61 @@ class EventDetail extends Component
     public $evento;
     public $messages = [];
     public $userInput = '';
+    public $solicitudPendiente = null;
 
     public function mount($id)
     {
         $this->evento = Evento::with(['ayuntamiento', 'artistas'])->findOrFail($id);
+        
+        // Check if artist has already applied
+        if (auth()->check() && auth()->user()->tipo_usuario === 'artista') {
+            $artista = \App\Models\Artista::where('id_usuario', auth()->id())->first();
+            if ($artista) {
+                $this->solicitudPendiente = \App\Models\Solicitud::where('id_artista', $artista->id)
+                    ->where('id_evento', $this->evento->id)
+                    ->first();
+            }
+        }
         
         // Initial message
         $this->messages[] = [
             'role' => 'assistant',
             'content' => "¡Hola! Soy el asistente de Eventia. ¿Tienes alguna duda sobre el **{$this->evento->nombre_evento}**? Puedo informarte sobre precios, artistas confirmados, ubicación o el ayuntamiento organizador."
         ];
+    }
+
+    public function solicitarEvento()
+    {
+        if (!auth()->check() || auth()->user()->tipo_usuario !== 'artista') {
+            return;
+        }
+
+        $artista = \App\Models\Artista::where('id_usuario', auth()->id())->first();
+        
+        if (!$artista) {
+            return;
+        }
+
+        // Double check if already exists
+        $exists = \App\Models\Solicitud::where('id_artista', $artista->id)
+            ->where('id_evento', $this->evento->id)
+            ->exists();
+
+        if ($exists) {
+            return;
+        }
+
+        $this->solicitudPendiente = \App\Models\Solicitud::create([
+            'id_artista' => $artista->id,
+            'id_evento' => $this->evento->id,
+            'estado' => 'pendiente'
+        ]);
+
+        $this->dispatch('notificar', [
+            'titulo' => 'Solicitud enviada',
+            'mensaje' => 'Tu propuesta ha sido enviada al ayuntamiento correctamente.',
+            'tipo' => 'success'
+        ]);
     }
 
     public function sendMessage()

@@ -221,9 +221,24 @@
                             <span class="text-lg font-black text-secondary">Solicitud</span>
                             <span class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">Abierto</span>
                         </div>
-                        <button class="w-full py-4 bg-secondary text-white rounded-2xl font-black shadow-lg hover:bg-secondary-dark transition-all">
+                        @if($solicitudPendiente)
+                        <div class="w-full py-4 text-center rounded-2xl font-black shadow-sm transition-all
+                            {{ $solicitudPendiente->estado === 'pendiente' ? 'bg-amber-100 text-amber-700 border border-amber-200' : '' }}
+                            {{ $solicitudPendiente->estado === 'aceptada' ? 'bg-green-100 text-green-700 border border-green-200' : '' }}
+                            {{ $solicitudPendiente->estado === 'rechazada' ? 'bg-red-100 text-red-700 border border-red-200' : '' }}">
+                            @if($solicitudPendiente->estado === 'pendiente')
+                                Propuesta enviada
+                            @elseif($solicitudPendiente->estado === 'aceptada')
+                                ¡Propuesta aceptada!
+                            @else
+                                Propuesta rechazada
+                            @endif
+                        </div>
+                    @else
+                        <button wire:click="solicitarEvento" class="w-full py-4 bg-secondary text-white rounded-2xl font-black shadow-lg hover:bg-secondary-dark transition-all">
                             Enviar propuesta
                         </button>
+                    @endif
                     </div>
                     @endif
                 </div>

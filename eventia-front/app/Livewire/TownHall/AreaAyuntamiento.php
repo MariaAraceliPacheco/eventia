@@ -9,6 +9,7 @@ use Livewire\WithFileUploads;
 use App\Models\Evento;
 use App\Models\Artista;
 use App\Models\Ayuntamiento;
+use App\Models\Solicitud;
 
 class AreaAyuntamiento extends Component
 {
@@ -81,7 +82,54 @@ class AreaAyuntamiento extends Component
 
         return view('livewire.town-hall.area-ayuntamiento', [
             'eventos' => $eventos,
-            'artistas' => $artistas
+            'artistas' => $artistas,
+            'solicitudes' => $this->solicitudes
+        ]);
+    }
+
+    public function getSolicitudesProperty()
+    {
+        return Solicitud::whereIn('id_evento', $this->ayuntamiento->eventos()->pluck('id'))
+            ->where('estado', 'pendiente')
+            ->with(['artista', 'evento'])
+            ->get();
+    }
+
+    public function aceptarSolicitud($solicitudId)
+    {
+        $solicitud = Solicitud::findOrFail($solicitudId);
+        
+        // Ensure this town hall owns the event
+        if ($solicitud->evento->id_ayuntamiento !== $this->ayuntamiento->id) {
+            return;
+        }
+
+        $solicitud->update(['estado' => 'aceptada']);
+
+        // Link artist to event
+        $solicitud->evento->artistas()->syncWithoutDetaching([$solicitud->id_artista]);
+
+        $this->dispatch('notificar', [
+            'titulo' => 'Solicitud aceptada',
+            'mensaje' => 'El artista ha sido añadido al cartel del evento.',
+            'tipo' => 'success'
+        ]);
+    }
+
+    public function rechazarSolicitud($solicitudId)
+    {
+        $solicitud = Solicitud::findOrFail($solicitudId);
+        
+        if ($solicitud->evento->id_ayuntamiento !== $this->ayuntamiento->id) {
+            return;
+        }
+
+        $solicitud->update(['estado' => 'rechazada']);
+
+        $this->dispatch('notificar', [
+            'titulo' => 'Solicitud rechazada',
+            'mensaje' => 'La solicitud ha sido rechazada.',
+            'tipo' => 'info'
         ]);
     }
 

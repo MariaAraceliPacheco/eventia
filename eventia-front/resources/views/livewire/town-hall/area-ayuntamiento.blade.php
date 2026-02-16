@@ -1,8 +1,57 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        <!-- Left Column: Info Artistas -->
+        <!-- Left Column: Solicitudes + Info Artistas -->
         <div class="lg:col-span-1 space-y-6">
+            
+            <!-- Pending Requests -->
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100/50 overflow-hidden">
+                <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-amber-50/30">
+                    <h3 class="text-xl font-bold text-text-main flex items-center gap-2">
+                        Solicitudes
+                        @if($solicitudes->count() > 0)
+                            <span class="flex h-2 w-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        @endif
+                    </h3>
+                    <span class="text-xs font-bold text-amber-600 bg-amber-100 px-2 py-1 rounded-lg">
+                        {{ $solicitudes->count() }} pendientes
+                    </span>
+                </div>
+                <div class="p-6 space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar">
+                    @forelse($solicitudes as $solicitud)
+                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center overflow-hidden">
+                                    @if($solicitud->artista->img_logo)
+                                        <img src="{{ asset('profiles/artistas/' . $solicitud->artista->img_logo) }}" class="w-full h-full object-cover">
+                                    @else
+                                        <span class="text-primary font-bold">{{ substr($solicitud->artista->nombre_artistico, 0, 1) }}</span>
+                                    @endif
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-bold text-text-main truncate">{{ $solicitud->artista->nombre_artistico }}</h4>
+                                    <p class="text-[10px] text-text-secondary truncate">Para: <b>{{ $solicitud->evento->nombre_evento }}</b></p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button wire:click="aceptarSolicitud({{ $solicitud->id }})" 
+                                    class="flex-1 py-2 bg-green-500 text-white text-xs font-bold rounded-xl hover:bg-green-600 transition-colors">
+                                    Aceptar
+                                </button>
+                                <button wire:click="rechazarSolicitud({{ $solicitud->id }})" 
+                                    class="flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    Rechazar
+                                </button>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-6 text-gray-400 text-sm italic">
+                            No hay solicitudes pendientes en este momento.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100/50 overflow-hidden">
                 <div class="p-6 border-b border-gray-50 flex items-center justify-between">
                     <h3 class="text-xl font-bold text-text-main">Info Artistas</h3>
