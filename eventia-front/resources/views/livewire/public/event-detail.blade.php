@@ -82,21 +82,35 @@
 
             <!-- Comprar Entradas Link (Visible only to Public or Guests) -->
             @if(!auth()->check() || auth()->user()->tipo_usuario === 'publico')
-                <div
-                    class="flex items-center justify-between p-8 bg-gradient-to-r from-primary to-secondary rounded-[32px] text-white shadow-xl shadow-primary/20 group cursor-pointer hover:-translate-y-1 transition-all">
-                    <div>
-                        <h3 class="text-2xl font-black font-heading italic">¡No te quedes fuera!</h3>
-                        <p class="text-sm font-bold opacity-80">Entradas limitadas para la categoría Pista</p>
+                @if($evento->estado === 'AGOTADO')
+                    <div
+                        class="flex items-center justify-between p-8 bg-gradient-to-r from-red-500 to-red-600 rounded-[32px] text-white shadow-xl shadow-red-500/20 group transition-all">
+                        <div>
+                            <h3 class="text-2xl font-black font-heading italic">¡Entradas agotadas!</h3>
+                            <p class="text-sm font-bold opacity-80">Este evento ya no tiene entradas disponibles.</p>
+                        </div>
+                        <div
+                            class="bg-white/20 text-white px-8 py-4 rounded-2xl font-black shadow-lg flex items-center gap-3 cursor-not-allowed">
+                            Agotado
+                        </div>
                     </div>
-                    <a href="{{ route('public.buy-ticket', ['eventId' => $evento->id]) }}"
-                        class="bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
-                        Comprar entradas
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                    </a>
-                </div>
+                @else
+                    <div
+                        class="flex items-center justify-between p-8 bg-gradient-to-r from-primary to-secondary rounded-[32px] text-white shadow-xl shadow-primary/20 group cursor-pointer hover:-translate-y-1 transition-all">
+                        <div>
+                            <h3 class="text-2xl font-black font-heading italic">¡No te quedes fuera!</h3>
+                            <p class="text-sm font-bold opacity-80">Entradas limitadas para la categoría Pista</p>
+                        </div>
+                        <a href="{{ route('public.buy-ticket', ['eventId' => $evento->id]) }}"
+                            class="bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                            Comprar entradas
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                            </svg>
+                        </a>
+                    </div>
+                @endif
             @endif
 
             <!-- Solicitar participación (Visible only to Artistas) -->

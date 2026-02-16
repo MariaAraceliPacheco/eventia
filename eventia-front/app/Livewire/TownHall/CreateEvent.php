@@ -26,6 +26,7 @@ class CreateEvent extends Component
     public $locality = '';
     public $province = '';
     public $foto = '';
+    public $max_entradas = 0;
 
     public function mount($id = null)
     {
@@ -49,6 +50,7 @@ class CreateEvent extends Component
             $this->province = $evento->provincia;
             $this->category = $evento->categoria ?? $evento->category;
             $this->price = $evento->precio;
+            $this->max_entradas = $evento->entradas_maximas;
             $this->description = $evento->descripcion;
             $this->tipos_entrada = $evento->tipos_entrada ?? [['nombre' => 'General', 'precio' => $evento->precio]];
             $this->selectedArtists = $evento->artistas->pluck('id')->toArray();
@@ -122,6 +124,7 @@ class CreateEvent extends Component
             'tipos_entrada.*.nombre' => 'required',
             'tipos_entrada.*.precio' => 'required|numeric|min:0',
             'image' => 'nullable|image|max:10240', // 10MB
+            'max_entradas' => 'nullable|numeric|min:0',
         ]);
 
         $data = [
@@ -135,6 +138,7 @@ class CreateEvent extends Component
             'tipos_entrada' => $this->tipos_entrada,
             'descripcion' => $this->description,
             'estado' => 'ABIERTO',
+            'entradas_maximas' => $this->max_entradas,
         ];
 
         if ($this->image) {

@@ -168,6 +168,12 @@
                                 class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
                                 placeholder="Ej: Madrid">
                         </div>
+                         <div class="space-y-1 text-sm">
+                            <label class="block font-bold text-text-main">Numero de entradas máximas</label>
+                            <input type="number" wire:model="max_entradas" min="0" step="1"
+                                class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
+                                placeholder="Ej: 1000">
+                        </div>
                     </div>
                 </div>
             </div>

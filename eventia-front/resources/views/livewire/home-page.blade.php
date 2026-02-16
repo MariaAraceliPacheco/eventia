@@ -83,7 +83,8 @@
                     <div
                         class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100">
                         <div class="relative h-64 overflow-hidden">
-                            <img src="{{ asset('storage/profiles/eventos/' . $evento->foto) }}" alt="{{ $evento->nombre_evento }}"
+                            <img src="{{ asset('storage/profiles/eventos/' . $evento->foto) }}"
+                                alt="{{ $evento->nombre_evento }}"
                                 class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
                             <div
                                 class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold shadow-sm">
@@ -115,15 +116,26 @@
                             <p class="text-text-secondary text-sm mb-6 line-clamp-2">
                                 {{ $evento->descripcion }}
                             </p>
-                            <a href="{{ route('public.event-detail', $evento->id) }}"
-                                class="w-full py-3 bg-gray-50 text-text-main font-bold rounded-xl hover:bg-primary hover:text-white transition flex items-center justify-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                    stroke="currentColor" class="w-5 h-5">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375Zm0 13.5c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
-                                </svg>
-                                Comprar Entradas
-                            </a>
+                            @if($evento->estado === 'AGOTADO')
+                                <div
+                                    class="w-full py-3 bg-gray-100 text-gray-400 font-bold rounded-xl flex items-center justify-center gap-2 cursor-not-allowed">
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+                                    </svg>
+                                    Entradas Agotadas
+                                </div>
+                            @else
+                                <a href="{{ route('public.event-detail', $evento->id) }}"
+                                    class="w-full py-3 bg-gray-50 text-text-main font-bold rounded-xl hover:bg-primary hover:text-white transition flex items-center justify-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                                        stroke="currentColor" class="w-5 h-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375Zm0 13.5c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
+                                    </svg>
+                                    Comprar Entradas
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @endforeach

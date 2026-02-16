@@ -10,14 +10,14 @@ class PaymentCheckout extends Component
     public $eventId;
     public $evento;
     public $paymentMethod = 'card'; // card, paypal, bizum
-    
+
     public $cardNumber = '';
     public $cardName = '';
     public $expiryDate = '';
     public $cvv = '';
     public $email = '';
     public $phone = '';
-    
+
     public $eventName = 'Cargando...';
     public $category = 'General';
     public $quantity = 1;
@@ -45,11 +45,20 @@ class PaymentCheckout extends Component
     {
         // Actualizing ticket sales
         if ($this->evento) {
+            // Check availability again (safety check for concurrent purchases)
+            if (
+                $this->evento->entradas_maximas !== null &&
+                ($this->evento->entradas_vendidas + $this->quantity) > $this->evento->entradas_maximas
+            ) {
+                session()->flash('error', 'Lo sentimos, ya no quedan suficientes entradas disponibles.');
+                return redirect()->route('public.event-detail', $this->eventId);
+            }
+
             $this->evento->increment('entradas_vendidas', $this->quantity);
 
-            // Automatically transition to FINALIZADO if sold out
+            // Automatically transition to AGOTADO if sold out
             if ($this->evento->isSoldOut()) {
-                $this->evento->update(['estado' => 'FINALIZADO']);
+                $this->evento->update(['estado' => 'AGOTADO']);
             }
 
             // Create Entrada record

@@ -18,7 +18,7 @@ class BuyTicket extends Component
         if ($eventId) {
             $this->eventId = $eventId;
             $this->evento = \App\Models\Evento::findOrFail($eventId);
-            
+
             if ($this->evento->tipos_entrada && count($this->evento->tipos_entrada) > 0) {
                 $this->tipos_disponibles = $this->evento->tipos_entrada;
                 $this->category = $this->tipos_disponibles[0]['nombre'];
@@ -36,7 +36,7 @@ class BuyTicket extends Component
             return redirect()->route('public.area')->with('error', 'Selecciona un evento para comprar entradas.');
         }
     }
-    
+
     public function getSelectedPrice()
     {
         foreach ($this->tipos_disponibles as $tipo) {
@@ -66,9 +66,17 @@ class BuyTicket extends Component
         return $this->getSubtotal() + 2.50; // Adding management fee
     }
 
+    public function getDisponibles()
+    {
+        if ($this->evento->entradas_maximas === null)
+            return 999;
+        return max(0, $this->evento->entradas_maximas - $this->evento->entradas_vendidas);
+    }
+
     public function increment()
     {
-        if ($this->quantity < 5) {
+        $max_compra = min(5, $this->getDisponibles());
+        if ($this->quantity < $max_compra) {
             $this->quantity++;
         }
     }
@@ -82,6 +90,12 @@ class BuyTicket extends Component
 
     public function buy()
     {
+        // Final validation of availability
+        if ($this->quantity > $this->getDisponibles()) {
+            return redirect()->route('public.event-detail', $this->eventId)
+                ->with('error', 'Lo sentimos, ya no quedan suficientes entradas disponibles.');
+        }
+
         // Redirect to payment checkout page with query parameters
         return redirect()->to('/pago?' . http_build_query([
             'eventId' => $this->eventId,
