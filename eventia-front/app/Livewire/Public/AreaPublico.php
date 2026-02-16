@@ -156,11 +156,25 @@ class AreaPublico extends Component
 
         // Fetch purchased tickets for the current user
         $purchasedTickets = [];
+        $upcomingEvents = [];
         if (auth()->check()) {
             $purchasedTickets = \App\Models\Entrada::with('evento')
                 ->where('id_usuario', auth()->id())
                 ->orderBy('fecha_compra', 'desc')
                 ->get();
+
+            // Upcoming Events Logic (only if notifications are enabled)
+            if ($this->publico && $this->publico->notificaciones) {
+                $upcomingEvents = \App\Models\Entrada::with('evento')
+                    ->where('id_usuario', auth()->id())
+                    ->whereHas('evento', function ($q) {
+                        $q->where('fecha_inicio', '>=', now())
+                            ->where('fecha_inicio', '<=', now()->addDays(7));
+                    })
+                    ->get()
+                    ->pluck('evento')
+                    ->unique('id');
+            }
         }
 
         // Fetch real items "in cart" (selected tickets)
@@ -172,6 +186,7 @@ class AreaPublico extends Component
         return view('livewire.public.area-publico', [
             'events' => $events,
             'purchasedTickets' => $purchasedTickets,
+            'upcomingEvents' => $upcomingEvents,
             'cartItems' => $cartItems
         ]);
     }

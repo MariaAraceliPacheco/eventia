@@ -133,6 +133,43 @@
                 </div>
 
                 <div class="space-y-8">
+                    <!-- Próximos Eventos (Highlighted) -->
+                    @if(count($upcomingEvents) > 0)
+                        <div>
+                            <h4 class="text-xs font-black text-primary uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                                <span class="flex h-2 w-2 relative">
+                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                                </span>
+                                Próximos Eventos (Esta semana)
+                            </h4>
+                            <div class="grid grid-cols-1 gap-4">
+                                @foreach($upcomingEvents as $upEvent)
+                                    <a href="{{ route('public.event-detail', $upEvent->id) }}" class="group relative bg-gradient-to-br from-primary/5 to-white border border-primary/20 p-5 rounded-3xl transition-all hover:shadow-lg hover:shadow-primary/5">
+                                        <div class="flex items-center gap-5">
+                                            <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex flex-col items-center justify-center border border-primary/10">
+                                                <span class="text-[10px] font-black text-primary uppercase">{{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->translatedFormat('M') }}</span>
+                                                <span class="text-xl font-black text-text-main -mt-1">{{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->format('d') }}</span>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h5 class="text-sm font-black text-text-main group-hover:text-primary transition-colors">{{ $upEvent->nombre_evento }}</h5>
+                                                <div class="flex items-center gap-2 mt-1">
+                                                    <span class="text-[10px] font-bold text-text-secondary flex items-center gap-1">
+                                                        <svg class="w-3 h-3 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                                        Quedan {{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->diffForHumans(null, true) }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="p-2 bg-white rounded-xl shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                            </div>
+                                        </div>
+                                    </a>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="h-px bg-gray-100 my-6"></div>
+                    @endif
                     <!-- Compradas -->
                     <div>
                         <h4
