@@ -20,10 +20,15 @@ class TownHallProfile extends Component
     public function render()
     {
         $query = $this->ayuntamiento->eventos();
+        
+        // Visibility logic: Public users don't see ABIERTO events
+        if (!auth()->check() || (auth()->user()->tipo_usuario !== 'artista' && auth()->user()->tipo_usuario !== 'ayuntamiento' && auth()->user()->tipo_usuario !== 'admin')) {
+            $query->where('estado', '!=', 'ABIERTO');
+        }
 
-        // If the logged-in user is an artist, show only open events
-        if (auth()->check() && auth()->user()->tipo_usuario === 'artista') {
-            $query->where('estado', 'abierto');
+        // If filtering specifically for artists (optional: they might only care about open ones)
+        if (auth()->check() && auth()->user()->tipo_usuario === 'artista' && request()->has('only_open')) {
+            $query->where('estado', 'ABIERTO');
         }
 
         $eventos = $query->orderBy('fecha_inicio', 'desc')->get();

@@ -123,7 +123,20 @@ class AreaPublico extends Component
     #[Layout('components.layouts.app')]
     public function render()
     {
-        return view('livewire.public.area-publico');
+        $query = \App\Models\Evento::query();
+
+        if ($this->searchEvent) {
+            $query->where('nombre_evento', 'like', '%' . $this->searchEvent . '%');
+        }
+
+        // Visibility logic: Public users don't see ABIERTO events
+        $query->where('estado', '!=', 'ABIERTO');
+
+        $events = $query->orderBy('fecha_inicio', 'desc')->take(10)->get();
+
+        return view('livewire.public.area-publico', [
+            'events' => $events
+        ]);
     }
 
     public function toggleSelection($ticketId)

@@ -19,6 +19,18 @@ class Admin extends Component
     public $publicos = [];
     public $eventos = [];
 
+    // Edit Publico properties
+    public $showEditPublicoModal = false;
+    public $editingPublicoId = null;
+    public $editNombre = '';
+    public $editEmail = '';
+    public $editComunidad = '';
+    public $editProvincia = '';
+    public $editLocalidad = '';
+    public $editGustos = [];
+    public $editFavoritos = [];
+    public $editNotificaciones = false;
+
 
     //esta funcion sirve para obtener el usuario y el artista
     public function mount()
@@ -63,6 +75,62 @@ class Admin extends Component
         session()->flash('message', 'Ayuntamiento eliminado correctamente.');
     }
 
+    public function editPublico($id)
+    {
+        $publico = Publico::with('usuario')->findOrFail($id);
+        $this->editingPublicoId = $id;
+        $this->editNombre = $publico->usuario->nombre;
+        $this->editEmail = $publico->usuario->email;
+        $this->editComunidad = $publico->comunidad_autonoma;
+        $this->editProvincia = $publico->provincia;
+        $this->editLocalidad = $publico->localidad;
+        
+        // Handle gustos and favoritos as arrays (conversion if they are stored as strings)
+        $this->editGustos = is_string($publico->gustos_musicales) ? explode(',', $publico->gustos_musicales) : (is_array($publico->gustos_musicales) ? $publico->gustos_musicales : []);
+        $this->editFavoritos = is_string($publico->tipo_eventos_favoritos) ? explode(',', $publico->tipo_eventos_favoritos) : (is_array($publico->tipo_eventos_favoritos) ? $publico->tipo_eventos_favoritos : []);
+        
+        $this->editNotificaciones = $publico->notificaciones;
+        $this->showEditPublicoModal = true;
+    }
+
+    public function updatePublico()
+    {
+        $this->validate([
+            'editNombre' => 'required|string|max:255',
+            'editEmail' => 'required|email|max:255',
+            'editComunidad' => 'required|string',
+            'editProvincia' => 'required|string',
+            'editLocalidad' => 'required|string',
+        ]);
+
+        $publico = Publico::findOrFail($this->editingPublicoId);
+        $user = $publico->usuario;
+
+        $user->update([
+            'nombre' => $this->editNombre,
+            'email' => $this->editEmail,
+        ]);
+
+        $publico->update([
+            'comunidad_autonoma' => $this->editComunidad,
+            'provincia' => $this->editProvincia,
+            'localidad' => $this->editLocalidad,
+            'gustos_musicales' => is_array($this->editGustos) ? implode(',', $this->editGustos) : $this->editGustos,
+            'tipo_eventos_favoritos' => is_array($this->editFavoritos) ? implode(',', $this->editFavoritos) : $this->editFavoritos,
+            'notificaciones' => $this->editNotificaciones,
+        ]);
+
+        $this->mount(); // Refresh data
+        $this->showEditPublicoModal = false;
+        session()->flash('message', 'Público actualizado correctamente.');
+    }
+
+    public function cancelEditPublico()
+    {
+        $this->showEditPublicoModal = false;
+        $this->editingPublicoId = null;
+    }
+
     #[Layout('components.layouts.app')]
     public function render()
     {
@@ -71,6 +139,8 @@ class Admin extends Component
             'ayuntamientos' => $this->ayuntamientos,
             'publicos' => $this->publicos,
             'eventos' => $this->eventos,
+            'allGustos' => Publico::GUSTOS_MUSICALES,
+            'allFavoritos' => Publico::TIPO_EVENTOS_FAVORITOS,
         ]);
     }
 

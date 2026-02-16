@@ -7,8 +7,24 @@ use Livewire\Attributes\Layout;
 
 class BuyTicket extends Component
 {
+    public $eventId;
+    public $evento;
     public $quantity = 1;
     public $category = 'General';
+
+    public function mount($eventId = null)
+    {
+        if ($eventId) {
+            $this->eventId = $eventId;
+            $this->evento = \App\Models\Evento::findOrFail($eventId);
+            
+            // If already sold out, don't allow buying
+            if ($this->evento->isSoldOut()) {
+                return redirect()->route('public.event-detail', $this->eventId)
+                    ->with('error', 'Lo sentimos, las entradas para este evento se han agotado.');
+            }
+        }
+    }
     
     // Price map for each category
     public $prices = [
@@ -55,6 +71,7 @@ class BuyTicket extends Component
     {
         // Redirect to payment checkout page with query parameters
         return redirect()->to('/pago?' . http_build_query([
+            'eventId' => $this->eventId,
             'category' => $this->category,
             'quantity' => $this->quantity,
             'price' => $this->prices[$this->category],

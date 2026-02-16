@@ -22,8 +22,21 @@ class Evento extends Model
         'localidad',
         'provincia',
         'precio',
-        'estado'
+        'estado',
+        'entradas_maximas',
+        'entradas_vendidas'
     ];
+
+    public function isVisibleToPublic()
+    {
+        return $this->estado !== 'ABIERTO';
+    }
+
+    public function isSoldOut()
+    {
+        if ($this->entradas_maximas === null) return false;
+        return $this->entradas_vendidas >= $this->entradas_maximas;
+    }
 
     protected $casts = [
         'fecha_inicio' => 'date'

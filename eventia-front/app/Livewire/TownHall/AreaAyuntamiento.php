@@ -57,8 +57,10 @@ class AreaAyuntamiento extends Component
         'Melilla' => ['Melilla'],
     ];
 
-    // Edit event modal properties
-    public $showEditModal = false;
+    // Cerrar event modal properties
+    public $showCerrarModal = false;
+    public $closingEventId = null;
+    public $total_entradas = 100;
 
     public function mount()
     {
@@ -154,9 +156,51 @@ class AreaAyuntamiento extends Component
     {
         $evento = Evento::find($eventId);
         if ($evento) {
+            if ($evento->estado === 'FINALIZADO') {
+                $this->dispatch('notificar', [
+                    'titulo' => 'Acción bloqueada',
+                    'mensaje' => 'No se puede eliminar un evento finalizado.',
+                    'tipo' => 'error'
+                ]);
+                return;
+            }
             $evento->delete();
             session()->flash('message', 'Evento eliminado correctamente');
         }
+    }
+
+    public function cerrarEvento($eventId)
+    {
+        $this->closingEventId = $eventId;
+        $this->showCerrarModal = true;
+    }
+
+    public function confirmCerrarEvento()
+    {
+        $this->validate([
+            'total_entradas' => 'required|integer|min:1'
+        ]);
+
+        $evento = Evento::findOrFail($this->closingEventId);
+        $evento->update([
+            'estado' => 'CERRADO',
+            'entradas_maximas' => $this->total_entradas
+        ]);
+
+        $this->showCerrarModal = false;
+        $this->closingEventId = null;
+
+        $this->dispatch('notificar', [
+            'titulo' => 'Evento cerrado',
+            'mensaje' => 'El evento ahora es visible para el público y se han habilitado las entradas.',
+            'tipo' => 'success'
+        ]);
+    }
+
+    public function cancelCerrarEvento()
+    {
+        $this->showCerrarModal = false;
+        $this->closingEventId = null;
     }
 
     public function editProfile()

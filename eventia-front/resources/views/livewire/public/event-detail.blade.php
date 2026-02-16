@@ -54,7 +54,7 @@
                     <h3 class="text-2xl font-black font-heading italic">¡No te quedes fuera!</h3>
                     <p class="text-sm font-bold opacity-80">Entradas limitadas para la categoría Pista</p>
                 </div>
-                <a href="{{ route('public.buy-ticket') }}" class="bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                <a href="{{ route('public.buy-ticket', ['eventId' => $evento->id]) }}" class="bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
                     Comprar entradas
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </a>

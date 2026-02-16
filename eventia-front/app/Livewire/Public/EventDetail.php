@@ -17,6 +17,13 @@ class EventDetail extends Component
     public function mount($id)
     {
         $this->evento = Evento::with(['ayuntamiento', 'artistas'])->findOrFail($id);
+
+        // Visibility protection: ABIERTO events are only for staff/artists
+        if ($this->evento->estado === 'ABIERTO') {
+            if (!auth()->check() || (auth()->user()->tipo_usuario !== 'artista' && auth()->user()->tipo_usuario !== 'ayuntamiento' && auth()->user()->tipo_usuario !== 'admin')) {
+                return redirect()->route('home')->with('error', 'Este evento aún no está disponible para el público.');
+            }
+        }
         
         // Check if artist has already applied
         if (auth()->check() && auth()->user()->tipo_usuario === 'artista') {
@@ -38,6 +45,15 @@ class EventDetail extends Component
     public function solicitarEvento()
     {
         if (!auth()->check() || auth()->user()->tipo_usuario !== 'artista') {
+            return;
+        }
+
+        if ($this->evento->estado !== 'ABIERTO') {
+            $this->dispatch('notificar', [
+                'titulo' => 'No disponible',
+                'mensaje' => 'Este evento ya no acepta solicitudes de artistas.',
+                'tipo' => 'error'
+            ]);
             return;
         }
 

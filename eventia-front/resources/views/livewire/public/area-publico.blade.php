@@ -49,8 +49,10 @@
 
                     <!-- Featured Events List -->
                     <div class="space-y-4 h-[550px] overflow-y-auto pr-3 custom-scrollbar">
-                        @foreach(['Festival de Verano 2026', 'Concierto Acústico: Indie Night', 'Feria de Tecnología & Ocio', 'Metal Bash: Open Air', 'Gastro-Fest: Sabores del Mundo'] as $index => $event)
-                            <a href="{{ route('public.event-detail', ['id' => $index + 1]) }}"
+                    <!-- Featured Events List -->
+                    <div class="space-y-4 h-[550px] overflow-y-auto pr-3 custom-scrollbar">
+                        @forelse($events as $event)
+                            <a href="{{ route('public.event-detail', ['id' => $event->id]) }}"
                                 class="block group relative bg-gray-50 rounded-2xl p-5 border border-transparent hover:border-primary/30 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 cursor-pointer overflow-hidden">
                                 <div
                                     class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-150">
@@ -59,19 +61,23 @@
                                 <div class="flex items-center gap-5 relative">
                                     <div
                                         class="w-16 h-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl group-hover:rotate-12 transition-transform">
-                                        🎟️
+                                        {{ $event->estado === 'FINALIZADO' ? '🏁' : '🎟️' }}
                                     </div>
                                     <div class="flex-1">
-                                        <h4
-                                            class="text-base font-bold text-text-main group-hover:text-primary transition-colors">
-                                            {{ $event }}</h4>
+                                        <div class="flex items-center gap-2">
+                                            <h4 class="text-base font-bold text-text-main group-hover:text-primary transition-colors">
+                                                {{ $event->nombre_evento }}</h4>
+                                            @if($event->estado === 'FINALIZADO')
+                                                <span class="text-[9px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded font-black">SOLDOUT</span>
+                                            @endif
+                                        </div>
                                         <div class="flex items-center gap-3 mt-1">
                                             <span class="text-xs text-text-secondary flex items-center gap-1">
                                                 <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                                 </svg>
-                                                15 Ago
+                                                {{ \Carbon\Carbon::parse($event->fecha_inicio)->format('d M') }}
                                             </span>
                                             <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
                                             <span class="text-xs text-text-secondary flex items-center gap-1">
@@ -81,16 +87,21 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                                 </svg>
-                                                Madrid
+                                                {{ $event->localidad }}
                                             </span>
                                         </div>
                                     </div>
                                     <div class="text-right">
-                                        <span class="text-lg font-black text-primary">Desde 25€</span>
+                                        <span class="text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
                                     </div>
                                 </div>
                             </a>
-                        @endforeach
+                        @empty
+                            <div class="text-center py-20 text-gray-400">
+                                <p class="text-sm italic">No se encontraron eventos disponibles.</p>
+                            </div>
+                        @endforelse
+                    </div>
                     </div>
                 </div>
             </div>

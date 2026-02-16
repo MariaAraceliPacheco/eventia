@@ -258,7 +258,7 @@
                                         </svg>
                                     </button>
                                 </a>
-                                <button title="Modificar"
+                                <button title="Modificar" wire:click="editPublico({{ $publico->id }})"
                                     class="p-2 text-gray-400 hover:text-secondary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -370,6 +370,102 @@
         <div class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg font-bold animate-bounce"
             x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
             {{ session('message') }}
+        </div>
+    @endif
+
+    <!-- Edit Publico Modal -->
+    @if($showEditPublicoModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="cancelEditPublico"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                    <div class="bg-white px-8 pt-8 pb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Modificar Usuario Público</h3>
+                            <button wire:click="cancelEditPublico" class="text-gray-400 hover:text-gray-500 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <form wire:submit.prevent="updatePublico" class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Account Info -->
+                                <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                    <div class="md:col-span-2 px-1">
+                                        <span class="text-[10px] font-black uppercase tracking-widest text-primary">Información de Cuenta</span>
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre</label>
+                                        <input type="text" wire:model="editNombre" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Email</label>
+                                        <input type="email" wire:model="editEmail" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    </div>
+                                </div>
+
+                                <!-- Location -->
+                                <div>
+                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad Autónoma</label>
+                                    <input type="text" wire:model="editComunidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
+                                    <input type="text" wire:model="editProvincia" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
+                                    <input type="text" wire:model="editLocalidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                </div>
+
+                                <!-- Preferences -->
+                                <div class="md:col-span-1">
+                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-3">Gustos Musicales</label>
+                                    <div class="space-y-2 max-h-40 overflow-y-auto p-2 bg-gray-50 rounded-xl border border-gray-100">
+                                        @foreach($allGustos as $gusto)
+                                            <label class="flex items-center gap-2 cursor-pointer group">
+                                                <input type="checkbox" value="{{ $gusto }}" wire:model="editGustos" class="rounded border-gray-300 text-primary focus:ring-primary/20">
+                                                <span class="text-sm text-text-main group-hover:text-primary transition-colors capitalize">{{ $gusto }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                                <div class="md:col-span-1">
+                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-3">Eventos Favoritos</label>
+                                    <div class="space-y-2 max-h-40 overflow-y-auto p-2 bg-gray-50 rounded-xl border border-gray-100">
+                                        @foreach($allFavoritos as $fav)
+                                            <label class="flex items-center gap-2 cursor-pointer group">
+                                                <input type="checkbox" value="{{ $fav }}" wire:model="editFavoritos" class="rounded border-gray-300 text-secondary focus:ring-secondary/20">
+                                                <span class="text-sm text-text-main group-hover:text-secondary transition-colors capitalize">{{ $fav }}</span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+
+                                <!-- Notifications -->
+                                <div class="md:col-span-2 flex items-center gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                                    <input type="checkbox" wire:model="editNotificaciones" id="editNotificaciones" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20">
+                                    <label for="editNotificaciones" class="text-sm font-bold text-text-main cursor-pointer">Recibir notificaciones comerciales</label>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-col md:flex-row gap-3 pt-4 border-t border-gray-100">
+                                <button type="submit" class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                                    Guardar Cambios
+                                </button>
+                                <button type="button" wire:click="cancelEditPublico" class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
+                                    Cancelar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     @endif
 </div>

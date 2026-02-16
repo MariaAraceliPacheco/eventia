@@ -62,10 +62,17 @@ class GlobalSearch extends Component
             ->get();
 
         // Búsqueda en el modelo Evento
-        $this->results['eventos'] = Evento::where('nombre_evento', 'like', '%' . $this->query . '%')
-            ->orWhere('localidad', 'like', '%' . $this->query . '%')
-            ->limit(5)
-            ->get();
+        $eventQuery = Evento::where(function($q) {
+                $q->where('nombre_evento', 'like', '%' . $this->query . '%')
+                  ->orWhere('localidad', 'like', '%' . $this->query . '%');
+            });
+
+        // Visibility logic: Public users don't see ABIERTO events
+        if (!auth()->check() || (auth()->user()->tipo_usuario !== 'artista' && auth()->user()->tipo_usuario !== 'ayuntamiento' && auth()->user()->tipo_usuario !== 'admin')) {
+            $eventQuery->where('estado', '!=', 'ABIERTO');
+        }
+
+        $this->results['eventos'] = $eventQuery->limit(5)->get();
     }
 
     public function render()
