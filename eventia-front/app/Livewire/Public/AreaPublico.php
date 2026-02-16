@@ -4,6 +4,7 @@ namespace App\Livewire\Public;
 
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AreaPublico extends Component
 {
@@ -178,5 +179,24 @@ class AreaPublico extends Component
             // Redirect to the first selected event for now
             return redirect()->route('public.buy-ticket', ['eventId' => $this->selectedTickets[0]]);
         }
+    }
+
+    public function downloadTicket($ticketId)
+    {
+        $ticket = \App\Models\Entrada::with('evento')->findOrFail($ticketId);
+
+        // Security check
+        if ($ticket->id_usuario !== auth()->id()) {
+            session()->flash('error', 'No tienes permiso para descargar esta entrada.');
+            return;
+        }
+
+        Pdf::setOption(['isRemoteEnabled' => true]);
+        $pdf = Pdf::loadView('pdf.ticket', ['ticket' => $ticket]);
+        
+        // Use stream or download
+        return response()->streamDownload(function() use ($pdf) {
+            echo $pdf->output();
+        }, 'Entrada-' . $ticket->evento->nombre_evento . '.pdf');
     }
 }
