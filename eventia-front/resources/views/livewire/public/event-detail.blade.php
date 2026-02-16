@@ -202,30 +202,32 @@
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                     </button>
                 </form>
-            </div>
-            
-            @if(!auth()->check() || auth()->user()->tipo_usuario === 'publico')
-            <div class="bg-white rounded-3xl p-6 border border-gray-100 flex items-center justify-between transition-all hover:shadow-lg">
-                <div class="flex items-center gap-4">
-                    <span class="text-lg font-black text-primary">{{ number_format($evento->precio, 2) }}€</span>
-                    <span class="text-xs text-text-secondary font-bold">Precio Entrada</span>
-                </div>
-                <div class="h-6 w-px bg-gray-100"></div>
-                <div class="text-sm font-black text-secondary">Agotándose</div>
-            </div>
-            @endif
 
-            @if(auth()->check() && auth()->user()->tipo_usuario === 'artista')
-            <div class="bg-white rounded-3xl p-6 border border-secondary/30 flex flex-col gap-4 transition-all hover:shadow-lg">
-                <div class="flex items-center justify-between">
-                    <span class="text-lg font-black text-secondary">Solicitud</span>
-                    <span class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">Abierto</span>
+                <div class="space-y-4 mt-6">
+                    @if(!auth()->check() || auth()->user()->tipo_usuario === 'publico')
+                    <div class="bg-white rounded-3xl p-6 border border-gray-100 flex items-center justify-between transition-all hover:shadow-lg shadow-sm">
+                        <div class="flex items-center gap-4">
+                            <span class="text-lg font-black text-primary">{{ number_format($evento->precio, 2) }}€</span>
+                            <span class="text-xs text-text-secondary font-bold">Precio Entrada</span>
+                        </div>
+                        <div class="h-6 w-px bg-gray-100"></div>
+                        <div class="text-sm font-black text-secondary">Agotándose</div>
+                    </div>
+                    @endif
+
+                    @if(auth()->check() && auth()->user()->tipo_usuario === 'artista')
+                    <div class="bg-white rounded-3xl p-6 border border-secondary/30 flex flex-col gap-4 transition-all hover:shadow-lg shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <span class="text-lg font-black text-secondary">Solicitud</span>
+                            <span class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">Abierto</span>
+                        </div>
+                        <button class="w-full py-4 bg-secondary text-white rounded-2xl font-black shadow-lg hover:bg-secondary-dark transition-all">
+                            Enviar propuesta
+                        </button>
+                    </div>
+                    @endif
                 </div>
-                <button class="w-full py-4 bg-secondary text-white rounded-2xl font-black shadow-lg hover:bg-secondary-dark transition-all">
-                    Enviar propuesta
-                </button>
             </div>
-            @endif
         </div>
     </div>
 
