@@ -19,6 +19,7 @@ class AreaPublico extends Component
     public $provincia = '';
     public $localidad = '';
     public $notificaciones = false;
+    public $nombre = '';
 
     public $user;
     public $publico;
@@ -68,6 +69,10 @@ class AreaPublico extends Component
             $this->localidad = $this->publico->localidad;
             $this->notificaciones = $this->publico->notificaciones;
         }
+
+        if ($this->user) {
+            $this->nombre = $this->user->nombre;
+        }
         $this->showProfileModal = true;
     }
 
@@ -80,7 +85,12 @@ class AreaPublico extends Component
             'gustos_musicales' => 'required|string',
             'tipo_eventos_favoritos' => 'required|string',
             'notificaciones' => 'boolean',
+            'nombre' => 'required|string|max:255',
         ]);
+
+        if ($this->user) {
+            $this->user->update(['nombre' => $this->nombre]);
+        }
 
         if ($this->publico) {
             $this->publico->update($validated);
@@ -88,6 +98,8 @@ class AreaPublico extends Component
         }
 
         $this->showProfileModal = false;
+
+        return redirect()->route('public.area');
     }
 
     public function cancelEdit()
@@ -131,13 +143,13 @@ class AreaPublico extends Component
         }
 
         // Filtering: Only show CERRADO, FINALIZADO or SOLD OUT events
-        $query->where(function($q) {
+        $query->where(function ($q) {
             $q->whereIn('estado', ['CERRADO', 'FINALIZADO'])
-              ->orWhere(function($sq) {
-                  $sq->where('estado', 'ABIERTO')
-                     ->whereNotNull('entradas_maximas')
-                     ->whereColumn('entradas_vendidas', '>=', 'entradas_maximas');
-              });
+                ->orWhere(function ($sq) {
+                    $sq->where('estado', 'ABIERTO')
+                        ->whereNotNull('entradas_maximas')
+                        ->whereColumn('entradas_vendidas', '>=', 'entradas_maximas');
+                });
         });
 
         $events = $query->orderBy('fecha_inicio', 'desc')->take(10)->get();
@@ -193,9 +205,9 @@ class AreaPublico extends Component
 
         Pdf::setOption(['isRemoteEnabled' => true]);
         $pdf = Pdf::loadView('pdf.ticket', ['ticket' => $ticket]);
-        
+
         // Use stream or download
-        return response()->streamDownload(function() use ($pdf) {
+        return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();
         }, 'Entrada-' . $ticket->evento->nombre_evento . '.pdf');
     }

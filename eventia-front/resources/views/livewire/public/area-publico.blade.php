@@ -10,7 +10,8 @@
             <div>
                 <h2 class="text-3xl font-black text-text-main font-heading">{{ $user->nombre }}</h2>
                 <p class="text-text-secondary font-medium">Panel de Usuario •
-                    {{ $publico->localidad ?? 'Sin ubicación' }}</p>
+                    {{ $publico->localidad ?? 'Sin ubicación' }}
+                </p>
             </div>
         </div>
         <button wire:click="editProfile"
@@ -49,63 +50,71 @@
 
                     <!-- Featured Events List -->
                     <div class="space-y-4 h-[550px] overflow-y-auto pr-3 custom-scrollbar">
-                    <!-- Featured Events List -->
-                    <div class="space-y-4 h-[550px] overflow-y-auto pr-3 custom-scrollbar">
-                        @forelse($events as $event)
-                            <a href="{{ route('public.event-detail', ['id' => $event->id]) }}"
-                                class="block group relative bg-gray-50 rounded-2xl p-5 border border-transparent hover:border-primary/30 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 cursor-pointer overflow-hidden">
-                                <div
-                                    class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-150">
-                                </div>
-
-                                <div class="flex items-center gap-5 relative">
+                        <!-- Featured Events List -->
+                        <div class="space-y-4 h-[550px] overflow-y-auto pr-3 custom-scrollbar">
+                            @forelse($events as $event)
+                                <a href="{{ route('public.event-detail', ['id' => $event->id]) }}"
+                                    class="block group relative bg-gray-50 rounded-2xl p-5 border border-transparent hover:border-primary/30 hover:bg-white hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 cursor-pointer overflow-hidden">
                                     <div
-                                        class="w-16 h-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl group-hover:rotate-12 transition-transform">
-                                        {{ $event->estado === 'FINALIZADO' ? '🏁' : '🎟️' }}
+                                        class="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-150">
                                     </div>
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-2">
-                                            <h4 class="text-base font-bold text-text-main group-hover:text-primary transition-colors">
-                                                {{ $event->nombre_evento }}</h4>
-                                            @if($event->estado === 'FINALIZADO')
-                                                <span class="text-[9px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded font-black">SOLDOUT</span>
-                                            @endif
+
+                                    <div class="flex items-center gap-5 relative">
+                                        <div
+                                            class="w-16 h-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl group-hover:rotate-12 transition-transform">
+                                            {{ $event->estado === 'FINALIZADO' ? '🏁' : '🎟️' }}
                                         </div>
-                                        <div class="flex items-center gap-3 mt-1">
-                                            <span class="text-xs text-text-secondary flex items-center gap-1">
-                                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                </svg>
-                                                {{ \Carbon\Carbon::parse($event->fecha_inicio)->format('d M') }}
-                                            </span>
-                                            <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
-                                            <span class="text-xs text-text-secondary flex items-center gap-1">
-                                                <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                                </svg>
-                                                {{ $event->localidad }}
-                                            </span>
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2">
+                                                <h4
+                                                    class="text-base font-bold text-text-main group-hover:text-primary transition-colors">
+                                                    {{ $event->nombre_evento }}
+                                                </h4>
+                                                @if($event->estado === 'FINALIZADO')
+                                                    <span
+                                                        class="text-[9px] bg-gray-100 text-gray-500 px-1.5 py-0.5 rounded font-black">SOLDOUT</span>
+                                                @endif
+                                            </div>
+                                            <div class="flex items-center gap-3 mt-1">
+                                                <span class="text-xs text-text-secondary flex items-center gap-1">
+                                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                                    </svg>
+                                                    {{ \Carbon\Carbon::parse($event->fecha_inicio)->format('d M') }}
+                                                </span>
+                                                <span class="w-1 h-1 bg-gray-300 rounded-full"></span>
+                                                <span class="text-xs text-text-secondary flex items-center gap-1">
+                                                    <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24"
+                                                        stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                                    </svg>
+                                                    {{ $event->localidad }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="text-right flex flex-col items-end gap-2">
+                                            <span
+                                                class="text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
+                                            <button wire:click.prevent="toggleSelection({{ $event->id }})"
+                                                class="px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'bg-gray-100 text-text-secondary hover:bg-gray-200' : 'bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
+                                                {{ in_array($event->id, $selectedTickets) ? 'Eliminar del Carrito' : 'Añadir al Carrito' }}
+                                            </button>
                                         </div>
                                     </div>
-                                    <div class="text-right flex flex-col items-end gap-2">
-                                        <span class="text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
-                                        <button wire:click.prevent="toggleSelection({{ $event->id }})" 
-                                            class="px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'bg-gray-100 text-text-secondary hover:bg-gray-200' : 'bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
-                                            {{ in_array($event->id, $selectedTickets) ? 'Eliminar del Carrito' : 'Añadir al Carrito' }}
-                                        </button>
-                                    </div>
+                                </a>
+                            @empty
+                                <div class="text-center py-20 text-gray-400">
+                                    <p class="text-sm italic">No se encontraron eventos disponibles.</p>
                                 </div>
-                            </a>
-                        @empty
-                            <div class="text-center py-20 text-gray-400">
-                                <p class="text-sm italic">No se encontraron eventos disponibles.</p>
-                            </div>
-                        @endforelse
-                    </div>
+                            @endforelse
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,13 +147,18 @@
                                     <div class="flex items-center gap-4">
                                         <div
                                             class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm italic font-bold text-primary">
-                                            {{ substr($ticket->evento->nombre_evento, 0, 1) }}</div>
+                                            {{ substr($ticket->evento->nombre_evento, 0, 1) }}
+                                        </div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-text-main">{{ $ticket->evento->nombre_evento }}</h5>
-                                            <p class="text-[11px] text-text-secondary">{{ $ticket->categoria }} • ID: {{ $ticket->codigo_ticket }}</p>
+                                            <h5 class="text-sm font-bold text-text-main">
+                                                {{ $ticket->evento->nombre_evento }}</h5>
+                                            <p class="text-[11px] text-text-secondary">{{ $ticket->categoria }} • ID:
+                                                {{ $ticket->codigo_ticket }}</p>
                                         </div>
                                     </div>
-                                    <button wire:click="downloadTicket({{ $ticket->id }})" class="text-primary hover:text-secondary transition-colors" title="Descargar Entrada">
+                                    <button wire:click="downloadTicket({{ $ticket->id }})"
+                                        class="text-primary hover:text-secondary transition-colors"
+                                        title="Descargar Entrada">
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -250,6 +264,18 @@
                         </div>
 
                         <div class="space-y-6">
+                            <!-- Nombre de usuario -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre
+                                    de usuario</label>
+                                <input type="text" wire:model="nombre"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                    placeholder="Tu nombre de usuario">
+                                @error('nombre') <span class="text-xs text-red-500 font-bold mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                             <!-- Comunidad Autónoma -->
                             <div>
                                 <label
