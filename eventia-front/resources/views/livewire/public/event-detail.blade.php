@@ -167,28 +167,41 @@
                     </div>
                 </div>
 
-                <!-- Chat Display (Mock) -->
-                <div class="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar mb-6">
-                    <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-text-main italic">
-                        ¡Hola! Soy el asistente de Eventia. ¿Tienes alguna duda sobre el **Summer Indie Festival**? Puedo informarte sobre horarios, accesos, transporte o el cartel.
-                    </div>
-                    <div class="bg-primary/10 p-4 rounded-2xl rounded-tr-none text-sm text-text-main text-right font-medium">
-                        ¿Hay opciones de comida vegana en el recinto?
-                    </div>
-                    <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-text-main leading-relaxed">
-                        ¡Sí! El recinto contará con un **Gastro-Space** con más de 12 food trucks, incluyendo 3 opciones 100% veganas y platos sin gluten. 🥗
+                <!-- Chat Display -->
+                <div class="flex-1 space-y-4 overflow-y-auto pr-2 custom-scrollbar mb-6" id="chat-container">
+                    @foreach($messages as $message)
+                        @if($message['role'] === 'assistant')
+                            <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-text-main">
+                                {!! nl2br(e($message['content'])) !!}
+                            </div>
+                        @else
+                            <div class="bg-primary text-white p-4 rounded-2xl rounded-tr-none text-sm font-medium ml-8">
+                                {{ $message['content'] }}
+                            </div>
+                        @endif
+                    @endforeach
+                    <div wire:loading wire:target="sendMessage">
+                        <div class="bg-white p-4 rounded-2xl rounded-tl-none shadow-sm border border-gray-100 text-sm text-text-main flex items-center gap-2">
+                            <span class="flex gap-1">
+                                <span class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce"></span>
+                                <span class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce [animation-delay:0.2s]"></span>
+                                <span class="w-1.5 h-1.5 bg-primary/40 rounded-full animate-bounce [animation-delay:0.4s]"></span>
+                            </span>
+                            <span class="text-xs font-bold text-text-secondary">Escribiendo...</span>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Input area -->
-                <div class="relative">
+                <form wire:submit.prevent="sendMessage" class="relative">
                     <input type="text" 
+                        wire:model="userInput"
                         class="w-full pl-5 pr-12 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all shadow-sm italic text-sm" 
                         placeholder="Pregunta lo que sea...">
-                    <button class="absolute inset-y-2 right-2 px-3 bg-text-main text-white rounded-xl shadow-lg hover:bg-gray-800 transition-colors">
+                    <button type="submit" class="absolute inset-y-2 right-2 px-3 bg-text-main text-white rounded-xl shadow-lg hover:bg-gray-800 transition-colors">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
                     </button>
-                </div>
+                </form>
             </div>
             
             @if(!auth()->check() || auth()->user()->tipo_usuario === 'publico')

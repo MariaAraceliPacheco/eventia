@@ -10,10 +10,67 @@ use App\Models\Evento;
 class EventDetail extends Component
 {
     public $evento;
-    
+    public $messages = [];
+    public $userInput = '';
+
     public function mount($id)
     {
         $this->evento = Evento::with(['ayuntamiento', 'artistas'])->findOrFail($id);
+        
+        // Initial message
+        $this->messages[] = [
+            'role' => 'assistant',
+            'content' => "¡Hola! Soy el asistente de Eventia. ¿Tienes alguna duda sobre el **{$this->evento->nombre_evento}**? Puedo informarte sobre precios, artistas confirmados, ubicación o el ayuntamiento organizador."
+        ];
+    }
+
+    public function sendMessage()
+    {
+        if (trim($this->userInput) === '') return;
+
+        $userMessage = $this->userInput;
+        $this->messages[] = ['role' => 'user', 'content' => $userMessage];
+        $this->userInput = '';
+
+        $response = $this->generateResponse($userMessage);
+        $this->messages[] = ['role' => 'assistant', 'content' => $response];
+        
+        $this->dispatch('messageAdded');
+    }
+
+    protected function generateResponse($input)
+    {
+        $input = mb_strtolower($input);
+        
+        if (str_contains($input, 'artista') || str_contains($input, 'quién') || str_contains($input, 'cartel')) {
+            $artistas = $this->evento->artistas->pluck('nombre_artistico')->join(', ', ' y ');
+            return $artistas 
+                ? "Los artistas confirmados para este evento son: **{$artistas}**. ¡Va a ser increíble! 🎵"
+                : "Aún no se han confirmado artistas específicos para este evento, ¡pero mantente atento a las actualizaciones!";
+        }
+
+        if (str_contains($input, 'precio') || str_contains($input, 'entrada') || str_contains($input, 'cuánto') || str_contains($input, 'cuesta')) {
+            return "El precio de la entrada es de **" . number_format($this->evento->precio, 2) . "€**. Puedes adquirir tus entradas directamente en esta página.";
+        }
+
+        if (str_contains($input, 'donde') || str_contains($input, 'dónde') || str_contains($input, 'ubicación') || str_contains($input, 'lugar') || str_contains($input, 'sitio')) {
+            return "El evento tendrá lugar en **{$this->evento->localidad}**, {$this->evento->provincia}. ¡Te esperamos allí! 📍";
+        }
+
+        if (str_contains($input, 'cuándo') || str_contains($input, 'cuando') || str_contains($input, 'fecha') || str_contains($input, 'día')) {
+            return "El evento está programado para el día **" . \Carbon\Carbon::parse($this->evento->fecha_inicio)->format('d/m/Y') . "**. 📅";
+        }
+
+        if (str_contains($input, 'ayuntamiento') || str_contains($input, 'organiza') || str_contains($input, 'institución')) {
+            $ayto = $this->evento->ayuntamiento->nombre_institucion;
+            return "Este evento es organizado por el **{$ayto}**. Son conocidos por su excelente gestión de eventos culturales.";
+        }
+
+        if (str_contains($input, 'hola') || str_contains($input, 'buenos días') || str_contains($input, 'buenas')) {
+            return "¡Hola! ¿En qué puedo ayudarte hoy con respecto al evento **{$this->evento->nombre_evento}**?";
+        }
+
+        return "Lo siento, no tengo información específica sobre eso. Pero recuerda que el evento **{$this->evento->nombre_evento}** será en {$this->evento->localidad} el día " . \Carbon\Carbon::parse($this->evento->fecha_inicio)->format('d/m/Y') . ". ¿Deseas saber algo más sobre los artistas o las entradas?";
     }
 
     #[Layout('components.layouts.app')]

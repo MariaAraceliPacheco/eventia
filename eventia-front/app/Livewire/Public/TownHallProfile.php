@@ -19,7 +19,14 @@ class TownHallProfile extends Component
     #[Layout('components.layouts.app')]
     public function render()
     {
-        $eventos = $this->ayuntamiento->eventos()->orderBy('fecha_inicio', 'desc')->get();
+        $query = $this->ayuntamiento->eventos();
+
+        // If the logged-in user is an artist, show only open events
+        if (auth()->check() && auth()->user()->tipo_usuario === 'artista') {
+            $query->where('estado', 'abierto');
+        }
+
+        $eventos = $query->orderBy('fecha_inicio', 'desc')->get();
         
         return view('livewire.public.town-hall-profile', [
             'eventos' => $eventos
