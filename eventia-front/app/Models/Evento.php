@@ -25,7 +25,8 @@ class Evento extends Model
         'estado',
         'entradas_maximas',
         'entradas_vendidas',
-        'tipos_entrada'
+        'tipos_entrada',
+        'foto'
     ];
 
     public function isVisibleToPublic()

@@ -5,6 +5,8 @@
         <div class="h-64 bg-gray-50 relative group cursor-pointer overflow-hidden">
             @if ($image)
                 <img src="{{ $image->temporaryUrl() }}" class="w-full h-full object-cover">
+            @elseif($foto)
+                <img src="{{ asset('storage/profiles/eventos/' . $foto) }}" class="w-full h-full object-cover">
             @else
                 <div class="w-full h-full flex flex-col items-center justify-center border-b border-gray-100">
                     <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-300 mb-4">

@@ -25,6 +25,7 @@ class CreateEvent extends Component
     public $description = '';
     public $locality = '';
     public $province = '';
+    public $foto = '';
 
     public function mount($id = null)
     {
@@ -51,13 +52,13 @@ class CreateEvent extends Component
             $this->description = $evento->descripcion;
             $this->tipos_entrada = $evento->tipos_entrada ?? [['nombre' => 'General', 'precio' => $evento->precio]];
             $this->selectedArtists = $evento->artistas->pluck('id')->toArray();
-            
+            $this->foto = $evento->foto;
             // Also include those with pending or rejected invitation to show their status
             $invitedIds = \App\Models\Solicitud::where('id_evento', $evento->id)
                 ->where('origen', 'ayuntamiento')
                 ->pluck('id_artista')
                 ->toArray();
-            
+
             $this->selectedArtists = array_unique(array_merge($this->selectedArtists, $invitedIds));
         } else {
             // Default for new events
@@ -74,7 +75,7 @@ class CreateEvent extends Component
     {
         unset($this->tipos_entrada[$index]);
         $this->tipos_entrada = array_values($this->tipos_entrada);
-        
+
         if (empty($this->tipos_entrada)) {
             $this->addTipoEntrada();
         }
@@ -120,6 +121,7 @@ class CreateEvent extends Component
             'tipos_entrada' => 'required|array|min:1',
             'tipos_entrada.*.nombre' => 'required',
             'tipos_entrada.*.precio' => 'required|numeric|min:0',
+            'image' => 'nullable|image|max:10240', // 10MB
         ]);
 
         $data = [
@@ -135,6 +137,14 @@ class CreateEvent extends Component
             'estado' => 'ABIERTO',
         ];
 
+        if ($this->image) {
+            // Guardar la imagen en public/profiles/eventos
+            $path = $this->image->store('profiles/eventos', 'public');
+            $data['foto'] = basename($path);
+        } else {
+            $data['foto'] = $this->foto;
+        }
+
         // Only set id_ayuntamiento for new events or if user is ayuntamiento
         if (!$this->eventId && auth()->user()->perfilAyuntamiento) {
             $data['id_ayuntamiento'] = auth()->user()->perfilAyuntamiento->id;
@@ -143,7 +153,7 @@ class CreateEvent extends Component
         if ($this->eventId) {
             $evento = Evento::findOrFail($this->eventId);
             $evento->update($data);
-            
+
             // 1. New invitations for newly selected artists
             $currentArtistIds = $evento->artistas->pluck('id')->toArray();
             foreach ($this->selectedArtists as $artistId) {
