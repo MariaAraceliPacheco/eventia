@@ -30,6 +30,8 @@ class PaymentCheckout extends Component
         if ($this->eventId) {
             $this->evento = \App\Models\Evento::findOrFail($this->eventId);
             $this->eventName = $this->evento->nombre_evento;
+        } else {
+            return redirect()->route('public.area')->with('error', 'Falta información del evento para procesar el pago.');
         }
 
         // Get parameters from query string
@@ -49,9 +51,20 @@ class PaymentCheckout extends Component
             if ($this->evento->isSoldOut()) {
                 $this->evento->update(['estado' => 'FINALIZADO']);
             }
+
+            // Create Entrada record
+            \App\Models\Entrada::create([
+                'id_usuario' => auth()->id(),
+                'id_evento' => $this->eventId,
+                'categoria' => $this->category,
+                'cantidad' => $this->quantity,
+                'precio_total' => $this->total,
+                'codigo_ticket' => strtoupper(\Illuminate\Support\Str::random(8)) . '-' . rand(1000, 9999),
+                'fecha_compra' => now()
+            ]);
         }
 
-        session()->flash('message', '¡Pago procesado con éxito! Recibirás tus entradas por email.');
+        session()->flash('message', '¡Pago procesado con éxito! Ya puedes ver tus entradas en tu área.');
         return redirect()->route('public.area');
     }
 

@@ -48,14 +48,27 @@
                                             @endif
                                         </div>
                                         <div class="flex flex-col">
-                                            <span class="text-sm font-bold text-text-main">{{ $artist->nombre_artistico }}</span>
+                                            <span class="text-sm font-bold text-text-main flex items-center gap-2">
+                                                {{ $artist->nombre_artistico }}
+                                                @if(isset($invitaciones[$artist->id]))
+                                                    <span class="text-[8px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
+                                                        {{ $invitaciones[$artist->id] === 'pendiente' ? 'bg-amber-100 text-amber-600' : 
+                                                           ($invitaciones[$artist->id] === 'aceptada' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600') }}">
+                                                        {{ $invitaciones[$artist->id] }}
+                                                    </span>
+                                                @endif
+                                            </span>
                                             <span class="text-[10px] text-text-secondary uppercase font-bold tracking-wider">{{ $artist->genero_musical }}</span>
                                         </div>
                                     </div>
                                     <button type="button" wire:click="toggleArtist({{ $artist->id }})" 
                                         class="w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-sm {{ in_array($artist->id, $selectedArtists) ? 'bg-primary text-white scale-90' : 'bg-white text-gray-400 border border-gray-100 hover:border-primary hover:text-primary hover:bg-primary/5' }}">
                                         @if(in_array($artist->id, $selectedArtists))
-                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                            @if(isset($invitaciones[$artist->id]) && $invitaciones[$artist->id] === 'aceptada')
+                                                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+                                            @else
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>
+                                            @endif
                                         @else
                                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                                         @endif
@@ -74,17 +87,41 @@
                         @endif
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-                        <!-- Price -->
-                        <div class="space-y-1">
-                            <label class="block text-sm font-bold text-text-main">Precio entrada (€)</label>
-                            <input type="text" wire:model="price"
-                                class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
-                                placeholder="Gratis o Ej: 15€">
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <label class="block text-sm font-bold text-text-main">Tipos de Entradas y Precios</label>
+                            <button type="button" wire:click="addTipoEntrada" class="text-xs font-black text-primary uppercase tracking-widest hover:text-secondary transition-colors flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+                                Añadir tipo
+                            </button>
                         </div>
+                        
+                        <div class="space-y-3">
+                            @foreach($tipos_entrada as $index => $tipo)
+                                <div class="flex items-center gap-3 animate-fade-in">
+                                    <div class="flex-1">
+                                        <input type="text" wire:model="tipos_entrada.{{ $index }}.nombre" 
+                                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all text-sm" 
+                                            placeholder="Ej: General, VIP, Pista...">
+                                    </div>
+                                    <div class="w-32 relative">
+                                        <input type="number" wire:model="tipos_entrada.{{ $index }}.precio" min="0" step="0.01"
+                                            class="w-full pl-4 pr-8 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all text-sm" 
+                                            placeholder="0.00">
+                                        <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">€</span>
+                                    </div>
+                                    @if(count($tipos_entrada) > 1)
+                                        <button type="button" wire:click="removeTipoEntrada({{ $index }})" class="p-2 text-gray-400 hover:text-red-500 transition-colors">
+                                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                        </button>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                        
                         <!-- Date -->
-                        <div class="space-y-1">
-                            <label class="block text-sm font-bold text-text-main">Fecha</label>
+                        <div class="pt-4 space-y-1">
+                            <label class="block text-sm font-bold text-text-main">Fecha del evento</label>
                             <input type="date" wire:model="date"
                                 class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
                         </div>

@@ -78,6 +78,41 @@ class AreaArtista extends Component
         $this->editImgLogo = null;
     }
 
+    public function aceptarInvitacion($solicitudId)
+    {
+        $solicitud = \App\Models\Solicitud::where('id', $solicitudId)
+            ->where('id_artista', $this->artista->id)
+            ->where('origen', 'ayuntamiento')
+            ->firstOrFail();
+
+        $solicitud->update(['estado' => 'aceptada']);
+        
+        // Add artist to event
+        $solicitud->evento->artistas()->syncWithoutDetaching([$this->artista->id]);
+
+        $this->dispatch('notificar', [
+            'titulo' => 'Invitación aceptada',
+            'mensaje' => "Te has unido al evento: {$solicitud->evento->nombre_evento}",
+            'tipo' => 'success'
+        ]);
+    }
+
+    public function rechazarInvitacion($solicitudId)
+    {
+        $solicitud = \App\Models\Solicitud::where('id', $solicitudId)
+            ->where('id_artista', $this->artista->id)
+            ->where('origen', 'ayuntamiento')
+            ->firstOrFail();
+
+        $solicitud->update(['estado' => 'rechazada']);
+
+        $this->dispatch('notificar', [
+            'titulo' => 'Invitación rechazada',
+            'mensaje' => "Has rechazado la invitación para: {$solicitud->evento->nombre_evento}",
+            'tipo' => 'info'
+        ]);
+    }
+
     public function mount()
     {
         $this->user = auth()->user();
@@ -103,9 +138,17 @@ class AreaArtista extends Component
             ->orderBy('fecha_inicio', 'desc')
             ->get();
 
+        // Invitations from town halls
+        $invitaciones = \App\Models\Solicitud::where('id_artista', $this->artista->id)
+            ->where('origen', 'ayuntamiento')
+            ->where('estado', 'pendiente')
+            ->with('evento.ayuntamiento')
+            ->get();
+
         return view('livewire.artist.area-artista', [
             'eventos' => $eventos,
-            'misEventos' => $misEventos
+            'misEventos' => $misEventos,
+            'invitaciones' => $invitaciones
         ]);
     }
 }

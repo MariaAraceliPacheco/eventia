@@ -24,7 +24,8 @@ class Evento extends Model
         'precio',
         'estado',
         'entradas_maximas',
-        'entradas_vendidas'
+        'entradas_vendidas',
+        'tipos_entrada'
     ];
 
     public function isVisibleToPublic()
@@ -39,7 +40,8 @@ class Evento extends Model
     }
 
     protected $casts = [
-        'fecha_inicio' => 'date'
+        'fecha_inicio' => 'date',
+        'tipos_entrada' => 'array'
     ];
 
     public function ayuntamiento()
@@ -52,4 +54,8 @@ class Evento extends Model
         return $this->belongsToMany(Artista::class, 'artista_evento', 'id_evento', 'id_artista');
     }
 
+    public function entradas()
+    {
+        return $this->hasMany(Entrada::class, 'id_evento', 'id');
+    }
 }

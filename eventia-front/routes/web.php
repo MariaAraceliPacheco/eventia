@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
     // Public Area (Only publico + admin for viewing)
     Route::middleware(['role:publico,admin'])->group(function () {
         Route::get('/area-publico/{id?}', \App\Livewire\Public\AreaPublico::class)->name('public.area');
-        Route::get('/compra-entrada', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
+        Route::get('/compra-entrada/{eventId?}', \App\Livewire\Public\BuyTicket::class)->name('public.buy-ticket');
         Route::get('/pago', \App\Livewire\Public\PaymentCheckout::class)->name('public.payment-checkout');
     });
 

@@ -36,9 +36,17 @@ class EventDetail extends Component
         }
         
         // Initial message
+        $precioBot = "";
+        if ($this->evento->tipos_entrada && count($this->evento->tipos_entrada) > 0) {
+            $minPrice = collect($this->evento->tipos_entrada)->min('precio');
+            $precioBot = "precios desde **" . number_format($minPrice, 2) . "€**";
+        } else {
+            $precioBot = "un precio de **" . number_format($this->evento->precio, 2) . "€**";
+        }
+
         $this->messages[] = [
             'role' => 'assistant',
-            'content' => "¡Hola! Soy el asistente de Eventia. ¿Tienes alguna duda sobre el **{$this->evento->nombre_evento}**? Puedo informarte sobre precios, artistas confirmados, ubicación o el ayuntamiento organizador."
+            'content' => "¡Hola! Soy el asistente de Eventia. ¿Tienes alguna duda sobre el **{$this->evento->nombre_evento}**? Puedo informarte sobre {$precioBot}, artistas confirmados, ubicación o el ayuntamiento organizador."
         ];
     }
 
@@ -111,6 +119,12 @@ class EventDetail extends Component
         }
 
         if (str_contains($input, 'precio') || str_contains($input, 'entrada') || str_contains($input, 'cuánto') || str_contains($input, 'cuesta')) {
+            if ($this->evento->tipos_entrada && count($this->evento->tipos_entrada) > 0) {
+                $precios = collect($this->evento->tipos_entrada)->map(function($t) {
+                    return "**{$t['nombre']}**: " . number_format($t['precio'], 2) . "€";
+                })->join(', ');
+                return "Tenemos varios tipos de entrada: {$precios}. Puedes comprarlas directamente aquí.";
+            }
             return "El precio de la entrada es de **" . number_format($this->evento->precio, 2) . "€**. Puedes adquirir tus entradas directamente en esta página.";
         }
 

@@ -174,9 +174,9 @@
                                         <div class="w-1.5 h-10 rounded-full {{ $evento->estado === 'ABIERTO' ? 'bg-amber-400' : ($evento->estado === 'CERRADO' ? 'bg-green-500' : 'bg-gray-400') }}"></div>
                                         <div>
                                             <div class="flex items-center gap-2">
-                                                <h4 class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
+                                                <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}" class="text-sm font-bold text-text-main hover:text-primary transition-colors">
                                                     {{ $evento->nombre_evento }}
-                                                </h4>
+                                                </a>
                                                 <span class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
                                                     {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                                                     {{ $evento->estado }}
@@ -220,7 +220,6 @@
                                         <span class="p-2 text-gray-300 italic text-[10px] font-bold">Evento Finalizado</span>
                                     @endif
                                 </div>
-                            </div>
                         @empty
                             <div class="text-center py-10 text-gray-500">
                                 No tienes eventos creados aún.
@@ -271,7 +270,6 @@
                         Ayuntamiento</div>
                 </div>
             </div>
-
         </div>
     </div>
     <style>

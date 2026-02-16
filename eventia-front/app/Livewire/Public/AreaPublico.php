@@ -129,30 +129,54 @@ class AreaPublico extends Component
             $query->where('nombre_evento', 'like', '%' . $this->searchEvent . '%');
         }
 
-        // Visibility logic: Public users don't see ABIERTO events
-        $query->where('estado', '!=', 'ABIERTO');
+        // Filtering: Only show CERRADO, FINALIZADO or SOLD OUT events
+        $query->where(function($q) {
+            $q->whereIn('estado', ['CERRADO', 'FINALIZADO'])
+              ->orWhere(function($sq) {
+                  $sq->where('estado', 'ABIERTO')
+                     ->whereNotNull('entradas_maximas')
+                     ->whereColumn('entradas_vendidas', '>=', 'entradas_maximas');
+              });
+        });
 
         $events = $query->orderBy('fecha_inicio', 'desc')->take(10)->get();
 
+        // Fetch purchased tickets for the current user
+        $purchasedTickets = [];
+        if (auth()->check()) {
+            $purchasedTickets = \App\Models\Entrada::with('evento')
+                ->where('id_usuario', auth()->id())
+                ->orderBy('fecha_compra', 'desc')
+                ->get();
+        }
+
+        // Fetch real items "in cart" (selected tickets)
+        $cartItems = [];
+        if (!empty($this->selectedTickets)) {
+            $cartItems = \App\Models\Evento::whereIn('id', $this->selectedTickets)->get();
+        }
+
         return view('livewire.public.area-publico', [
-            'events' => $events
+            'events' => $events,
+            'purchasedTickets' => $purchasedTickets,
+            'cartItems' => $cartItems
         ]);
     }
 
-    public function toggleSelection($ticketId)
+    public function toggleSelection($eventId)
     {
-        if (in_array($ticketId, $this->selectedTickets)) {
-            $this->selectedTickets = array_diff($this->selectedTickets, [$ticketId]);
+        if (in_array($eventId, $this->selectedTickets)) {
+            $this->selectedTickets = array_diff($this->selectedTickets, [$eventId]);
         } else {
-            $this->selectedTickets[] = $ticketId;
+            $this->selectedTickets[] = $eventId;
         }
     }
 
     public function goToPurchase()
     {
         if (count($this->selectedTickets) > 0) {
-            // In a real app, we'd pass the actual IDs or save selection to session
-            return redirect()->route('public.buy-ticket');
+            // Redirect to the first selected event for now
+            return redirect()->route('public.buy-ticket', ['eventId' => $this->selectedTickets[0]]);
         }
     }
 }

@@ -10,7 +10,8 @@ class BuyTicket extends Component
     public $eventId;
     public $evento;
     public $quantity = 1;
-    public $category = 'General';
+    public $category = '';
+    public $tipos_disponibles = [];
 
     public function mount($eventId = null)
     {
@@ -18,21 +19,33 @@ class BuyTicket extends Component
             $this->eventId = $eventId;
             $this->evento = \App\Models\Evento::findOrFail($eventId);
             
+            if ($this->evento->tipos_entrada && count($this->evento->tipos_entrada) > 0) {
+                $this->tipos_disponibles = $this->evento->tipos_entrada;
+                $this->category = $this->tipos_disponibles[0]['nombre'];
+            } else {
+                $this->tipos_disponibles = [['nombre' => 'General', 'precio' => $this->evento->precio]];
+                $this->category = 'General';
+            }
+
             // If already sold out, don't allow buying
             if ($this->evento->isSoldOut()) {
                 return redirect()->route('public.event-detail', $this->eventId)
                     ->with('error', 'Lo sentimos, las entradas para este evento se han agotado.');
             }
+        } else {
+            return redirect()->route('public.area')->with('error', 'Selecciona un evento para comprar entradas.');
         }
     }
     
-    // Price map for each category
-    public $prices = [
-        'General' => 35,
-        'Pista' => 45,
-        'V.I.P.' => 120,
-        'Grada Lateral' => 30
-    ];
+    public function getSelectedPrice()
+    {
+        foreach ($this->tipos_disponibles as $tipo) {
+            if ($tipo['nombre'] === $this->category) {
+                return (float) $tipo['precio'];
+            }
+        }
+        return 0;
+    }
 
     #[Layout('components.layouts.app')]
     public function render()
@@ -45,7 +58,7 @@ class BuyTicket extends Component
 
     public function getSubtotal()
     {
-        return $this->prices[$this->category] * $this->quantity;
+        return $this->getSelectedPrice() * $this->quantity;
     }
 
     public function getTotal()
@@ -74,7 +87,7 @@ class BuyTicket extends Component
             'eventId' => $this->eventId,
             'category' => $this->category,
             'quantity' => $this->quantity,
-            'price' => $this->prices[$this->category],
+            'price' => $this->getSelectedPrice(),
             'total' => $this->getTotal()
         ]));
     }

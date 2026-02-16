@@ -91,8 +91,12 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="text-right">
+                                    <div class="text-right flex flex-col items-end gap-2">
                                         <span class="text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
+                                        <button wire:click.prevent="toggleSelection({{ $event->id }})" 
+                                            class="px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'bg-gray-100 text-text-secondary hover:bg-gray-200' : 'bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
+                                            {{ in_array($event->id, $selectedTickets) ? 'Eliminar del Carrito' : 'Añadir al Carrito' }}
+                                        </button>
                                     </div>
                                 </div>
                             </a>
@@ -128,24 +132,30 @@
                             Compradas
                         </h4>
                         <div class="space-y-3 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
-                            <div
-                                class="p-4 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-between group hover:bg-white hover:shadow-md transition-all">
-                                <div class="flex items-center gap-4">
-                                    <div
-                                        class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm italic font-bold text-primary">
-                                        E</div>
-                                    <div>
-                                        <h5 class="text-sm font-bold text-text-main">Feria de Abril 2026</h5>
-                                        <p class="text-[11px] text-text-secondary">Vip Pass • ID: 29384-X</p>
+                            @forelse($purchasedTickets as $ticket)
+                                <div
+                                    class="p-4 bg-gray-50 border border-gray-100 rounded-2xl flex items-center justify-between group hover:bg-white hover:shadow-md transition-all">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm italic font-bold text-primary">
+                                            {{ substr($ticket->evento->nombre_evento, 0, 1) }}</div>
+                                        <div>
+                                            <h5 class="text-sm font-bold text-text-main">{{ $ticket->evento->nombre_evento }}</h5>
+                                            <p class="text-[11px] text-text-secondary">{{ $ticket->categoria }} • ID: {{ $ticket->codigo_ticket }}</p>
+                                        </div>
                                     </div>
+                                    <button class="text-primary hover:text-secondary transition-colors" title="Descargar Entrada">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                        </svg>
+                                    </button>
                                 </div>
-                                <button class="text-primary hover:text-secondary transition-colors">
-                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
-                                    </svg>
-                                </button>
-                            </div>
+                            @empty
+                                <div class="text-center py-10 text-gray-400">
+                                    <p class="text-[11px] italic">Aún no has comprado ninguna entrada.</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 
@@ -157,27 +167,30 @@
                             En el carrito
                         </h4>
                         <div class="space-y-3 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
-                            @foreach(['Rock Night' => 'R1', 'Tour Museos' => 'T1'] as $label => $id)
+                            @forelse($cartItems as $item)
                                 <div
-                                    class="p-4 {{ in_array($id, $selectedTickets) ? 'bg-primary/5 border-primary shadow-md' : 'bg-accent/5 border-accent/10' }} border rounded-2xl flex items-center justify-between transition-all">
+                                    class="p-4 bg-primary/5 border-primary shadow-md border rounded-2xl flex items-center justify-between transition-all">
                                     <div class="flex items-center gap-4">
                                         <div
                                             class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm">
                                             🛒</div>
                                         <div>
-                                            <h5 class="text-sm font-bold text-text-main">{{ $label }}</h5>
-                                            <p
-                                                class="text-[11px] {{ in_array($id, $selectedTickets) ? 'text-primary' : 'text-accent' }}">
-                                                {{ in_array($id, $selectedTickets) ? 'Seleccionada' : 'Pendiente de pago' }}
+                                            <h5 class="text-sm font-bold text-text-main">{{ $item->nombre_evento }}</h5>
+                                            <p class="text-[11px] text-primary">
+                                                Seleccionada
                                             </p>
                                         </div>
                                     </div>
-                                    <button wire:click="toggleSelection('{{ $id }}')"
-                                        class="p-1 px-3 {{ in_array($id, $selectedTickets) ? 'bg-primary' : 'bg-accent' }} text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition-all">
-                                        {{ in_array($id, $selectedTickets) ? 'Deseleccionar' : 'Seleccionar' }}
+                                    <button wire:click="toggleSelection({{ $item->id }})"
+                                        class="p-1 px-3 bg-accent text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition-all">
+                                        Eliminar del Carrito
                                     </button>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="text-center py-10 text-gray-400">
+                                    <p class="text-[11px] italic">No tienes entradas seleccionadas.</p>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
                 </div>

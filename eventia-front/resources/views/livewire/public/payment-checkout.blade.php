@@ -6,7 +6,7 @@
             
             <!-- Header -->
             <div class="flex items-center gap-4 mb-8">
-                <a href="{{ route('public.buy-ticket') }}" class="p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
+                <a href="{{ route('public.buy-ticket', ['eventId' => $eventId]) }}" class="p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors">
                     <svg class="w-5 h-5 text-text-main" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                     </svg>

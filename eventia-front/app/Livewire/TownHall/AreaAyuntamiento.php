@@ -93,6 +93,7 @@ class AreaAyuntamiento extends Component
     {
         return Solicitud::whereIn('id_evento', $this->ayuntamiento->eventos()->pluck('id'))
             ->where('estado', 'pendiente')
+            ->where('origen', 'artista') // Only those initiated by artists
             ->with(['artista', 'evento'])
             ->get();
     }

@@ -1,8 +1,53 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-        <!-- Left Column: Info Eventos -->
+        <!-- Left Column: Invitaciones + Info Eventos -->
         <div class="lg:col-span-1 space-y-6">
+            
+            <!-- Pending Invitations -->
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100/50 overflow-hidden">
+                <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-primary/5">
+                    <h3 class="text-xl font-bold text-text-main flex items-center gap-2">
+                        Invitaciones
+                        @if($invitaciones->count() > 0)
+                            <span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+                        @endif
+                    </h3>
+                    <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-lg">
+                        {{ $invitaciones->count() }} nuevas
+                    </span>
+                </div>
+                <div class="p-6 space-y-4 max-h-[400px] overflow-y-auto custom-scrollbar">
+                    @forelse($invitaciones as $invitacion)
+                        <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-xl">
+                                    🏛️
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <h4 class="text-sm font-bold text-text-main truncate">{{ $invitacion->evento->ayuntamiento->nombre_institucion }}</h4>
+                                    <p class="text-[10px] text-text-secondary truncate">Te invita a: <b>{{ $invitacion->evento->nombre_evento }}</b></p>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button wire:click="aceptarInvitacion({{ $invitacion->id }})" 
+                                    class="flex-1 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-sm">
+                                    Aceptar
+                                </button>
+                                <button wire:click="rechazarInvitacion({{ $invitacion->id }})" 
+                                    class="flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    Rechazar
+                                </button>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-6 text-gray-400 text-sm italic">
+                            No tienes invitaciones pendientes.
+                        </div>
+                    @endforelse
+                </div>
+            </div>
+
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100/50 overflow-hidden">
                 <div class="p-6 border-b border-gray-50 flex items-center justify-between">
                     <h3 class="text-xl font-bold text-text-main font-heading">Info Eventos</h3>

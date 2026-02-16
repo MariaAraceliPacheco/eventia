@@ -207,11 +207,19 @@
                     @if(!auth()->check() || auth()->user()->tipo_usuario === 'publico')
                     <div class="bg-white rounded-3xl p-6 border border-gray-100 flex items-center justify-between transition-all hover:shadow-lg shadow-sm">
                         <div class="flex items-center gap-4">
-                            <span class="text-lg font-black text-primary">{{ number_format($evento->precio, 2) }}€</span>
+                            @if($evento->tipos_entrada && count($evento->tipos_entrada) > 0)
+                                @php $minPrice = collect($evento->tipos_entrada)->min('precio'); @endphp
+                                <div class="flex flex-col">
+                                    <span class="text-xs text-text-secondary font-bold uppercase tracking-widest">Desde</span>
+                                    <span class="text-lg font-black text-primary">{{ number_format($minPrice, 2) }}€</span>
+                                </div>
+                            @else
+                                <span class="text-lg font-black text-primary">{{ number_format($evento->precio, 2) }}€</span>
+                            @endif
                             <span class="text-xs text-text-secondary font-bold">Precio Entrada</span>
                         </div>
                         <div class="h-6 w-px bg-gray-100"></div>
-                        <div class="text-sm font-black text-secondary">Agotándose</div>
+                        <div class="text-sm font-black text-secondary">Habilitadas</div>
                     </div>
                     @endif
 

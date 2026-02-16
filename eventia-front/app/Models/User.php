@@ -87,4 +87,8 @@ class User extends Authenticatable
     public function perfilPublico() {
         return $this->hasOne(Publico::class, 'id_usuario', 'id');
     }
+
+    public function entradas() {
+        return $this->hasMany(Entrada::class, 'id_usuario', 'id');
+    }
 }

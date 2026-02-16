@@ -14,6 +14,7 @@ class Solicitud extends Model
     protected $fillable = [
         'id_artista',
         'id_evento',
+        'origen',
         'estado'
     ];
 

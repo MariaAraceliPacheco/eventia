@@ -16,19 +16,21 @@
                     
                     <div class="flex-1 space-y-4 text-center md:text-left">
                         <div class="flex flex-wrap items-center gap-2 justify-center md:justify-start">
-                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-[10px] font-black uppercase tracking-widest text-primary">Próximamente</span>
-                            <button class="text-xs font-bold text-white/80 hover:text-white transition-colors underline decoration-primary/50">Ver más conciertos</button>
+                            <span class="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-[10px] font-black uppercase tracking-widest text-primary">{{ $evento->categoria }}</span>
+                            @if($evento->estado === 'FINALIZADO')
+                                <span class="px-3 py-1 bg-red-500 rounded-full text-[10px] font-black uppercase tracking-widest text-white">Sold Out</span>
+                            @endif
                         </div>
-                        <h1 class="text-4xl md:text-5xl font-black font-heading leading-tight tracking-tight">Summer Indie Festival 2026</h1>
+                        <h1 class="text-4xl md:text-5xl font-black font-heading leading-tight tracking-tight">{{ $evento->nombre_evento }}</h1>
                         
                         <div class="flex flex-wrap items-center gap-6 justify-center md:justify-start">
                              <div class="flex items-center gap-2">
                                 <span class="p-2 bg-white/10 rounded-xl"><svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg></span>
-                                <span class="font-bold text-sm">Wanda Metropolitano, Madrid</span>
+                                <span class="font-bold text-sm">{{ $evento->localidad }}, {{ $evento->provincia }}</span>
                             </div>
                             <div class="flex items-center gap-2">
                                 <span class="p-2 bg-white/10 rounded-xl"><svg class="w-5 h-5 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></span>
-                                <span class="font-bold text-sm">15 Ago • 21:00h</span>
+                                <span class="font-bold text-sm">{{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M') }} • {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('H:i') }}h</span>
                             </div>
                         </div>
                     </div>
@@ -67,7 +69,8 @@
                         <div class="h-1 w-12 bg-secondary rounded-full"></div>
                     </h3>
                     <div class="space-y-4">
-                        @foreach(['General' => '35€', 'Pista' => '45€', 'V.I.P.' => '120€', 'Grada Lateral' => '30€'] as $label => $price)
+                        @foreach($tipos_disponibles as $tipo)
+                        @php $label = $tipo['nombre']; @endphp
                         <label wire:click="$set('category', '{{ $label }}')" class="flex items-center justify-between p-5 rounded-2xl border-2 {{ $category === $label ? 'border-primary bg-primary/5 shadow-md shadow-primary/5' : 'border-gray-100 bg-white hover:border-gray-200' }} cursor-pointer transition-all group relative overflow-hidden">
                             @if($category === $label)
                                 <div class="absolute inset-y-0 left-0 w-1.5 bg-primary"></div>
@@ -78,7 +81,7 @@
                                 </div>
                                 <span class="font-bold text-text-main transition-colors {{ $category === $label ? 'text-primary' : '' }}">{{ $label }}</span>
                             </div>
-                            <span class="text-lg font-black {{ $category === $label ? 'text-primary' : 'text-text-secondary' }}">{{ $price }}</span>
+                            <span class="text-lg font-black {{ $category === $label ? 'text-primary' : 'text-text-secondary' }}">{{ number_format((float) $tipo['precio'], 2) }}€</span>
                         </label>
                         @endforeach
                     </div>
