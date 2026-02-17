@@ -80,8 +80,8 @@
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($recentEvents as $evento)
                     <!-- Event Card -->
-                    <div
-                        class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100">
+                    <a href="{{ route('public.event-detail', $evento->id) }}"
+                        class="bg-white rounded-3xl overflow-hidden shadow-lg hover:shadow-xl transition group border border-gray-100 block">
                         <div class="relative h-64 overflow-hidden">
                             <img src="{{ asset('storage/profiles/eventos/' . $evento->foto) }}"
                                 alt="{{ $evento->nombre_evento }}"
@@ -126,7 +126,7 @@
                                     Entradas Agotadas
                                 </div>
                             @else
-                                <a href="{{ route('public.event-detail', $evento->id) }}"
+                                <div
                                     class="w-full py-3 bg-gray-50 text-text-main font-bold rounded-xl hover:bg-primary hover:text-white transition flex items-center justify-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                                         stroke="currentColor" class="w-5 h-5">
@@ -134,10 +134,10 @@
                                             d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125V6.375c0-.621-.504-1.125-1.125-1.125H3.375Zm0 13.5c-.621 0-1.125.504-1.125 1.125v4.5c0 .621.504 1.125 1.125 1.125h4.5c.621 0 1.125-.504 1.125-1.125v-4.5c0-.621-.504-1.125-1.125-1.125H3.375Z" />
                                     </svg>
                                     Comprar Entradas
-                                </a>
+                                </div>
                             @endif
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
         </div>
