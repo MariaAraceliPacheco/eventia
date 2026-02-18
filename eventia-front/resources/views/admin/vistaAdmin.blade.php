@@ -66,8 +66,7 @@
                             <div class="flex items-center gap-4">
                                 <div
                                     class="w-12 h-12 rounded-full bg-gradient-to-br from-gray-200 to-gray-100 border-2 border-white shadow-sm overflow-hidden">
-                                    <img style="border-radius: 50%; width: 100%; height: 100%; object-fit: cover;"
-                                        src="{{ asset('storage/' . $artista->img_logo) }}"
+                                    <img style="border-radius: 50%;" src="{{ asset('storage/profiles/artistas/' . $artista->img_logo) }}"
                                         alt="{{ $artista->nombre_artistico }}">
                                 </div>
                                 <div>
@@ -150,7 +149,7 @@
                             <div class="flex items-center gap-4">
                                 <div
                                     class="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 shadow-sm overflow-hidden p-2">
-                                    <img style="border-radius: 50%;" src="{{ asset('storage/' . $ayuntamiento->imagen) }}"
+                                    <img style="border-radius: 50%;" src="{{ asset('storage/profiles/ayuntamientos/' . $ayuntamiento->imagen) }}"
                                         alt="{{ $ayuntamiento->nombre_institucion }}">
                                 </div>
                                 <div>
@@ -176,7 +175,7 @@
                                         </svg>
                                     </button>
                                 </a>
-                                <button title="Modificar"
+                                <button title="Modificar" wire:click="editAyuntamiento({{ $ayuntamiento->id }})"
                                     class="p-2 text-gray-400 hover:text-secondary transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -506,7 +505,7 @@
                                     @else
                                         @php $artista = \App\Models\Artista::find($editingArtistaId); @endphp
                                         @if($artista && $artista->img_logo)
-                                            <img src="{{ asset('storage/' . $artista->img_logo) }}"
+                                            <img src="{{ asset('storage/profiles/artistas/' . $artista->img_logo) }}"
                                                 class="w-20 h-20 rounded-xl object-cover border border-gray-200">
                                         @else
                                             <div class="w-20 h-20 rounded-xl bg-gray-100 flex items-center justify-center text-3xl border border-gray-200">🎵</div>
@@ -589,4 +588,154 @@
             </div>
         </div>
     @endif
+
+    <!-- Edit Ayuntamiento Modal -->
+    @if($showEditAyuntamientoModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-ayuntamiento-title" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="cancelEditAyuntamiento"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <!-- Modal Panel -->
+                <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                    <div class="bg-white px-8 pt-8 pb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-2xl font-black text-text-main font-heading" id="modal-ayuntamiento-title">Editar Perfil de Ayuntamiento</h3>
+                            <button wire:click="cancelEditAyuntamiento" class="text-gray-400 hover:text-gray-500 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Nombre Institución -->
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre de la Institución</label>
+                                <input type="text" wire:model="editNombreInstitucion"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Imagen -->
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Imagen / Escudo</label>
+                                <div class="flex items-center gap-4">
+                                    @if($editAyuntamientoImagen)
+                                        <img src="{{ $editAyuntamientoImagen->temporaryUrl() }}"
+                                            class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+                                    @else
+                                        @php $ayun = \App\Models\Ayuntamiento::find($editingAyuntamientoId); @endphp
+                                        @if($ayun && $ayun->imagen)
+                                            <img src="{{ asset('storage/profiles/ayuntamientos/' . $ayun->imagen) }}"
+                                                class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+                                        @else
+                                            <div class="w-20 h-20 rounded-xl bg-gray-100 flex items-center justify-center text-3xl border border-gray-200">🏛️</div>
+                                        @endif
+                                    @endif
+                                    <input type="file" wire:model="editAyuntamientoImagen"
+                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                                </div>
+                            </div>
+
+                            <!-- Teléfono -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Teléfono</label>
+                                <input type="text" wire:model="editAyuntamientoTelefono"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Comunidad Autónoma -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad Autónoma</label>
+                                <select wire:model.live="editAyuntamientoComunidad"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona una comunidad</option>
+                                    @foreach(array_keys($regions_data) as $region)
+                                        <option value="{{ $region }}">{{ $region }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Provincia -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
+                                <select wire:model.live="editAyuntamientoProvincia"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona una provincia</option>
+                                    @foreach($this->provinces as $prov)
+                                        <option value="{{ $prov }}">{{ $prov }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Localidad -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
+                                <input type="text" wire:model="editAyuntamientoLocalidad"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Tipo Evento -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo de Eventos</label>
+                                <input type="text" wire:model="editTipoEvento"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Frecuencia -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Frecuencia</label>
+                                <input type="text" wire:model="editFrecuencia"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Tipo Espacio -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo de Espacio</label>
+                                <select wire:model="editTipoEspacio"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona un tipo de espacio</option>
+                                    @foreach(\App\Models\Ayuntamiento::TIPO_ESPACIO as $espacio)
+                                        <option value="{{ $espacio }}">{{ ucfirst(str_replace('_', ' ', $espacio)) }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- Accesibilidad -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Accesibilidad</label>
+                                <input type="text" wire:model="editOpcionesAccesibilidad"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+
+                            <!-- Facturación -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Facturación</label>
+                                <select wire:model="editTipoFacturacion"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="plataforma">Plataforma</option>
+                                    <option value="correo">Correo</option>
+                                </select>
+                            </div>
+
+                            <!-- Logística -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Logística Propia</label>
+                                <input type="text" wire:model="editLogisticaPropia"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
+                        <button wire:click="updateAyuntamiento"
+                            class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar Cambios</button>
+                        <button wire:click="cancelEditAyuntamiento"
+                            class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
 </div>
+          

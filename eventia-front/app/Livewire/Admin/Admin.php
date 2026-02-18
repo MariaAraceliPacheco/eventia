@@ -34,6 +34,44 @@ class Admin extends Component
     public $editRecibirFacturas = '';
     public $editImgLogoArtista = null;
 
+    // Edit Ayuntamientos properties
+    public $showEditAyuntamientoModal = false;
+    public $editingAyuntamientoId = null;
+    public $editNombreInstitucion = '';
+    public $editAyuntamientoImagen = null;
+    public $editAyuntamientoTelefono = '';
+    public $editAyuntamientoComunidad = '';
+    public $editAyuntamientoProvincia = '';
+    public $editAyuntamientoLocalidad = '';
+    public $editTipoEvento = '';
+    public $editFrecuencia = '';
+    public $editTipoEspacio = '';
+    public $editOpcionesAccesibilidad = '';
+    public $editTipoFacturacion = 'plataforma';
+    public $editLogisticaPropia = '';
+
+    public $regions_data = [
+        'Andalucía' => ['Almería', 'Cádiz', 'Córdoba', 'Granada', 'Huelva', 'Jaén', 'Málaga', 'Sevilla'],
+        'Aragón' => ['Huesca', 'Teruel', 'Zaragoza'],
+        'Asturias' => ['Asturias'],
+        'Baleares' => ['Islas Baleares'],
+        'Canarias' => ['Las Palmas', 'Santa Cruz de Tenerife'],
+        'Cantabria' => ['Cantabria'],
+        'Castilla y León' => ['Ávila', 'Burgos', 'León', 'Palencia', 'Salamanca', 'Segovia', 'Soria', 'Valladolid', 'Zamora'],
+        'Castilla-La Mancha' => ['Albacete', 'Ciudad Real', 'Cuenca', 'Guadalajara', 'Toledo'],
+        'Cataluña' => ['Barcelona', 'Girona', 'Lleida', 'Tarragona'],
+        'Comunidad Valenciana' => ['Alicante', 'Castellón', 'Valencia'],
+        'Extremadura' => ['Badajoz', 'Cáceres'],
+        'Galicia' => ['A Coruña', 'Lugo', 'Ourense', 'Pontevedra'],
+        'Madrid' => ['Madrid'],
+        'Murcia' => ['Murcia'],
+        'Navarra' => ['Navarra'],
+        'País Vasco' => ['Álava', 'Bizkaia', 'Gipuzkoa'],
+        'La Rioja' => ['La Rioja'],
+        'Ceuta' => ['Ceuta'],
+        'Melilla' => ['Melilla'],
+    ];
+
     // Edit Publico properties
     public $showEditPublicoModal = false;
     public $editingPublicoId = null;
@@ -128,8 +166,7 @@ class Admin extends Component
         ];
 
         if ($this->editImgLogoArtista) {
-            $path = $this->editImgLogoArtista->store('profiles/artistas', 'public');
-            $data['img_logo'] = $path;
+            $data['img_logo'] = \App\Http\Controllers\ArtistaController::handleImageUpload($this->editImgLogoArtista);
         }
 
         $artista->update($data);
@@ -145,6 +182,100 @@ class Admin extends Component
         $this->showEditArtistaModal = false;
         $this->editingArtistaId = null;
         $this->editImgLogoArtista = null;
+    }
+
+    public function editAyuntamiento($id)
+    {
+        $ayuntamiento = Ayuntamiento::findOrFail($id);
+        $this->editingAyuntamientoId = $id;
+        $this->editNombreInstitucion = $ayuntamiento->nombre_institucion;
+        $this->editAyuntamientoTelefono = $ayuntamiento->telefono;
+        $this->editAyuntamientoComunidad = $ayuntamiento->comunidad_autonoma;
+        $this->editAyuntamientoProvincia = $ayuntamiento->provincia;
+        $this->editAyuntamientoLocalidad = $ayuntamiento->localidad;
+        $this->editTipoEvento = $ayuntamiento->tipo_evento;
+        $this->editFrecuencia = $ayuntamiento->frecuencia;
+        $this->editTipoEspacio = $ayuntamiento->tipo_espacio;
+        $this->editOpcionesAccesibilidad = $ayuntamiento->opciones_accesibilidad;
+        $this->editTipoFacturacion = $ayuntamiento->tipo_facturacion;
+        $this->editLogisticaPropia = $ayuntamiento->logistica_propia;
+        $this->editAyuntamientoImagen = null;
+        $this->showEditAyuntamientoModal = true;
+    }
+
+    public function updateAyuntamiento()
+    {
+        $this->validate([
+            'editNombreInstitucion' => 'required|string',
+            'editAyuntamientoTelefono' => 'required|string',
+            'editAyuntamientoComunidad' => 'required|string',
+            'editAyuntamientoProvincia' => 'required|string',
+            'editAyuntamientoLocalidad' => 'required|string',
+            'editTipoEvento' => 'required|string',
+            'editFrecuencia' => 'required|string',
+            'editTipoEspacio' => 'required|string',
+            'editAyuntamientoImagen' => 'nullable|image|max:2048',
+        ]);
+
+        $ayuntamiento = Ayuntamiento::findOrFail($this->editingAyuntamientoId);
+
+        $data = [
+            'nombre_institucion' => $this->editNombreInstitucion,
+            'telefono' => $this->editAyuntamientoTelefono,
+            'comunidad_autonoma' => $this->editAyuntamientoComunidad,
+            'provincia' => $this->editAyuntamientoProvincia,
+            'localidad' => $this->editAyuntamientoLocalidad,
+            'tipo_evento' => $this->editTipoEvento,
+            'frecuencia' => $this->editFrecuencia,
+            'tipo_espacio' => $this->editTipoEspacio,
+            'opciones_accesibilidad' => $this->editOpcionesAccesibilidad,
+            'tipo_facturacion' => $this->editTipoFacturacion,
+            'logistica_propia' => $this->editLogisticaPropia,
+        ];
+
+        if ($this->editAyuntamientoImagen) {
+            $data['imagen'] = \App\Http\Controllers\AyuntamientoController::handleImageUpload($this->editAyuntamientoImagen);
+        }
+
+        $ayuntamiento->update($data);
+
+        $this->mount(); // Refresh data
+        $this->showEditAyuntamientoModal = false;
+        $this->editingAyuntamientoId = null;
+        session()->flash('message', 'Ayuntamiento actualizado correctamente.');
+    }
+
+    public function cancelEditAyuntamiento()
+    {
+        $this->showEditAyuntamientoModal = false;
+        $this->editingAyuntamientoId = null;
+        $this->editAyuntamientoImagen = null;
+    }
+
+    public function getProvincesProperty()
+    {
+        if ($this->editAyuntamientoComunidad) {
+            return $this->regions_data[$this->editAyuntamientoComunidad] ?? [];
+        }
+
+        $all = [];
+        foreach ($this->regions_data as $provinces) {
+            $all = array_merge($all, $provinces);
+        }
+        sort($all);
+        return $all;
+    }
+
+    public function updatedEditAyuntamientoProvincia()
+    {
+        if ($this->editAyuntamientoProvincia) {
+            foreach ($this->regions_data as $region => $provinces) {
+                if (in_array($this->editAyuntamientoProvincia, $provinces)) {
+                    $this->editAyuntamientoComunidad = $region;
+                    break;
+                }
+            }
+        }
     }
 
     public function deleteAyuntamiento($id)

@@ -3,7 +3,7 @@
 
         <!-- Left Column: Solicitudes + Info Artistas -->
         <div class="lg:col-span-1 space-y-6">
-            
+
             <!-- Pending Requests -->
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100/50 overflow-hidden">
                 <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-amber-50/30">
@@ -21,24 +21,31 @@
                     @forelse($solicitudes as $solicitud)
                         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center overflow-hidden">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center overflow-hidden">
                                     @if($solicitud->artista->img_logo)
-                                        <img src="{{ asset('profiles/artistas/' . $solicitud->artista->img_logo) }}" class="w-full h-full object-cover">
+                                        <img src="{{ asset('storage/profiles/artistas/' . $solicitud->artista->img_logo) }}"
+                                            class="w-full h-full object-cover">
                                     @else
-                                        <span class="text-primary font-bold">{{ substr($solicitud->artista->nombre_artistico, 0, 1) }}</span>
+                                        <span
+                                            class="text-primary font-bold">{{ substr($solicitud->artista->nombre_artistico, 0, 1) }}</span>
                                     @endif
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="text-sm font-bold text-text-main truncate">{{ $solicitud->artista->nombre_artistico }}</h4>
-                                    <p class="text-[10px] text-text-secondary truncate">Para: <b>{{ $solicitud->evento->nombre_evento }}</b></p>
+                                    <h4 class="text-sm font-bold text-text-main truncate">
+                                        {{ $solicitud->artista->nombre_artistico }}
+                                    </h4>
+                                    <p class="text-[10px] text-text-secondary truncate">Para:
+                                        <b>{{ $solicitud->evento->nombre_evento }}</b>
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button wire:click="aceptarSolicitud({{ $solicitud->id }})" 
+                                <button wire:click="aceptarSolicitud({{ $solicitud->id }})"
                                     class="flex-1 py-2 bg-green-500 text-white text-xs font-bold rounded-xl hover:bg-green-600 transition-colors">
                                     Aceptar
                                 </button>
-                                <button wire:click="rechazarSolicitud({{ $solicitud->id }})" 
+                                <button wire:click="rechazarSolicitud({{ $solicitud->id }})"
                                     class="flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
                                     Rechazar
                                 </button>
@@ -79,7 +86,7 @@
                                 <div
                                     class="w-12 h-12 rounded-xl bg-gray-100 overflow-hidden flex items-center justify-center">
                                     @if($artista->img_logo)
-                                        <img src="{{ asset('profiles/artistas/' . $artista->img_logo) }}"
+                                        <img src="{{ asset('storage/profiles/artistas/' . $artista->img_logo) }}"
                                             alt="{{ $artista->nombre_artistico }}" class="w-full h-full object-cover">
                                     @else
                                         <span
@@ -170,56 +177,60 @@
                         @forelse($eventos as $evento)
                             <div
                                 class="flex items-center justify-between p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:bg-white hover:shadow-md transition-all group">
-                                    <div class="flex items-center gap-4 flex-1">
-                                        <div class="w-1.5 h-10 rounded-full {{ $evento->estado === 'ABIERTO' ? 'bg-amber-400' : ($evento->estado === 'CERRADO' ? 'bg-green-500' : 'bg-gray-400') }}"></div>
-                                        <div>
-                                            <div class="flex items-center gap-2">
-                                                <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}" class="text-sm font-bold text-text-main hover:text-primary transition-colors">
-                                                    {{ $evento->nombre_evento }}
-                                                </a>
-                                                <span class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
-                                                    {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
-                                                    {{ $evento->estado }}
-                                                </span>
-                                            </div>
-                                            <p class="text-xs text-text-secondary">
-                                                {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
-                                                {{ $evento->localidad }} • 
-                                                @if($evento->estado !== 'ABIERTO')
-                                                    <b>{{ $evento->entradas_vendidas }}/{{ $evento->entradas_maximas }}</b> entradas
-                                                @else
-                                                    Captando artistas
-                                                @endif
-                                            </p>
-                                        </div>
+                                <div class="flex items-center gap-4 flex-1">
+                                    <div
+                                        class="w-1.5 h-10 rounded-full {{ $evento->estado === 'ABIERTO' ? 'bg-amber-400' : ($evento->estado === 'CERRADO' ? 'bg-green-500' : 'bg-gray-400') }}">
                                     </div>
-                                    @if($evento->estado === 'ABIERTO')
-                                        <button wire:click="cerrarEvento({{ $evento->id }})" title="Cerrar Evento y Vender Entradas"
-                                            class="px-3 py-2 text-xs font-black bg-white text-secondary border border-secondary/20 rounded-lg hover:bg-secondary hover:text-white transition-all shadow-sm">
-                                            Cerrar Evento
-                                        </button>
-                                    @endif
-
-                                    @if($evento->estado !== 'FINALIZADO')
-                                        <button wire:click="editEvent({{ $evento->id }})"
-                                            class="p-2 text-text-secondary hover:text-primary transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
-                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                            </svg>
-                                        </button>
-                                        <button wire:click="deleteEvent({{ $evento->id }})"
-                                            wire:confirm="¿Estás seguro de que quieres eliminar este evento?"
-                                            class="p-2 text-text-secondary hover:text-red-500 transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
-                                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                            </svg>
-                                        </button>
-                                    @else
-                                        <span class="p-2 text-gray-300 italic text-[10px] font-bold">Evento Finalizado</span>
-                                    @endif
+                                    <div>
+                                        <div class="flex items-center gap-2">
+                                            <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}"
+                                                class="text-sm font-bold text-text-main hover:text-primary transition-colors">
+                                                {{ $evento->nombre_evento }}
+                                            </a>
+                                            <span
+                                                class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
+                                                            {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
+                                                {{ $evento->estado }}
+                                            </span>
+                                        </div>
+                                        <p class="text-xs text-text-secondary">
+                                            {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
+                                            {{ $evento->localidad }} •
+                                            @if($evento->estado !== 'ABIERTO')
+                                                <b>{{ $evento->entradas_vendidas }}/{{ $evento->entradas_maximas }}</b> entradas
+                                            @else
+                                                Captando artistas
+                                            @endif
+                                        </p>
+                                    </div>
                                 </div>
+                                @if($evento->estado === 'ABIERTO')
+                                    <button wire:click="cerrarEvento({{ $evento->id }})" title="Cerrar Evento y Vender Entradas"
+                                        class="px-3 py-2 text-xs font-black bg-white text-secondary border border-secondary/20 rounded-lg hover:bg-secondary hover:text-white transition-all shadow-sm">
+                                        Cerrar Evento
+                                    </button>
+                                @endif
+
+                                @if($evento->estado !== 'FINALIZADO')
+                                    <button wire:click="editEvent({{ $evento->id }})"
+                                        class="p-2 text-text-secondary hover:text-primary transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
+                                    </button>
+                                    <button wire:click="deleteEvent({{ $evento->id }})"
+                                        wire:confirm="¿Estás seguro de que quieres eliminar este evento?"
+                                        class="p-2 text-text-secondary hover:text-red-500 transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
+                                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                        </svg>
+                                    </button>
+                                @else
+                                    <span class="p-2 text-gray-300 italic text-[10px] font-bold">Evento Finalizado</span>
+                                @endif
+                            </div>
                         @empty
                             <div class="text-center py-10 text-gray-500">
                                 No tienes eventos creados aún.
@@ -336,10 +347,10 @@
                                     @if($editImagen)
                                         <img src="{{ $editImagen->temporaryUrl() }}"
                                             class="w-20 h-20 rounded-xl object-cover border border-gray-200">
-                                    @else
-                                        <img src="{{ asset('profiles/ayuntamientos/' . $ayuntamiento->imagen) }}"
+                                    @elseif($ayuntamiento->imagen)
+                                        <img src="{{ asset('storage/profiles/ayuntamientos/' . $ayuntamiento->imagen) }}"
                                             class="w-20 h-20 rounded-xl object-cover border border-gray-200">
-                                    @endif
+                                    @else @endif
                                     <input type="file" wire:model="editImagen"
                                         class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
                                 </div>
@@ -410,8 +421,13 @@
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
                                     de Espacio</label>
-                                <input type="text" wire:model="tipo_espacio"
+                                <select wire:model="tipo_espacio"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona un tipo de espacio</option>
+                                    @foreach(\App\Models\Ayuntamiento::TIPO_ESPACIO as $espacio)
+                                        <option value="{{ $espacio }}">{{ ucfirst(str_replace('_', ' ', $espacio)) }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <!-- Accesibilidad -->
@@ -429,7 +445,7 @@
                                 <select wire:model="tipo_facturacion"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="plataforma">Plataforma</option>
-                                    <option value="externo">Externo</option>
+                                    <option value="correo">Correo</option>
                                 </select>
                             </div>
 
@@ -459,29 +475,38 @@
     @if($showCerrarModal)
         <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="cancelCerrarEvento"></div>
+                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true"
+                    wire:click="cancelCerrarEvento"></div>
                 <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                <div
+                    class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
                     <div class="bg-white px-8 pt-8 pb-8">
                         <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-black text-text-main font-heading" id="modal-title">Finalizar Captación</h3>
-                            <button wire:click="cancelCerrarEvento" class="text-gray-400 hover:text-gray-500 transition-colors">
+                            <h3 class="text-xl font-black text-text-main font-heading" id="modal-title">Finalizar Captación
+                            </h3>
+                            <button wire:click="cancelCerrarEvento"
+                                class="text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
-                        
+
                         <div class="space-y-4">
-                            <p class="text-sm text-text-secondary">Al cerrar el evento, este pasará a ser visible para el público general. Indica cuántas entradas quieres poner a la venta.</p>
-                            
+                            <p class="text-sm text-text-secondary">Al cerrar el evento, este pasará a ser visible para el
+                                público general. Indica cuántas entradas quieres poner a la venta.</p>
+
                             <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100 mb-4">
-                                <p class="text-xs text-amber-700 font-bold italic">Nota: Una vez cerrado, no podrás volver a abrir la captación de artistas.</p>
+                                <p class="text-xs text-amber-700 font-bold italic">Nota: Una vez cerrado, no podrás volver a
+                                    abrir la captación de artistas.</p>
                             </div>
 
                             <div>
-                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Número de Entradas</label>
-                                <input type="number" wire:model="total_entradas" 
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Número
+                                    de Entradas</label>
+                                <input type="number" wire:model="total_entradas"
                                     class="w-full px-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-xl font-black text-center">
                                 @error('total_entradas') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
