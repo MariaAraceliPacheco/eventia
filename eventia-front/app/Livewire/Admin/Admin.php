@@ -8,9 +8,11 @@ use App\Models\Evento;
 use App\Models\Publico;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
+use Livewire\WithFileUploads;
 
 class Admin extends Component
 {
+    use WithFileUploads;
     public $searchEvent = '';
     public $user;
 
@@ -18,6 +20,19 @@ class Admin extends Component
     public $ayuntamientos = [];
     public $publicos = [];
     public $eventos = [];
+
+    // Edit Artista properties
+    public $showEditArtistaModal = false;
+    public $editingArtistaId = null;
+    public $editNombreArtistico = '';
+    public $editTipo = '';
+    public $editGeneroMusical = '';
+    public $editDescripcion = '';
+    public $editTelefono = '';
+    public $editPrecioReferencia = '';
+    public $editEquipoPropio = false;
+    public $editRecibirFacturas = '';
+    public $editImgLogoArtista = null;
 
     // Edit Publico properties
     public $showEditPublicoModal = false;
@@ -57,19 +72,83 @@ class Admin extends Component
         session()->flash('message', 'Evento eliminado correctamente.');
     }
 
-    public function deletePublico($id) {
+    public function deletePublico($id)
+    {
         $publico = Publico::destroy($id);
         $this->publicos = Publico::all();
         session()->flash('message', 'Publico eliminado correctamente.');
     }
 
-    public function deleteArtista($id) {
+    public function deleteArtista($id)
+    {
         $artista = Artista::destroy($id);
-        $this->artistas = Artista::all();
+        $this->artistas = Artista::with('usuario')->get();
         session()->flash('message', 'Artista eliminado correctamente.');
     }
 
-    public function deleteAyuntamiento($id) {
+    public function editArtista($id)
+    {
+        $artista = Artista::findOrFail($id);
+        $this->editingArtistaId = $id;
+        $this->editNombreArtistico = $artista->nombre_artistico;
+        $this->editTipo = $artista->tipo;
+        $this->editGeneroMusical = $artista->genero_musical;
+        $this->editDescripcion = $artista->descripcion;
+        $this->editTelefono = $artista->telefono;
+        $this->editPrecioReferencia = $artista->precio_referencia;
+        $this->editEquipoPropio = (bool) $artista->equipo_propio;
+        $this->editRecibirFacturas = $artista->recibir_facturas;
+        $this->editImgLogoArtista = null;
+        $this->showEditArtistaModal = true;
+    }
+
+    public function updateArtista()
+    {
+        $this->validate([
+            'editNombreArtistico' => 'required|string|max:255',
+            'editTipo' => 'required|string',
+            'editGeneroMusical' => 'required|string',
+            'editDescripcion' => 'nullable|string',
+            'editTelefono' => 'nullable|string|max:20',
+            'editPrecioReferencia' => 'nullable|string|max:100',
+            'editImgLogoArtista' => 'nullable|image|max:2048',
+        ]);
+
+        $artista = Artista::findOrFail($this->editingArtistaId);
+
+        $data = [
+            'nombre_artistico' => $this->editNombreArtistico,
+            'tipo' => $this->editTipo,
+            'genero_musical' => $this->editGeneroMusical,
+            'descripcion' => $this->editDescripcion,
+            'telefono' => $this->editTelefono,
+            'precio_referencia' => $this->editPrecioReferencia,
+            'equipo_propio' => $this->editEquipoPropio,
+            'recibir_facturas' => $this->editRecibirFacturas,
+        ];
+
+        if ($this->editImgLogoArtista) {
+            $path = $this->editImgLogoArtista->store('profiles/artistas', 'public');
+            $data['img_logo'] = $path;
+        }
+
+        $artista->update($data);
+
+        $this->artistas = Artista::with('usuario')->get();
+        $this->showEditArtistaModal = false;
+        $this->editingArtistaId = null;
+        session()->flash('message', 'Artista actualizado correctamente.');
+    }
+
+    public function cancelEditArtista()
+    {
+        $this->showEditArtistaModal = false;
+        $this->editingArtistaId = null;
+        $this->editImgLogoArtista = null;
+    }
+
+    public function deleteAyuntamiento($id)
+    {
         $ayuntamiento = Ayuntamiento::destroy($id);
         $this->ayuntamientos = Ayuntamiento::all();
         session()->flash('message', 'Ayuntamiento eliminado correctamente.');
@@ -84,11 +163,11 @@ class Admin extends Component
         $this->editComunidad = $publico->comunidad_autonoma;
         $this->editProvincia = $publico->provincia;
         $this->editLocalidad = $publico->localidad;
-        
+
         // Handle gustos and favoritos as arrays (conversion if they are stored as strings)
         $this->editGustos = is_string($publico->gustos_musicales) ? explode(',', $publico->gustos_musicales) : (is_array($publico->gustos_musicales) ? $publico->gustos_musicales : []);
         $this->editFavoritos = is_string($publico->tipo_eventos_favoritos) ? explode(',', $publico->tipo_eventos_favoritos) : (is_array($publico->tipo_eventos_favoritos) ? $publico->tipo_eventos_favoritos : []);
-        
+
         $this->editNotificaciones = $publico->notificaciones;
         $this->showEditPublicoModal = true;
     }
