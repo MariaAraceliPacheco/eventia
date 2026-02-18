@@ -68,27 +68,44 @@ class User extends Authenticatable
             ->implode('');
     }
 
-    public function perfilArtista() {
+    public function perfilArtista()
+    {
         //aqui es como si se preguntara
         //dato ESTE usuario... cual es su artista?
         //y la respuesta es la columna de la tabla artista que tenga el mismo id_usuario
-        return $this->hasOne(Artista::class, //modelo padre
-         'id_usuario', //FK en artistas
-         'id'); //PK en users
+        return $this->hasOne(
+            Artista::class, //modelo padre
+            'id_usuario', //FK en artistas
+            'id'
+        ); //PK en users
         //es como si se dijera:
         //un usuario tiene un artista donde artistas.id_usuario = usuarios.id
         //y un artista tiene un usuario donde usuarios.id = artistas.id_usuario
     }
 
-    public function perfilAyuntamiento() {
+    public function perfilAyuntamiento()
+    {
         return $this->hasOne(Ayuntamiento::class, 'id_usuario', 'id');
     }
 
-    public function perfilPublico() {
+    public function perfilPublico()
+    {
         return $this->hasOne(Publico::class, 'id_usuario', 'id');
     }
 
-    public function entradas() {
+    public function entradas()
+    {
         return $this->hasMany(Entrada::class, 'id_usuario', 'id');
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\ResetPasswordNotification($token));
     }
 }

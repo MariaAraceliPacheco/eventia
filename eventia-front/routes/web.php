@@ -20,7 +20,7 @@ use App\Livewire\Public\ArtistList;
 use App\Livewire\Admin\Admin;
 use App\Http\Controllers\PublicoController;
 
-Route::get('/', HomePage::class);
+Route::get('/', HomePage::class)->name('home');
 
 Route::get('/login', Login::class)->name('login');
 Route::get('/register', Register::class)->name('register');

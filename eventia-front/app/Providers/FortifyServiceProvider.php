@@ -31,10 +31,14 @@ class FortifyServiceProvider extends ServiceProvider
             \App\Http\Responses\RegisterResponse::class
         );
 
-        //esto sirve para que cuando inicie sesion me mande a la vista que quiero
         $this->app->singleton(
             \Laravel\Fortify\Contracts\LoginResponse::class,
             \App\Http\Responses\LoginResponse::class
+        );
+
+        $this->app->singleton(
+            \Laravel\Fortify\Contracts\PasswordResetResponse::class,
+            \App\Http\Responses\PasswordResetResponse::class
         );
 
         $this->configureActions();
