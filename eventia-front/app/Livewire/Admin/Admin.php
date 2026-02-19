@@ -13,13 +13,11 @@ use Livewire\WithFileUploads;
 class Admin extends Component
 {
     use WithFileUploads;
-    public $searchEvent = '';
+    public $searchArtista = '';
+    public $searchAyuntamiento = '';
+    public $searchPublico = '';
+    public $searchEvento = '';
     public $user;
-
-    public $artistas = [];
-    public $ayuntamientos = [];
-    public $publicos = [];
-    public $eventos = [];
 
     // Edit Artista properties
     public $showEditArtistaModal = false;
@@ -89,13 +87,6 @@ class Admin extends Component
     public function mount()
     {
         $this->user = auth()->user();
-
-        //se les pone el with para que a parte del artista, tambien devuelva su usuario al que hace referencia.
-        //Asi se obtendria el objeto entero por decirlo de alguna forma
-        $this->artistas = Artista::with('usuario')->get();
-        $this->ayuntamientos = Ayuntamiento::with('usuario')->get();
-        $this->publicos = Publico::with('usuario')->get();
-        $this->eventos = Evento::all();
     }
 
     public function editEvent($id)
@@ -106,21 +97,18 @@ class Admin extends Component
     public function deleteEvent($id)
     {
         $evento = Evento::destroy($id);
-        $this->eventos = Evento::all();
         session()->flash('message', 'Evento eliminado correctamente.');
     }
 
     public function deletePublico($id)
     {
         $publico = Publico::destroy($id);
-        $this->publicos = Publico::all();
         session()->flash('message', 'Publico eliminado correctamente.');
     }
 
     public function deleteArtista($id)
     {
         $artista = Artista::destroy($id);
-        $this->artistas = Artista::with('usuario')->get();
         session()->flash('message', 'Artista eliminado correctamente.');
     }
 
@@ -171,7 +159,6 @@ class Admin extends Component
 
         $artista->update($data);
 
-        $this->artistas = Artista::with('usuario')->get();
         $this->showEditArtistaModal = false;
         $this->editingArtistaId = null;
         session()->flash('message', 'Artista actualizado correctamente.');
@@ -239,7 +226,6 @@ class Admin extends Component
 
         $ayuntamiento->update($data);
 
-        $this->mount(); // Refresh data
         $this->showEditAyuntamientoModal = false;
         $this->editingAyuntamientoId = null;
         session()->flash('message', 'Ayuntamiento actualizado correctamente.');
@@ -281,7 +267,6 @@ class Admin extends Component
     public function deleteAyuntamiento($id)
     {
         $ayuntamiento = Ayuntamiento::destroy($id);
-        $this->ayuntamientos = Ayuntamiento::all();
         session()->flash('message', 'Ayuntamiento eliminado correctamente.');
     }
 
@@ -330,7 +315,6 @@ class Admin extends Component
             'notificaciones' => $this->editNotificaciones,
         ]);
 
-        $this->mount(); // Refresh data
         $this->showEditPublicoModal = false;
         session()->flash('message', 'Público actualizado correctamente.');
     }
@@ -344,11 +328,42 @@ class Admin extends Component
     #[Layout('components.layouts.app')]
     public function render()
     {
+        $artistas = Artista::with('usuario')
+            ->when($this->searchArtista, function ($query) {
+                $query->where('nombre_artistico', 'like', '%' . $this->searchArtista . '%')
+                    ->orWhereHas('usuario', function ($q) {
+                        $q->where('nombre', 'like', '%' . $this->searchArtista . '%');
+                    });
+            })
+            ->get();
+
+        $ayuntamientos = Ayuntamiento::with('usuario')
+            ->when($this->searchAyuntamiento, function ($query) {
+                $query->where('nombre_institucion', 'like', '%' . $this->searchAyuntamiento . '%')
+                    ->orWhereHas('usuario', function ($q) {
+                        $q->where('nombre', 'like', '%' . $this->searchAyuntamiento . '%');
+                    });
+            })
+            ->get();
+
+        $publicos = Publico::with('usuario')
+            ->when($this->searchPublico, function ($query) {
+                $query->whereHas('usuario', function ($q) {
+                    $q->where('nombre', 'like', '%' . $this->searchPublico . '%')
+                        ->orWhere('email', 'like', '%' . $this->searchPublico . '%');
+                });
+            })
+            ->get();
+
+        $eventos = Evento::when($this->searchEvento, function ($query) {
+            $query->where('nombre_evento', 'like', '%' . $this->searchEvento . '%');
+        })->get();
+
         return view('admin.vistaAdmin', [
-            'artistas' => $this->artistas,
-            'ayuntamientos' => $this->ayuntamientos,
-            'publicos' => $this->publicos,
-            'eventos' => $this->eventos,
+            'artistas' => $artistas,
+            'ayuntamientos' => $ayuntamientos,
+            'publicos' => $publicos,
+            'eventos' => $eventos,
             'allGustos' => Publico::GUSTOS_MUSICALES,
             'allFavoritos' => Publico::TIPO_EVENTOS_FAVORITOS,
         ]);

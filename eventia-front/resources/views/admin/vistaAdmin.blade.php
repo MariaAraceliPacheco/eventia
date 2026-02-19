@@ -50,7 +50,7 @@
 
             <div class="p-6 flex-1">
                 <div class="relative mb-6">
-                    <input type="text" placeholder="Buscar artista..."
+                    <input type="text" placeholder="Buscar artista..." wire:model.live="searchArtista"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-primary/20 transition">
                     <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -134,7 +134,7 @@
 
             <div class="p-6 flex-1">
                 <div class="relative mb-6">
-                    <input type="text" placeholder="Buscar ayuntamiento..."
+                    <input type="text" placeholder="Buscar ayuntamiento..." wire:model.live="searchAyuntamiento"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-secondary/20 transition">
                     <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -217,7 +217,7 @@
 
             <div class="p-6 flex-1">
                 <div class="relative mb-6">
-                    <input type="text" placeholder="Buscar usuario..."
+                    <input type="text" placeholder="Buscar usuario..." wire:model.live="searchPublico"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-accent/20 transition">
                     <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
@@ -299,7 +299,7 @@
 
             <div class="p-6 flex-1">
                 <div class="relative mb-6">
-                    <input type="text" placeholder="Buscar evento..."
+                    <input type="text" placeholder="Buscar evento..." wire:model.live="searchEvento"
                         class="w-full pl-10 pr-4 py-2 bg-gray-50 border-none rounded-xl text-sm focus:ring-2 focus:ring-gray-200 transition">
                     <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
