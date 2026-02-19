@@ -112,6 +112,9 @@
                         </div>
                     @endforeach
                 </div>
+                <div class="mt-4 px-4">
+                    {{ $artistas->links() }}
+                </div>
             </div>
         </div>
 
@@ -195,6 +198,9 @@
                         </div>
                     @endforeach
                 </div>
+                <div class="mt-4 px-4">
+                    {{ $ayuntamientos->links() }}
+                </div>
             </div>
         </div>
 
@@ -276,6 +282,9 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+                <div class="mt-4 px-4">
+                    {{ $publicos->links() }}
                 </div>
             </div>
         </div>
@@ -359,6 +368,9 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+                <div class="mt-4 px-4">
+                    {{ $eventos->links() }}
                 </div>
             </div>
         </div>

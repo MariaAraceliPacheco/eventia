@@ -9,10 +9,12 @@ use App\Models\Publico;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Admin extends Component
 {
     use WithFileUploads;
+    use WithPagination;
     public $searchArtista = '';
     public $searchAyuntamiento = '';
     public $searchPublico = '';
@@ -334,8 +336,11 @@ class Admin extends Component
                     ->orWhereHas('usuario', function ($q) {
                         $q->where('nombre', 'like', '%' . $this->searchArtista . '%');
                     });
-            })
-            ->get();
+            })//el metodo paginate acepta varios argumentos ($registrosPorPagina, $columnas, $nombreDeLaPagina)
+            //el * sirve para que traiga todas las columnas
+            //'artistasPage' sirve para diferenciar las paginaciones en caso de que haya mas de una en la misma pagina
+            //para que cuando se quiera avanzar una, no se muevan las demas
+            ->paginate(5, ['*'], 'artistasPage');
 
         $ayuntamientos = Ayuntamiento::with('usuario')
             ->when($this->searchAyuntamiento, function ($query) {
@@ -344,7 +349,7 @@ class Admin extends Component
                         $q->where('nombre', 'like', '%' . $this->searchAyuntamiento . '%');
                     });
             })
-            ->get();
+            ->paginate(5, ['*'], 'ayuntamientosPage');
 
         $publicos = Publico::with('usuario')
             ->when($this->searchPublico, function ($query) {
@@ -353,11 +358,11 @@ class Admin extends Component
                         ->orWhere('email', 'like', '%' . $this->searchPublico . '%');
                 });
             })
-            ->get();
+            ->paginate(5, ['*'], 'publicosPage');
 
         $eventos = Evento::when($this->searchEvento, function ($query) {
             $query->where('nombre_evento', 'like', '%' . $this->searchEvento . '%');
-        })->get();
+        })->paginate(5, ['*'], 'eventosPage');
 
         return view('admin.vistaAdmin', [
             'artistas' => $artistas,

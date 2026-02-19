@@ -111,6 +111,7 @@
                             </div>
                         @endforelse
                     </div>
+                    {{ $artistas->links() }}
                 </div>
             </div>
         </div>
