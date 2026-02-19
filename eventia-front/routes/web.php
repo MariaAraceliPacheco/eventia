@@ -37,7 +37,7 @@ Route::get('/artistas', ArtistList::class)->name('public.artist-list');
 Route::get('/artista/{id}', \App\Livewire\Public\ArtistProfile::class)->name('public.artist-profile');
 
 // Protected Routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     // Town Hall Area (Only ayuntamiento)
     Route::middleware(['role:ayuntamiento,admin'])->group(function () {
         Route::get('/area-ayuntamiento', AreaAyuntamiento::class)->name('town-hall.area');
