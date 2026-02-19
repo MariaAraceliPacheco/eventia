@@ -5,6 +5,7 @@ namespace App\Livewire\TownHall;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 use App\Models\Evento;
 use App\Models\Artista;
@@ -14,6 +15,8 @@ use App\Models\Solicitud;
 class AreaAyuntamiento extends Component
 {
     use WithFileUploads;
+    use WithPagination;
+
 
     public $searchArtist = '';
 
@@ -80,7 +83,7 @@ class AreaAyuntamiento extends Component
             ->when($this->searchArtist, function ($query) {
                 $query->where('nombre_artistico', 'like', '%' . $this->searchArtist . '%');
             })
-            ->get();
+            ->paginate(5);
 
         return view('livewire.town-hall.area-ayuntamiento', [
             'eventos' => $eventos,
@@ -101,7 +104,7 @@ class AreaAyuntamiento extends Component
     public function aceptarSolicitud($solicitudId)
     {
         $solicitud = Solicitud::findOrFail($solicitudId);
-        
+
         // Ensure this town hall owns the event
         if ($solicitud->evento->id_ayuntamiento !== $this->ayuntamiento->id) {
             return;
@@ -122,7 +125,7 @@ class AreaAyuntamiento extends Component
     public function rechazarSolicitud($solicitudId)
     {
         $solicitud = Solicitud::findOrFail($solicitudId);
-        
+
         if ($solicitud->evento->id_ayuntamiento !== $this->ayuntamiento->id) {
             return;
         }

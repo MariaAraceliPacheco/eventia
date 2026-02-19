@@ -45,7 +45,6 @@
                     </div>
                     <h3 class="font-heading font-bold text-xl text-text-main tracking-tight">Artistas</h3>
                 </div>
-                <button class="text-sm text-primary font-bold hover:underline">Ver todos</button>
             </div>
 
             <div class="p-6 flex-1">
@@ -132,7 +131,6 @@
                     </div>
                     <h3 class="font-heading font-bold text-xl text-text-main tracking-tight">Ayuntamientos</h3>
                 </div>
-                <button class="text-sm text-secondary font-bold hover:underline">Ver todos</button>
             </div>
 
             <div class="p-6 flex-1">
@@ -218,7 +216,6 @@
                     </div>
                     <h3 class="font-heading font-bold text-xl text-text-main tracking-tight">Público</h3>
                 </div>
-                <button class="text-sm text-accent font-bold hover:underline">Ver todos</button>
             </div>
 
             <div class="p-6 flex-1">
@@ -303,7 +300,6 @@
                     </div>
                     <h3 class="font-heading font-bold text-xl text-text-main tracking-tight">Eventos</h3>
                 </div>
-                <button class="text-sm text-text-main font-bold hover:underline">Ver todos</button>
             </div>
 
             <div class="p-6 flex-1">
