@@ -13,11 +13,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Crear 10 usuarios de tipo público con sus perfiles correspondientes
+        \App\Models\Publico::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Crear un usuario de prueba específico si no existe
+        if (!User::where('email', 'test@example.com')->exists()) {
+            User::factory()->create([
+                'nombre' => 'Test User',
+                'email' => 'test@example.com',
+                'tipo_usuario' => 'admin'
+            ]);
+        }
     }
 }
