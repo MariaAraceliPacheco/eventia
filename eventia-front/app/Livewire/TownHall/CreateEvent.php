@@ -127,82 +127,99 @@ class CreateEvent extends Component
             'max_entradas' => 'nullable|numeric|min:0',
         ]);
 
-        $data = [
-            'nombre_evento' => $this->title,
-            'fecha_inicio' => $this->date,
-            'localidad' => $this->locality,
-            'provincia' => $this->province,
-            'category' => $this->category,
-            'categoria' => $this->category,
-            'precio' => count($this->tipos_entrada) > 0 ? $this->tipos_entrada[0]['precio'] : $this->price,
-            'tipos_entrada' => $this->tipos_entrada,
-            'descripcion' => $this->description,
-            'estado' => 'ABIERTO',
-            'entradas_maximas' => $this->max_entradas,
-        ];
+        try {
+            $data = [
+                'nombre_evento' => $this->title,
+                'fecha_inicio' => $this->date,
+                'localidad' => $this->locality,
+                'provincia' => $this->province,
+                'category' => $this->category,
+                'categoria' => $this->category,
+                'precio' => count($this->tipos_entrada) > 0 ? $this->tipos_entrada[0]['precio'] : $this->price,
+                'tipos_entrada' => $this->tipos_entrada,
+                'descripcion' => $this->description,
+                'estado' => 'ABIERTO',
+                'entradas_maximas' => $this->max_entradas,
+            ];
 
-        if ($this->image) {
-            // Guardar la imagen en public/profiles/eventos
-            $path = $this->image->store('profiles/eventos', 'public');
-            $data['foto'] = basename($path);
-        } else {
-            $data['foto'] = $this->foto;
-        }
+            if ($this->image) {
+                // Guardar la imagen en public/profiles/eventos
+                $path = $this->image->store('profiles/eventos', 'public');
+                $data['foto'] = basename($path);
+            } else {
+                $data['foto'] = $this->foto;
+            }
 
-        // Only set id_ayuntamiento for new events or if user is ayuntamiento
-        if (!$this->eventId && auth()->user()->perfilAyuntamiento) {
-            $data['id_ayuntamiento'] = auth()->user()->perfilAyuntamiento->id;
-        }
+            // Only set id_ayuntamiento for new events or if user is ayuntamiento
+            if (!$this->eventId && auth()->user()->perfilAyuntamiento) {
+                $data['id_ayuntamiento'] = auth()->user()->perfilAyuntamiento->id;
+            }
 
-        if ($this->eventId) {
-            $evento = Evento::findOrFail($this->eventId);
-            $evento->update($data);
+            if ($this->eventId) {
+                $evento = Evento::findOrFail($this->eventId);
+                $evento->update($data);
 
-            // 1. New invitations for newly selected artists
-            $currentArtistIds = $evento->artistas->pluck('id')->toArray();
-            foreach ($this->selectedArtists as $artistId) {
-                if (!in_array($artistId, $currentArtistIds)) {
-                    \App\Models\Solicitud::firstOrCreate([
+                // 1. New invitations for newly selected artists
+                $currentArtistIds = $evento->artistas->pluck('id')->toArray();
+                foreach ($this->selectedArtists as $artistId) {
+                    if (!in_array($artistId, $currentArtistIds)) {
+                        \App\Models\Solicitud::firstOrCreate([
+                            'id_artista' => $artistId,
+                            'id_evento' => $evento->id,
+                            'origen' => 'ayuntamiento',
+                            'estado' => 'pendiente'
+                        ]);
+                    }
+                }
+
+                // 2. Remove attached artists who are NO LONGER selected
+                $toDetach = array_diff($currentArtistIds, $this->selectedArtists);
+                if (!empty($toDetach)) {
+                    $evento->artistas()->detach($toDetach);
+                }
+
+                // 3. Remove pending or rejected invitations for artists who are NO LONGER selected
+                \App\Models\Solicitud::where('id_evento', $evento->id)
+                    ->where('origen', 'ayuntamiento')
+                    ->whereIn('estado', ['pendiente', 'rechazada'])
+                    ->whereNotIn('id_artista', $this->selectedArtists)
+                    ->delete();
+
+                session()->flash('notificar', [
+                    'titulo' => '¡Evento Actualizado!',
+                    'mensaje' => 'Los cambios en el evento se han guardado correctamente.',
+                    'tipo' => 'success'
+                ]);
+            } else {
+                $evento = Evento::create($data);
+                // Create invitations for all selected artists
+                foreach ($this->selectedArtists as $artistId) {
+                    \App\Models\Solicitud::create([
                         'id_artista' => $artistId,
                         'id_evento' => $evento->id,
                         'origen' => 'ayuntamiento',
                         'estado' => 'pendiente'
                     ]);
                 }
-            }
-
-            // 2. Remove attached artists who are NO LONGER selected
-            $toDetach = array_diff($currentArtistIds, $this->selectedArtists);
-            if (!empty($toDetach)) {
-                $evento->artistas()->detach($toDetach);
-            }
-
-            // 3. Remove pending or rejected invitations for artists who are NO LONGER selected
-            \App\Models\Solicitud::where('id_evento', $evento->id)
-                ->where('origen', 'ayuntamiento')
-                ->whereIn('estado', ['pendiente', 'rechazada'])
-                ->whereNotIn('id_artista', $this->selectedArtists)
-                ->delete();
-
-            session()->flash('message', 'Evento actualizado con éxito.');
-        } else {
-            $evento = Evento::create($data);
-            // Create invitations for all selected artists
-            foreach ($this->selectedArtists as $artistId) {
-                \App\Models\Solicitud::create([
-                    'id_artista' => $artistId,
-                    'id_evento' => $evento->id,
-                    'origen' => 'ayuntamiento',
-                    'estado' => 'pendiente'
+                session()->flash('notificar', [
+                    'titulo' => '¡Evento Creado!',
+                    'mensaje' => 'Tu evento ha sido publicado y las invitaciones han sido enviadas.',
+                    'tipo' => 'success'
                 ]);
             }
-            session()->flash('message', 'Evento creado con éxito. Se han enviado invitaciones a los artistas seleccionados.');
-        }
 
-        if (auth()->user()->tipo_usuario === 'admin') {
-            return redirect()->route('admin.vistaAdmin');
-        }
+            if (auth()->user()->tipo_usuario === 'admin') {
+                return redirect()->route('admin.vistaAdmin');
+            }
 
-        return redirect()->route('town-hall.area');
+            return redirect()->route('town-hall.area');
+
+        } catch (\Exception $e) {
+            $this->dispatch('notificar', [
+                'titulo' => 'Error al guardar',
+                'mensaje' => 'No se pudo procesar el evento. Por favor, revisa los datos e inténtalo de nuevo.',
+                'tipo' => 'error'
+            ]);
+        }
     }
 }

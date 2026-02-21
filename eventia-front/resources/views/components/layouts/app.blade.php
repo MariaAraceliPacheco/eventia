@@ -93,8 +93,8 @@
                                     <span style="font-size: 16px;"
                                         class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
                                 </a>
-                                 @elseif(auth()->user()->tipo_usuario == 'admin')
-                                  <a href="{{ route('admin.vistaAdmin') }}">
+                            @elseif(auth()->user()->tipo_usuario == 'admin')
+                                <a href="{{ route('admin.vistaAdmin') }}">
                                     <span style="font-size: 16px;"
                                         class="font-bold text-text-main line-clamp-1">{{ auth()->user()->nombre }}</span>
                                 </a>
@@ -194,6 +194,81 @@
         </div>
     </footer>
     @livewire('public.global-search')
+
+    <!-- Global Notification Modal -->
+    <div x-data="{ 
+            show: {{ session()->has('notificar') ? 'true' : 'false' }}, 
+            titulo: '{{ session('notificar.titulo', '') }}', 
+            mensaje: '{{ session('notificar.mensaje', '') }}', 
+            tipo: '{{ session('notificar.tipo', 'success') }}',
+            timeout: null 
+        }" x-init="
+            if(show) { 
+                timeout = setTimeout(() => { show = false }, 2500); 
+            }
+        " x-on:notificar.window="
+            titulo = $event.detail[0].titulo;
+            mensaje = $event.detail[0].mensaje;
+            tipo = $event.detail[0].tipo || 'success';
+            show = true;
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => { show = false }, 2500);
+        " x-show="show" x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100"
+        x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform scale-100"
+        x-transition:leave-end="opacity-0 transform scale-90"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 pointer-events-none" style="display: none;">
+
+        <div
+            class="bg-white rounded-[32px] shadow-2xl border border-gray-100 max-w-sm w-full p-8 pointer-events-auto relative overflow-hidden">
+            <!-- Decorative background -->
+            <div :class="{
+                'bg-green-500/5': tipo === 'success',
+                'bg-red-500/5': tipo === 'error',
+                'bg-blue-500/5': tipo === 'info'
+            }" class="absolute top-0 left-0 w-full h-2"></div>
+
+            <div class="flex flex-col items-center text-center">
+                <!-- Icon -->
+                <div :class="{
+                    'bg-green-100 text-green-600': tipo === 'success',
+                    'bg-red-100 text-red-600': tipo === 'error',
+                    'bg-blue-100 text-blue-600': tipo === 'info'
+                }" class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-6">
+                    <template x-if="tipo === 'success'">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                        </svg>
+                    </template>
+                    <template x-if="tipo === 'error'">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </template>
+                    <template x-if="tipo === 'info'">
+                        <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </template>
+                </div>
+
+                <h4 class="text-xl font-black text-text-main mb-2" x-text="titulo"></h4>
+                <p class="text-sm text-text-secondary leading-relaxed mb-8" x-text="mensaje"></p>
+
+                <button @click="show = false" :class="{
+                        'bg-green-600 shadow-green-200': tipo === 'success',
+                        'bg-red-600 shadow-red-200': tipo === 'error',
+                        'bg-blue-600 shadow-blue-200': tipo === 'info'
+                    }"
+                    class="w-full text-white font-bold py-4 rounded-2xl shadow-lg hover:scale-[1.02] active:scale-95 transition-all">
+                    Entendido
+                </button>
+            </div>
+        </div>
+    </div>
+
     @livewireScripts
     @fluxScripts
 </body>

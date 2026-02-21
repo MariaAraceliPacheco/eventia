@@ -65,6 +65,10 @@ class AreaAyuntamiento extends Component
     public $closingEventId = null;
     public $total_entradas = 100;
 
+    // Deletion Modal properties
+    public $showDeleteModal = false;
+    public $eventToDeleteId = null;
+
     public function mount()
     {
         $this->user = auth()->user();
@@ -156,9 +160,24 @@ class AreaAyuntamiento extends Component
         $this->resetEditForm();
     }
 
-    public function deleteEvent($eventId)
+    public function triggerDelete($eventId)
     {
-        $evento = Evento::find($eventId);
+        $this->eventToDeleteId = $eventId;
+        $this->showDeleteModal = true;
+    }
+
+    public function cancelDelete()
+    {
+        $this->showDeleteModal = false;
+        $this->eventToDeleteId = null;
+    }
+
+    public function deleteEvent()
+    {
+        if (!$this->eventToDeleteId)
+            return;
+
+        $evento = Evento::find($this->eventToDeleteId);
         if ($evento) {
             if ($evento->estado === 'FINALIZADO') {
                 $this->dispatch('notificar', [
@@ -166,11 +185,20 @@ class AreaAyuntamiento extends Component
                     'mensaje' => 'No se puede eliminar un evento finalizado.',
                     'tipo' => 'error'
                 ]);
+                $this->cancelDelete();
                 return;
             }
+
             $evento->delete();
-            session()->flash('message', 'Evento eliminado correctamente');
+
+            $this->dispatch('notificar', [
+                'titulo' => 'Evento Eliminado',
+                'mensaje' => 'El evento ha sido eliminado correctamente.',
+                'tipo' => 'success'
+            ]);
         }
+
+        $this->cancelDelete();
     }
 
     public function cerrarEvento($eventId)
@@ -241,17 +269,30 @@ class AreaAyuntamiento extends Component
             'logistica_propia' => 'string',
         ]);
 
-        if ($this->editImagen) {
-            $validated['imagen'] = \App\Http\Controllers\AyuntamientoController::handleImageUpload($this->editImagen);
-        }
+        try {
+            if ($this->editImagen) {
+                $validated['imagen'] = \App\Http\Controllers\AyuntamientoController::handleImageUpload($this->editImagen);
+            }
 
-        if ($this->ayuntamiento) {
-            $this->ayuntamiento->update($validated);
-            session()->flash('message', 'Perfil actualizado con éxito');
-        }
+            if ($this->ayuntamiento) {
+                $this->ayuntamiento->update($validated);
+            }
 
-        $this->showProfileModal = false;
-        $this->editImagen = null;
+            $this->dispatch('notificar', [
+                'titulo' => '¡Perfil Actualizado!',
+                'mensaje' => 'Tus cambios se han guardado correctamente.',
+                'tipo' => 'success'
+            ]);
+
+            $this->showProfileModal = false;
+            $this->editImagen = null;
+        } catch (\Exception $e) {
+            $this->dispatch('notificar', [
+                'titulo' => 'Error al guardar',
+                'mensaje' => 'No se pudieron guardar los cambios. Por favor, inténtalo de nuevo.',
+                'tipo' => 'error'
+            ]);
+        }
     }
 
     public function cancelProfileEdit()

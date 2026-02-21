@@ -59,17 +59,30 @@ class AreaArtista extends Component
             'recibir_facturas' => 'required|in:' . implode(',', Artista::RECIBIR_FACTURAS),
         ]);
 
-        if ($this->editImgLogo) {
-            $validated['img_logo'] = \App\Http\Controllers\ArtistaController::handleImageUpload($this->editImgLogo);
-        }
+        try {
+            if ($this->editImgLogo) {
+                $validated['img_logo'] = \App\Http\Controllers\ArtistaController::handleImageUpload($this->editImgLogo);
+            }
 
-        if ($this->artista) {
-            $this->artista->update($validated);
-            session()->flash('message', 'Perfil actualizado con éxito');
-        }
+            if ($this->artista) {
+                $this->artista->update($validated);
+            }
 
-        $this->showProfileModal = false;
-        $this->editImgLogo = null;
+            $this->dispatch('notificar', [
+                'titulo' => '¡Perfil Actualizado!',
+                'mensaje' => 'Tus cambios se han guardado correctamente.',
+                'tipo' => 'success'
+            ]);
+
+            $this->showProfileModal = false;
+            $this->editImgLogo = null;
+        } catch (\Exception $e) {
+            $this->dispatch('notificar', [
+                'titulo' => 'Error al guardar',
+                'mensaje' => 'No se pudieron guardar los cambios. Por favor, inténtalo de nuevo.',
+                'tipo' => 'error'
+            ]);
+        }
     }
 
     public function cancelEdit()
@@ -86,7 +99,7 @@ class AreaArtista extends Component
             ->firstOrFail();
 
         $solicitud->update(['estado' => 'aceptada']);
-        
+
         // Add artist to event
         $solicitud->evento->artistas()->syncWithoutDetaching([$this->artista->id]);
 

@@ -34,7 +34,7 @@
             <!-- Socials -->
             <div class="space-y-3 mb-8">
                 <button type="button"
-                    class="group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
+                    class="cursor-pointer group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
                     <!-- Google SVG -->
                     <svg class="w-5 h-5 transition-transform group-hover:scale-110" viewBox="0 0 24 24"
                         fill="currentColor">
@@ -45,7 +45,7 @@
                 </button>
 
                 <button type="button"
-                    class="group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
+                    class="cursor-pointer group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
                     <!-- Spotify SVG -->
                     <svg class="w-5 h-5 text-[#1DB954] transition-transform group-hover:scale-110" viewBox="0 0 24 24"
                         fill="currentColor">
@@ -56,7 +56,7 @@
                 </button>
 
                 <button type="button"
-                    class="group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
+                    class="cursor-pointer group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
                     <!-- Amazon SVG -->
                     <svg class="w-5 h-5 text-text-main transition-transform group-hover:scale-110" role="img"
                         viewBox="0 0 24 24" fill="currentColor">
@@ -68,7 +68,7 @@
                 </button>
 
                 <button type="button"
-                    class="group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
+                    class="cursor-pointer group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
                     <svg class="w-5 h-5 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -127,7 +127,7 @@
                 </div>
 
                 <button type="submit"
-                    class="w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-3.5 rounded-xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/40 flex items-center justify-center transform hover:-translate-y-0.5">
+                    class="cursor-pointer w-full bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-bold py-3.5 rounded-xl transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/40 flex items-center justify-center transform hover:-translate-y-0.5">
                     Iniciar sesión
                 </button>
             </form>

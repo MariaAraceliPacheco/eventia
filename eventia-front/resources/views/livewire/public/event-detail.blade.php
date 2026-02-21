@@ -115,21 +115,68 @@
 
             <!-- Solicitar participación (Visible only to Artistas) -->
             @if(auth()->check() && auth()->user()->tipo_usuario === 'artista')
-                <div
-                    class="flex items-center justify-between p-8 bg-gradient-to-r from-secondary to-accent rounded-[32px] text-white shadow-xl shadow-secondary/20 group cursor-pointer hover:-translate-y-1 transition-all">
-                    <div>
-                        <h3 class="text-2xl font-black font-heading italic">¿Quieres actuar aquí?</h3>
-                        <p class="text-sm font-bold opacity-80">Envía tu propuesta al ayuntamiento para este evento</p>
+                @if($solicitudPendiente)
+                    <div
+                        class="flex items-center justify-between p-8 rounded-[32px] shadow-xl transition-all border
+                        {{ $solicitudPendiente->estado === 'pendiente' ? 'bg-gradient-to-r from-amber-500 to-amber-600 text-white shadow-amber-500/20 border-amber-400/20' : '' }}
+                        {{ $solicitudPendiente->estado === 'aceptada' ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-green-500/20 border-green-400/20' : '' }}
+                        {{ $solicitudPendiente->estado === 'rechazada' ? 'bg-gradient-to-r from-red-500 to-red-600 text-white shadow-red-500/20 border-red-400/20' : '' }}">
+                        <div>
+                            <h3 class="text-2xl font-black font-heading italic">
+                                @if($solicitudPendiente->estado === 'pendiente')
+                                    Propuesta en revisión
+                                @elseif($solicitudPendiente->estado === 'aceptada')
+                                    ¡Propuesta aceptada!
+                                @else
+                                    Propuesta rechazada
+                                @endif
+                            </h3>
+                            <p class="text-sm font-bold opacity-80">
+                                @if($solicitudPendiente->estado === 'pendiente')
+                                    El ayuntamiento está revisando tu propuesta para este evento.
+                                @elseif($solicitudPendiente->estado === 'aceptada')
+                                    ¡Felicidades! Has sido confirmado para actuar en este evento.
+                                @else
+                                    Lo sentimos, tu propuesta no ha sido seleccionada en esta ocasión.
+                                @endif
+                            </p>
+                        </div>
+                        <div class="bg-white/20 text-white px-8 py-4 rounded-2xl font-black shadow-lg flex items-center gap-3 backdrop-blur-sm border border-white/10">
+                            @if($solicitudPendiente->estado === 'pendiente')
+                                <svg class="w-5 h-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Enviada
+                            @elseif($solicitudPendiente->estado === 'aceptada')
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                                Confirmado
+                            @else
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Finalizada
+                            @endif
+                        </div>
                     </div>
-                    <button
-                        class="bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
-                        Solicitar participación
-                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                    </button>
-                </div>
+                @else
+                    <div
+                        class="flex items-center justify-between p-8 bg-gradient-to-r from-secondary to-accent rounded-[32px] text-white shadow-xl shadow-secondary/20 group cursor-pointer hover:-translate-y-1 transition-all">
+                        <div>
+                            <h3 class="text-2xl font-black font-heading italic">¿Quieres actuar aquí?</h3>
+                            <p class="text-sm font-bold opacity-80">Envía tu propuesta al ayuntamiento para este evento</p>
+                        </div>
+                        <button wire:click="solicitarEvento"
+                            class="cursor-pointer bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                            Solicitar participación
+                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                        </button>
+                    </div>
+                @endif
             @endif
 
             <!-- Description -->

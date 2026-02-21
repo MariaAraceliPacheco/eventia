@@ -88,18 +88,29 @@ class AreaPublico extends Component
             'nombre' => 'required|string|max:255',
         ]);
 
-        if ($this->user) {
-            $this->user->update(['nombre' => $this->nombre]);
+        try {
+            if ($this->user) {
+                $this->user->update(['nombre' => $this->nombre]);
+            }
+
+            if ($this->publico) {
+                $this->publico->update($validated);
+            }
+
+            $this->dispatch('notificar', [
+                'titulo' => '¡Perfil Actualizado!',
+                'mensaje' => 'Tus cambios se han guardado correctamente.',
+                'tipo' => 'success'
+            ]);
+
+            $this->showProfileModal = false;
+        } catch (\Exception $e) {
+            $this->dispatch('notificar', [
+                'titulo' => 'Error al guardar',
+                'mensaje' => 'No se pudieron guardar los cambios. Por favor, inténtalo de nuevo.',
+                'tipo' => 'error'
+            ]);
         }
-
-        if ($this->publico) {
-            $this->publico->update($validated);
-            session()->flash('message', 'Perfil actualizado con éxito');
-        }
-
-        $this->showProfileModal = false;
-
-        return redirect()->route('public.area');
     }
 
     public function cancelEdit()
