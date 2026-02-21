@@ -278,7 +278,7 @@
                         class="w-full pl-5 pr-12 py-4 bg-white border border-gray-200 rounded-2xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all shadow-sm italic text-sm"
                         placeholder="Pregunta lo que sea...">
                     <button type="submit"
-                        class="absolute inset-y-2 right-2 px-3 bg-text-main text-white rounded-xl shadow-lg hover:bg-gray-800 transition-colors">
+                        class="cursor-pointer absolute inset-y-2 right-2 px-3 bg-text-main text-white rounded-xl shadow-lg hover:bg-gray-800 transition-colors">
                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

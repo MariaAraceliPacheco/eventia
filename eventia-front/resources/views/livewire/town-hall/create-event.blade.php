@@ -64,7 +64,7 @@
                                         </div>
                                     </div>
                                     <button type="button" wire:click="toggleArtist({{ $artist->id }})" 
-                                        class="w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-sm {{ in_array($artist->id, $selectedArtists) ? 'bg-primary text-white scale-90' : 'bg-white text-gray-400 border border-gray-100 hover:border-primary hover:text-primary hover:bg-primary/5' }}">
+                                        class="cursor-pointer w-10 h-10 rounded-xl flex items-center justify-center transition-all shadow-sm {{ in_array($artist->id, $selectedArtists) ? 'bg-primary text-white scale-90' : 'bg-white text-gray-400 border border-gray-100 hover:border-primary hover:text-primary hover:bg-primary/5' }}">
                                         @if(in_array($artist->id, $selectedArtists))
                                             @if(isset($invitaciones[$artist->id]) && $invitaciones[$artist->id] === 'aceptada')
                                                 <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
@@ -92,7 +92,7 @@
                     <div class="space-y-4">
                         <div class="flex items-center justify-between">
                             <label class="block text-sm font-bold text-text-main">Tipos de Entradas y Precios</label>
-                            <button type="button" wire:click="addTipoEntrada" class="text-xs font-black text-primary uppercase tracking-widest hover:text-secondary transition-colors flex items-center gap-1">
+                            <button type="button" wire:click="addTipoEntrada" class="cursor-pointer text-xs font-black text-primary uppercase tracking-widest hover:text-secondary transition-colors flex items-center gap-1">
                                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
                                 Añadir tipo
                             </button>
@@ -113,7 +113,7 @@
                                         <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">€</span>
                                     </div>
                                     @if(count($tipos_entrada) > 1)
-                                        <button type="button" wire:click="removeTipoEntrada({{ $index }})" class="p-2 text-gray-400 hover:text-red-500 transition-colors">
+                                        <button type="button" wire:click="removeTipoEntrada({{ $index }})" class="cursor-pointer p-2 text-gray-400 hover:text-red-500 transition-colors">
                                             <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
                                         </button>
                                     @endif
@@ -136,7 +136,7 @@
                     <div class="space-y-1">
                         <label class="block text-sm font-bold text-text-main">Categoría</label>
                         <select wire:model="category"
-                            class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all cursor-pointer">
+                            class="cursor-pointer w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all cursor-pointer">
                             <option value="">Selecciona estilo</option>
                             <option value="concierto">Concierto</option>
                             <option value="festival">Festival</option>
@@ -175,7 +175,7 @@
             <!-- Footer Buttons -->
             <div class="flex items-center justify-end gap-4 mt-12 border-t border-gray-50 pt-8">
                 <a href="{{ route('town-hall.area') }}" class="px-8 py-4 text-sm font-bold text-text-secondary hover:text-text-main transition-colors">Cancelar</a>
-                <button type="submit" class="bg-gradient-to-r from-accent to-secondary text-white font-bold px-10 py-4 rounded-[20px] shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-all transform hover:-translate-y-1">
+                <button type="submit" class="cursor-pointer bg-gradient-to-r from-accent to-secondary text-white font-bold px-10 py-4 rounded-[20px] shadow-lg shadow-accent/20 hover:shadow-accent/40 transition-all transform hover:-translate-y-1">
                     {{ $eventId ? 'Guardar cambios' : 'Publicar evento' }}
                 </button>
             </div>

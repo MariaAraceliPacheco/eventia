@@ -42,11 +42,11 @@
                             </div>
                             <div class="flex gap-2">
                                 <button wire:click="aceptarSolicitud({{ $solicitud->id }})"
-                                    class="flex-1 py-2 bg-green-500 text-white text-xs font-bold rounded-xl hover:bg-green-600 transition-colors">
+                                    class="cursor-pointer flex-1 py-2 bg-green-500 text-white text-xs font-bold rounded-xl hover:bg-green-600 transition-colors">
                                     Aceptar
                                 </button>
                                 <button wire:click="rechazarSolicitud({{ $solicitud->id }})"
-                                    class="flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    class="cursor-pointer flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
                                     Rechazar
                                 </button>
                             </div>
@@ -139,7 +139,7 @@
                         <div class="flex items-center gap-3 mb-1">
                             <h2 class="text-2xl font-bold text-text-main">{{ $ayuntamiento->nombre_institucion }}</h2>
                             <button wire:click="editProfile"
-                                class="text-xs font-medium px-2 py-1 bg-gray-100 text-text-secondary rounded-lg hover:bg-gray-200 transition">Editar</button>
+                                class="cursor-pointer text-xs font-medium px-2 py-1 bg-gray-100 text-text-secondary rounded-lg hover:bg-gray-200 transition">Editar</button>
                         </div>
 
                         <div class="flex items-center gap-6 mt-5">
@@ -190,7 +190,7 @@
                                             </a>
                                             <span
                                                 class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
-                                                            {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
+                                                                {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                                                 {{ $evento->estado }}
                                             </span>
                                         </div>
@@ -207,14 +207,14 @@
                                 </div>
                                 @if($evento->estado === 'ABIERTO')
                                     <button wire:click="cerrarEvento({{ $evento->id }})" title="Cerrar Evento y Vender Entradas"
-                                        class="px-3 py-2 text-xs font-black bg-white text-secondary border border-secondary/20 rounded-lg hover:bg-secondary hover:text-white transition-all shadow-sm">
+                                        class="cursor-pointer px-3 py-2 text-xs font-black bg-white text-secondary border border-secondary/20 rounded-lg hover:bg-secondary hover:text-white transition-all shadow-sm">
                                         Cerrar Evento
                                     </button>
                                 @endif
 
                                 @if($evento->estado !== 'FINALIZADO')
                                     <button wire:click="editEvent({{ $evento->id }})"
-                                        class="p-2 text-text-secondary hover:text-primary transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
+                                        class="cursor-pointer p-2 text-text-secondary hover:text-primary transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -222,7 +222,7 @@
                                     </button>
                                     <button wire:click="deleteEvent({{ $evento->id }})"
                                         wire:confirm="¿Estás seguro de que quieres eliminar este evento?"
-                                        class="p-2 text-text-secondary hover:text-red-500 transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
+                                        class="cursor-pointer p-2 text-text-secondary hover:text-red-500 transition-colors bg-white rounded-lg shadow-sm border border-gray-100">
                                         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -240,7 +240,7 @@
                     </div>
 
                     <button wire:click="createEvent"
-                        class="w-full mt-6 bg-gradient-to-r from-primary to-secondary text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-1">
+                        class="cursor-pointer w-full mt-6 bg-gradient-to-r from-primary to-secondary text-white font-bold py-4 rounded-2xl shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all transform hover:-translate-y-1">
                         + Crear nuevo evento
                     </button>
                 </div>
@@ -321,7 +321,7 @@
                             <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil de
                                 Ayuntamiento</h3>
                             <button wire:click="cancelProfileEdit"
-                                class="text-gray-400 hover:text-gray-500 transition-colors">
+                                class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12" />
@@ -371,7 +371,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad
                                     Autónoma</label>
                                 <select wire:model.live="comunidad_autonoma"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="">Selecciona una comunidad</option>
                                     @foreach(array_keys($regions_data) as $region)
                                         <option value="{{ $region }}">{{ $region }}</option>
@@ -384,7 +384,7 @@
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
                                 <select wire:model.live="provincia"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="">Selecciona una provincia</option>
                                     @foreach($this->provinces as $prov)
                                         <option value="{{ $prov }}">{{ $prov }}</option>
@@ -405,16 +405,26 @@
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
                                     de Eventos</label>
-                                <input type="text" wire:model="tipo_evento"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                <select wire:model="tipo_evento"
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona el tipo de evento</option>
+                                    @foreach(\App\Models\Ayuntamiento::TIPO_EVENTO as $tipo)
+                                        <option value="{{ $tipo }}">{{ ucfirst($tipo) }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <!-- Frecuencia -->
                             <div>
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Frecuencia</label>
-                                <input type="text" wire:model="frecuencia"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                <select wire:model="frecuencia"
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="">Selecciona la frecuencia</option>
+                                    @foreach(\App\Models\Ayuntamiento::FRECUENCIA as $f)
+                                        <option value="{{ $f }}">{{ ucfirst(str_replace('_', ' ', $f)) }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <!-- Tipo Espacio -->
@@ -423,7 +433,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
                                     de Espacio</label>
                                 <select wire:model="tipo_espacio"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="">Selecciona un tipo de espacio</option>
                                     @foreach(\App\Models\Ayuntamiento::TIPO_ESPACIO as $espacio)
                                         <option value="{{ $espacio }}">{{ ucfirst(str_replace('_', ' ', $espacio)) }}</option>
@@ -444,9 +454,10 @@
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Facturación</label>
                                 <select wire:model="tipo_facturacion"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="plataforma">Plataforma</option>
-                                    <option value="correo">Correo</option>
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    @foreach(\App\Models\Ayuntamiento::TIPO_FACTURACION as $tf)
+                                        <option value="{{ $tf }}">{{ ucfirst($tf) }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -462,10 +473,10 @@
                     </div>
                     <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
                         <button wire:click="saveProfile"
-                            class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
+                            class="cursor-pointer flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
                             Cambios</button>
                         <button wire:click="cancelProfileEdit"
-                            class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                            class="cursor-pointer flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
                     </div>
                 </div>
             </div>
@@ -486,7 +497,7 @@
                             <h3 class="text-xl font-black text-text-main font-heading" id="modal-title">Finalizar Captación
                             </h3>
                             <button wire:click="cancelCerrarEvento"
-                                class="text-gray-400 hover:text-gray-500 transition-colors">
+                                class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12" />
@@ -515,11 +526,11 @@
 
                         <div class="mt-8 flex flex-col gap-3">
                             <button wire:click="confirmCerrarEvento"
-                                class="w-full bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                                class="cursor-pointer w-full bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">
                                 Guardar y Publicar Evento
                             </button>
                             <button wire:click="cancelCerrarEvento"
-                                class="w-full bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
+                                class="cursor-pointer w-full bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
                                 Cancelar
                             </button>
                         </div>

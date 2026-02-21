@@ -15,7 +15,7 @@
             </div>
         </div>
         <button wire:click="editProfile"
-            class="px-6 py-3 bg-gray-50 text-text-secondary font-bold rounded-xl border border-gray-100 hover:bg-gray-100 transition-all flex items-center gap-2">
+            class="cursor-pointer px-6 py-3 bg-gray-50 text-text-secondary font-bold rounded-xl border border-gray-100 hover:bg-gray-100 transition-all flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -101,9 +101,9 @@
                                         </div>
                                         <div class="text-right flex flex-col items-end gap-2">
                                             <span
-                                                class="text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
+                                                class="cursor-pointer text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
                                             <button wire:click.prevent="toggleSelection({{ $event->id }})"
-                                                class="px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'bg-gray-100 text-text-secondary hover:bg-gray-200' : 'bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
+                                                class="cursor-pointer px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'bg-gray-100 text-text-secondary hover:bg-gray-200' : 'bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
                                                 {{ in_array($event->id, $selectedTickets) ? 'Eliminar del Carrito' : 'Añadir al Carrito' }}
                                             </button>
                                         </div>
@@ -194,7 +194,7 @@
                                         </div>
                                     </div>
                                     <button wire:click="downloadTicket({{ $ticket->id }})"
-                                        class="text-primary hover:text-secondary transition-colors"
+                                        class="cursor-pointer text-primary hover:text-secondary transition-colors"
                                         title="Descargar Entrada">
                                         <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -233,7 +233,7 @@
                                         </div>
                                     </div>
                                     <button wire:click="toggleSelection({{ $item->id }})"
-                                        class="p-1 px-3 bg-accent text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition-all">
+                                        class="cursor-pointer p-1 px-3 bg-accent text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition-all">
                                         Eliminar del Carrito
                                     </button>
                                 </div>
@@ -248,7 +248,7 @@
 
                 <!-- Final Button -->
                 <button wire:click="goToPurchase" @if(count($selectedTickets) === 0) disabled @endif
-                    class="w-full mt-10 inline-flex items-center justify-center gap-3 {{ count($selectedTickets) > 0 ? 'bg-gradient-to-r from-primary via-secondary to-accent shadow-primary/20 hover:shadow-primary/40' : 'bg-gray-200 cursor-not-allowed opacity-50' }} text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform {{ count($selectedTickets) > 0 ? 'hover:-translate-y-1' : '' }} group">
+                    class="cursor-pointer w-full mt-10 inline-flex items-center justify-center gap-3 {{ count($selectedTickets) > 0 ? 'bg-gradient-to-r from-primary via-secondary to-accent shadow-primary/20 hover:shadow-primary/40' : 'bg-gray-200 cursor-not-allowed opacity-50' }} text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform {{ count($selectedTickets) > 0 ? 'hover:-translate-y-1' : '' }} group">
                     <span>Ir a Comprar Entradas</span>
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
@@ -319,7 +319,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad
                                     Autónoma</label>
                                 <select wire:model.live="comunidad_autonoma"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="">Selecciona una comunidad</option>
                                     @foreach(array_keys($regions_data) as $region)
                                         <option value="{{ $region }}">{{ $region }}</option>
@@ -332,7 +332,7 @@
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
                                 <select wire:model.live="provincia"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="">Selecciona una provincia</option>
                                     @foreach($this->provinces as $prov)
                                         <option value="{{ $prov }}">{{ $prov }}</option>
@@ -355,7 +355,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Gustos
                                     Musicales</label>
                                 <select wire:model="gustos_musicales"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="">¿Qué música te gusta?</option>
                                     @foreach(\App\Models\Publico::GUSTOS_MUSICALES as $gusto)
                                         <option value="{{ $gusto }}">{{ ucfirst($gusto) }}</option>
@@ -369,7 +369,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
                                     de Eventos Favoritos</label>
                                 <select wire:model="tipo_eventos_favoritos"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="">¿A qué eventos sueles ir?</option>
                                     @foreach(\App\Models\Publico::TIPO_EVENTOS_FAVORITOS as $tipo)
                                         <option value="{{ $tipo }}">{{ ucfirst($tipo) }}</option>
@@ -380,7 +380,7 @@
                             <!-- Notificaciones -->
                             <div class="flex items-center gap-3 bg-primary/5 p-4 rounded-2xl border border-primary/10">
                                 <input type="checkbox" wire:model="notificaciones"
-                                    class="w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary">
+                                    class="cursor-pointer w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary">
                                 <label class="text-sm font-bold text-text-main">Recibir notificaciones de eventos
                                     similares</label>
                             </div>
@@ -388,10 +388,10 @@
                     </div>
                     <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
                         <button wire:click="saveProfile"
-                            class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
+                            class="cursor-pointer flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
                             Cambios</button>
                         <button wire:click="cancelEdit"
-                            class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                            class="cursor-pointer flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
                     </div>
                 </div>
             </div>

@@ -165,15 +165,15 @@
                     </div>
 
                     <button wire:click="setPlan('publico')"
-                        class="w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'publico' ? 'text-primary' : 'text-text-secondary hover:text-text-main' }}">
+                        class="cursor-pointer w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'publico' ? 'text-primary' : 'text-text-secondary hover:text-text-main' }}">
                         Público
                     </button>
                     <button wire:click="setPlan('artistas')"
-                        class="w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'artistas' ? 'text-secondary' : 'text-text-secondary hover:text-text-main' }}">
+                        class="cursor-pointer w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'artistas' ? 'text-secondary' : 'text-text-secondary hover:text-text-main' }}">
                         Artistas
                     </button>
                     <button wire:click="setPlan('ayuntamientos')"
-                        class="w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'ayuntamientos' ? 'text-accent' : 'text-text-secondary hover:text-text-main' }}">
+                        class="cursor-pointer w-full px-4 py-2 rounded-full text-sm font-bold transition relative z-10 {{ $selectedPlan === 'ayuntamientos' ? 'text-accent' : 'text-text-secondary hover:text-text-main' }}">
                         Organizadores
                     </button>
                 </div>
@@ -204,7 +204,7 @@
                             </li>
                         </ul>
                         <button
-                            class="w-full py-3 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition">Empezar
+                            class="cursor-pointer w-full py-3 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition">Empezar
                             Gratis</button>
                     </div>
 
@@ -246,8 +246,8 @@
                                 Merchandising digital y VIP
                             </li>
                         </ul>
-                        <button
-                            class="w-full py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition">Suscribirse</button>
+                        <button 
+                            class="cursor-pointer w-full py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition">Suscribirse</button>
                     </div>
                     <div
                         class="bg-white p-8 rounded-3xl opacity-50 pointer-events-none filter blur-[1px] select-none flex flex-col border border-gray-100 relative">
@@ -297,7 +297,7 @@
                             </li>
                         </ul>
                         <button
-                            class="w-full py-3 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition">Registrarse</button>
+                            class="cursor-pointer w-full py-3 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition">Registrarse</button>
                     </div>
 
                     <div
@@ -340,7 +340,7 @@
                             </li>
                         </ul>
                         <button
-                            class="w-full py-3 bg-secondary text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition">Mejorar
+                            class="w-full py-3 bg-secondary text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition cursor-pointer">Mejorar
                             Perfil</button>
                     </div>
 
@@ -380,7 +380,7 @@
                             </li>
                         </ul>
                         <button
-                            class="w-full py-3 border-2 border-secondary text-secondary font-bold rounded-xl hover:bg-secondary hover:text-white transition">Contratar
+                            class="w-full py-3 border-2 border-secondary text-secondary font-bold rounded-xl hover:bg-secondary hover:text-white transition cursor-pointer">Contratar
                             Pro</button>
                     </div>
 
@@ -414,7 +414,7 @@
                             </li>
                         </ul>
                         <button
-                            class="w-full py-3 border-2 border-accent text-accent font-bold rounded-xl hover:bg-accent hover:text-white transition">Comenzar</button>
+                            class="w-full py-3 border-2 border-accent text-accent font-bold rounded-xl hover:bg-accent hover:text-white transition cursor-pointer">Comenzar</button>
                     </div>
 
                     <div
@@ -448,7 +448,7 @@
                             </li>
                         </ul>
                         <button
-                            class="w-full py-3 bg-accent text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition">Contactar
+                            class="w-full py-3 bg-accent text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition cursor-pointer">Contactar
                             Ventas</button>
                     </div>
 
@@ -480,7 +480,7 @@
                             </li>
                         </ul>
                         <button
-                            class="w-full py-3 border-2 border-accent text-accent font-bold rounded-xl hover:bg-accent hover:text-white transition">Agendar
+                            class="w-full py-3 border-2 border-accent text-accent font-bold rounded-xl hover:bg-accent hover:text-white transition cursor-pointer">Agendar
                             Demo</button>
                     </div>
                 @endif

@@ -31,11 +31,11 @@
                             </div>
                             <div class="flex gap-2">
                                 <button wire:click="aceptarInvitacion({{ $invitacion->id }})" 
-                                    class="flex-1 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-sm">
+                                    class="cursor-pointer flex-1 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-sm">
                                     Aceptar
                                 </button>
                                 <button wire:click="rechazarInvitacion({{ $invitacion->id }})" 
-                                    class="flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
+                                    class="cursor-pointer flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
                                     Rechazar
                                 </button>
                             </div>
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <button
-                            class="absolute -bottom-2 -right-2 p-2 bg-white rounded-xl shadow-md border border-gray-100 text-text-secondary hover:text-secondary transition-colors">
+                            class="cursor-pointer absolute -bottom-2 -right-2 p-2 bg-white rounded-xl shadow-md border border-gray-100 text-text-secondary hover:text-secondary transition-colors">
                             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -147,7 +147,7 @@
                                 </p>
                             </div>
                             <button wire:click="editProfile"
-                                class="px-4 py-2 bg-gray-50 text-text-secondary font-bold rounded-xl border border-gray-100 hover:bg-gray-100 transition-all text-sm">Editar
+                                class="cursor-pointer px-4 py-2 bg-gray-50 text-text-secondary font-bold rounded-xl border border-gray-100 hover:bg-gray-100 transition-all text-sm">Editar
                                 perfil</button>
                         </div>
 
@@ -291,7 +291,7 @@
                         <div class="flex items-center justify-between mb-6">
                             <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil de
                                 Artista</h3>
-                            <button wire:click="cancelEdit" class="text-gray-400 hover:text-gray-500 transition-colors">
+                            <button wire:click="cancelEdit" class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12" />
@@ -332,7 +332,7 @@
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo</label>
                                 <select wire:model="tipo"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                    class="cursor-pointer cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
                                     @foreach(\App\Models\Artista::TIPO as $t)
                                         <option value="{{ $t }}">{{ ucfirst($t) }}</option>
                                     @endforeach
@@ -345,7 +345,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Género
                                     Musical</label>
                                 <select wire:model="genero_musical"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
                                     @foreach(\App\Models\Artista::GENERO_MUSICAL as $g)
                                         <option value="{{ $g }}">{{ ucfirst($g) }}</option>
                                     @endforeach
@@ -382,7 +382,7 @@
                             <!-- Equipo Propio -->
                             <div class="flex items-center gap-3 bg-secondary/5 p-4 rounded-2xl border border-secondary/10">
                                 <input type="checkbox" wire:model="equipo_propio"
-                                    class="w-5 h-5 text-secondary rounded border-gray-300 focus:ring-secondary">
+                                    class="cursor-pointer w-5 h-5 text-secondary rounded border-gray-300 focus:ring-secondary">
                                 <label class="text-sm font-bold text-text-main">Dispongo de equipo propio</label>
                             </div>
 
@@ -392,7 +392,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Recibir
                                     Facturas mediante</label>
                                 <select wire:model="recibir_facturas"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
                                     @foreach(\App\Models\Artista::RECIBIR_FACTURAS as $rf)
                                         <option value="{{ $rf }}">{{ ucfirst($rf) }}</option>
                                     @endforeach
@@ -402,10 +402,10 @@
                     </div>
                     <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
                         <button wire:click="saveProfile"
-                            class="flex-1 bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
+                            class="cursor-pointer flex-1 bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
                             Cambios</button>
                         <button wire:click="cancelEdit"
-                            class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                            class="cursor-pointer flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
                     </div>
                 </div>
             </div>
