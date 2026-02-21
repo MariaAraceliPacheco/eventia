@@ -31,15 +31,19 @@
 
         .logo {
             background-color: #ffffff;
-            width: 60px;
-            height: 60px;
-            line-height: 60px;
-            border-radius: 16px;
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
             display: inline-block;
-            font-size: 32px;
-            font-weight: bold;
-            color: #25e4ce;
             margin-bottom: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .content {
@@ -134,12 +138,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">E</div>
+            <div class="logo">
+                <img src="{{ $message->embed(public_path('images/EventiaLogo.png')) }}" alt="Logo" width="70"
+                    height="70">
+            </div>
         </div>
         <div class="content">
             <h1>Hola, {{ $user->nombre }}</h1>
             <p>Has recibido este correo porque solicitaste restablecer la contraseña de tu cuenta en
-                <strong>Eventia</strong>.</p>
+                <strong>Eventia</strong>.
+            </p>
 
             <div class="steps-container">
                 <div class="step">

@@ -58,7 +58,7 @@
 
                     <div class="absolute top-8 right-8 flex flex-col gap-2">
                         <button
-                            class="p-4 bg-white/10 backdrop-blur-md rounded-2xl text-white hover:bg-primary transition-all duration-300 group/btn">
+                            class="cursor-pointer p-4 bg-white/10 backdrop-blur-md rounded-2xl text-white hover:bg-primary transition-all duration-300 group/btn">
                             <svg class="w-6 h-6 group-hover/btn:scale-110 transition-transform" fill="none"
                                 viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -89,10 +89,10 @@
                 </div>
                 <div class="flex items-center gap-6 bg-white p-3 rounded-2xl shadow-sm border border-gray-100">
                     <button wire:click="decrement"
-                        class="w-12 h-12 rounded-xl bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-text-main font-black text-xl transition-colors">-</button>
+                        class="cursor-pointer w-12 h-12 rounded-xl bg-gray-50 hover:bg-gray-100 flex items-center justify-center text-text-main font-black text-xl transition-colors">-</button>
                     <span class="text-3xl font-black text-primary min-w-[40px] text-center">{{ $quantity }}</span>
                     <button wire:click="increment"
-                        class="w-12 h-12 rounded-xl {{ $quantity >= min(5, $disponibles) ? 'bg-gray-200 cursor-not-allowed text-gray-400' : 'bg-primary text-white hover:opacity-90' }} flex items-center justify-center font-black text-xl transition-colors shadow-lg shadow-primary/20"
+                        class="cursor-pointer w-12 h-12 rounded-xl {{ $quantity >= min(5, $disponibles) ? 'bg-gray-200 cursor-not-allowed text-gray-400' : 'bg-primary text-white hover:opacity-90' }} flex items-center justify-center font-black text-xl transition-colors shadow-lg shadow-primary/20"
                         @if($quantity >= min(5, $disponibles)) disabled @endif>+</button>
                 </div>
             </div>
@@ -162,7 +162,7 @@
                     </div>
 
                     <button wire:click="buy"
-                        class="w-full mt-10 bg-gradient-to-r from-primary via-secondary to-accent text-white font-black py-5 rounded-2xl shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-1 hover:scale-[1.02] flex items-center justify-center gap-3 active:scale-95 group">
+                        class="cursor-pointer w-full mt-10 bg-gradient-to-r from-primary via-secondary to-accent text-white font-black py-5 rounded-2xl shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-1 hover:scale-[1.02] flex items-center justify-center gap-3 active:scale-95 group">
                         Confirmar y Pagar
                         <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none"
                             viewBox="0 0 24 24" stroke="currentColor">

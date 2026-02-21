@@ -30,9 +30,8 @@
                 <div class="flex-shrink-0 flex items-center gap-2">
                     <a href="/" class="flex items-center gap-2">
                         <!-- Logo Icon -->
-                        <div
-                            class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                            E
+                        <div>
+                            <img src="{{ asset('images/EventiaLogo.png') }}" alt="Logo" width="64" height="64">
                         </div>
                         <span class="font-heading font-bold text-2xl tracking-tight">eventia</span>
                     </a>
@@ -160,9 +159,8 @@
                 <!-- Branding & Social -->
                 <div class="flex flex-col items-start md:items-end">
                     <div class="flex items-center gap-2 mb-4">
-                        <div
-                            class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-xl">
-                            E
+                       <div>
+                            <img src="{{ asset('images/EventiaLogo.png') }}" alt="Logo" width="64" height="64">
                         </div>
                         <span class="font-heading font-bold text-2xl tracking-tight">eventia</span>
                     </div>

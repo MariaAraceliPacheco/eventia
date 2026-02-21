@@ -25,17 +25,17 @@
                 </div>
                 
                 <div class="grid grid-cols-3 gap-4">
-                    <button wire:click="$set('paymentMethod', 'card')" class="p-4 border-2 {{ $paymentMethod === 'card' ? 'border-primary bg-primary/5' : 'border-gray-100 bg-white hover:border-gray-200' }} rounded-2xl flex flex-col items-center justify-center gap-2 transition-all">
+                    <button wire:click="$set('paymentMethod', 'card')" class="cursor-pointer p-4 border-2 {{ $paymentMethod === 'card' ? 'border-primary bg-primary/5' : 'border-gray-100 bg-white hover:border-gray-200' }} rounded-2xl flex flex-col items-center justify-center gap-2 transition-all">
                         <svg class="w-8 h-8 {{ $paymentMethod === 'card' ? 'text-primary' : 'text-gray-400' }}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                         </svg>
                         <span class="text-xs font-bold {{ $paymentMethod === 'card' ? 'text-primary' : 'text-gray-500' }}">Tarjeta</span>
                     </button>
-                    <button wire:click="$set('paymentMethod', 'paypal')" class="p-4 border-2 {{ $paymentMethod === 'paypal' ? 'border-primary bg-primary/5' : 'border-gray-100 bg-white hover:border-gray-200' }} rounded-2xl flex flex-col items-center justify-center gap-2 transition-all">
+                    <button wire:click="$set('paymentMethod', 'paypal')" class="cursor-pointer p-4 border-2 {{ $paymentMethod === 'paypal' ? 'border-primary bg-primary/5' : 'border-gray-100 bg-white hover:border-gray-200' }} rounded-2xl flex flex-col items-center justify-center gap-2 transition-all">
                         <span class="text-3xl">💳</span>
                         <span class="text-xs font-bold {{ $paymentMethod === 'paypal' ? 'text-primary' : 'text-gray-500' }}">PayPal</span>
                     </button>
-                    <button wire:click="$set('paymentMethod', 'bizum')" class="p-4 border-2 {{ $paymentMethod === 'bizum' ? 'border-primary bg-primary/5' : 'border-gray-100 bg-white hover:border-gray-200' }} rounded-2xl flex flex-col items-center justify-center gap-2 transition-all">
+                    <button wire:click="$set('paymentMethod', 'bizum')" class="cursor-pointer p-4 border-2 {{ $paymentMethod === 'bizum' ? 'border-primary bg-primary/5' : 'border-gray-100 bg-white hover:border-gray-200' }} rounded-2xl flex flex-col items-center justify-center gap-2 transition-all">
                         <span class="text-3xl">📱</span>
                         <span class="text-xs font-bold {{ $paymentMethod === 'bizum' ? 'text-primary' : 'text-gray-500' }}">Bizum</span>
                     </button>
@@ -193,7 +193,7 @@
                     </div>
                 </div>
 
-                <button wire:click="processPayment" class="w-full mt-6 bg-gradient-to-r from-primary via-secondary to-accent text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-1 hover:scale-[1.02] flex items-center justify-center gap-3 active:scale-95 group">
+                <button wire:click="processPayment" class="cursor-pointer w-full mt-6 bg-gradient-to-r from-primary via-secondary to-accent text-white font-black py-4 rounded-2xl shadow-xl shadow-primary/30 hover:shadow-primary/50 transition-all transform hover:-translate-y-1 hover:scale-[1.02] flex items-center justify-center gap-3 active:scale-95 group">
                     <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                     </svg>

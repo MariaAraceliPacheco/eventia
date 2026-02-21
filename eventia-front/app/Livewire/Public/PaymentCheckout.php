@@ -62,7 +62,7 @@ class PaymentCheckout extends Component
             }
 
             // Create Entrada record
-            \App\Models\Entrada::create([
+            $entrada = \App\Models\Entrada::create([
                 'id_usuario' => auth()->id(),
                 'id_evento' => $this->eventId,
                 'categoria' => $this->category,
@@ -71,6 +71,15 @@ class PaymentCheckout extends Component
                 'codigo_ticket' => strtoupper(\Illuminate\Support\Str::random(8)) . '-' . rand(1000, 9999),
                 'fecha_compra' => now()
             ]);
+
+            // Send confirmation email
+            try {
+                \Illuminate\Support\Facades\Mail::to($this->email)
+                    ->send(new \App\Mail\ConfirmacionCompraEntrada($entrada));
+            } catch (\Exception $e) {
+                // Log the error or handle it silently to not break the payment flow
+                \Illuminate\Support\Facades\Log::error('Error enviando email de confirmación: ' . $e->getMessage());
+            }
         }
 
         session()->flash('notificar', [
