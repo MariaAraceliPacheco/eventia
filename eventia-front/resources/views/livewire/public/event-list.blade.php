@@ -111,7 +111,7 @@
                                 @foreach($evento->artistas->take(3) as $artist)
                                     <div class="w-8 h-8 rounded-full border-2 border-white bg-gray-200 overflow-hidden shadow-sm">
                                         @if($artist->img_logo)
-                                            <img src="{{ asset('storage/profiles/artistas/' . $artist->img_logo) }}" class="w-full h-full object-cover">
+                                            <img src="{{ asset('profiles/artistas/' . $artist->img_logo) }}" class="w-full h-full object-cover">
                                         @else
                                             <div class="w-full h-full flex items-center justify-center text-[10px] font-black text-text-secondary">
                                                 {{ substr($artist->nombre_artistico, 0, 1) }}

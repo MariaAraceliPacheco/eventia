@@ -62,7 +62,12 @@
                                     <div class="flex items-center gap-5 relative">
                                         <div
                                             class="w-16 h-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl group-hover:rotate-12 transition-transform">
-                                            {{ $event->estado === 'FINALIZADO' ? '🏁' : '🎟️' }}
+                                                @if ($event->foto)
+                                                    <img src="{{ asset('storage/profiles/eventos/' . $event->foto) }}"
+                                                        class="w-full h-full object-cover rounded-2xl">
+                                                @else
+                                                    🎟️
+                                                @endif
                                         </div>
                                         <div class="flex-1">
                                             <div class="flex items-center gap-2">

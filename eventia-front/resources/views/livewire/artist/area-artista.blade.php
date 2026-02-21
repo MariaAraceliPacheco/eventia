@@ -22,7 +22,12 @@
                         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
                             <div class="flex items-center gap-3">
                                 <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-xl">
-                                    🏛️
+                                    @if ($invitacion->evento->ayuntamiento->imagen)
+                                        <img src="{{ asset('storage/profiles/ayuntamientos/' . $invitacion->evento->ayuntamiento->imagen) }}"
+                                            class="w-full h-full object-cover rounded-2xl">
+                                    @else
+                                        🏛️
+                                    @endif
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="text-sm font-bold text-text-main truncate">{{ $invitacion->evento->ayuntamiento->nombre_institucion }}</h4>
@@ -74,7 +79,14 @@
                                 class="group flex items-center gap-4 p-4 rounded-2xl hover:bg-gray-50 border border-transparent hover:border-gray-100 transition-all cursor-pointer">
                                 <div
                                     class="w-14 h-14 rounded-xl bg-gradient-to-br from-secondary/10 to-accent/10 flex items-center justify-center text-secondary font-bold overflow-hidden">
-                                    <span class="group-hover:scale-110 transition-transform duration-300">📅</span>
+                                    <span class="group-hover:scale-110 transition-transform duration-300">
+                                        @if ($evento->foto)
+                                            <img src="{{ asset('storage/profiles/eventos/' . $evento->foto) }}"
+                                                class="w-full h-full object-cover rounded-2xl">
+                                        @else
+                                            📅
+                                        @endif
+                                    </span>
                                 </div>
                                 <div class="flex-1">
                                     <h4
@@ -117,7 +129,7 @@
                             <div
                                 class="w-full h-full rounded-[22px] bg-white flex items-center justify-center text-4xl">
                                 @if($artista->img_logo)
-                                    <img src="{{ asset('profiles/artistas/' . $artista->img_logo) }}"
+                                    <img src="{{ asset('storage/profiles/artistas/' . $artista->img_logo) }}"
                                         alt="{{ $artista->nombre_artistico }}"
                                         class="w-full h-full object-cover rounded-[22px]">
                                 @else
@@ -189,7 +201,14 @@
                                 <div class="flex items-center gap-3">
                                     <div
                                         class="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-lg shadow-sm">
-                                        🎵</div>
+                                        @if($evento->foto)
+                                            <img src="{{ asset('storage/profiles/eventos/' . $evento->foto) }}"
+                                                alt="{{ $evento->nombre_evento }}"
+                                                class="w-full h-full object-cover rounded-[22px]">
+                                        @else
+                                            🎵
+                                        @endif    
+                                    </div>
                                     <div>
                                         <h4 class="text-sm font-bold text-text-main">{{ $evento->nombre_evento }}</h4>
                                         <p class="text-[11px] text-text-secondary">
@@ -319,7 +338,7 @@
                                         <img src="{{ $editImgLogo->temporaryUrl() }}"
                                             class="w-20 h-20 rounded-xl object-cover border border-gray-200">
                                     @else
-                                        <img src="{{ asset('profiles/artistas/' . $artista->img_logo) }}"
+                                        <img src="{{ asset('storage/profiles/artistas/' . $artista->img_logo) }}"
                                             class="w-20 h-20 rounded-xl object-cover border border-gray-200">
                                     @endif
                                     <input type="file" wire:model="editImgLogo"

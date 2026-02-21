@@ -24,7 +24,7 @@ class ArtistList extends Component
                     'name' => $artista->nombre_artistico,
                     'genre' => $artista->genero_musical,
                     'description' => $artista->descripcion ?? 'Artista profesional con amplia trayectoria.',
-                    'image' => '🎤',
+                    'image' => $artista->img_logo,
                     'events' => ['Próximamente'],
                     'town_halls' => ['Varios'],
                     'color' => 'secondary'

@@ -24,7 +24,7 @@ class TownHallList extends Component
                     'name' => $ayuntamiento->nombre_institucion,
                     'description' => 'Institución comprometida con la cultura y el ocio.',
                     'events' => ['Próximamente'],
-                    'image' => '🏛️',
+                    'image' => $ayuntamiento->imagen,
                     'color' => 'primary'
                 ];
             })

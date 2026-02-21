@@ -220,7 +220,13 @@
                 class="bg-white rounded-[40px] shadow-sm border border-gray-100 p-10 flex items-center gap-8 group hover:border-secondary/30 transition-all">
                 <div
                     class="w-20 h-20 rounded-2xl bg-secondary/10 flex items-center justify-center text-3xl group-hover:scale-110 transition-transform">
-                    🏛️</div>
+                    @if ($evento->ayuntamiento->imagen)
+                        <img src="{{ asset('profiles/ayuntamientos/' . $evento->ayuntamiento->imagen) }}"
+                            class="w-full h-full object-cover rounded-2xl">
+                    @else
+                        🏛️
+                    @endif
+                </div>
                 <div class="flex-1">
                     <h4 class="text-xl font-bold text-text-main font-heading mb-1">Organizado por
                         {{ $evento->ayuntamiento->nombre_institucion }}</h4>

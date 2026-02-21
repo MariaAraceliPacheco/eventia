@@ -34,7 +34,12 @@
                     <!-- Icon / Image -->
                     <div class="w-24 h-24 rounded-3xl bg-gradient-to-br from-{{ $th['color'] }} to-{{ $th['color'] === 'primary' ? 'secondary' : 'accent' }} p-1 flex-shrink-0 shadow-lg shadow-{{ $th['color'] }}/20">
                         <div class="w-full h-full rounded-[22px] bg-white flex items-center justify-center text-4xl group-hover:rotate-12 transition-transform duration-300">
-                            {{ $th['image'] }}
+                            @if($th['image'])
+                                    <img src="{{ asset('profiles/ayuntamientos/' . $th['image']) }}"
+                                        class="w-full h-full object-cover rounded-2xl">
+                                @else
+                                    <span class="text-xl">🏛️</span>
+                                @endif
                         </div>
                     </div>
 

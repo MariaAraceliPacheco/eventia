@@ -44,7 +44,7 @@
                                     <div class="flex items-center gap-3">
                                         <div class="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-100">
                                             @if($artist->img_logo)
-                                                <img src="{{ asset('storage/profiles/artistas/' . $artist->img_logo) }}" class="w-full h-full object-cover">
+                                                <img src="{{ asset('profiles/artistas/' . $artist->img_logo) }}" class="w-full h-full object-cover">
                                             @else
                                                 <span class="text-xs font-black text-gray-400 uppercase">{{ substr($artist->nombre_artistico, 0, 1) }}</span>
                                             @endif

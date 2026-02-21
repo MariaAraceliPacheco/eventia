@@ -96,7 +96,14 @@
                                 <div class="flex items-center gap-4">
                                     <div
                                         class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
-                                        🎵</div>
+                                        @if($evento->foto)
+                                            <img src="{{ asset('storage/profiles/eventos/' . $evento->foto) }}"
+                                                alt="{{ $evento->nombre_evento }}"
+                                                class="w-full h-full object-cover rounded-[22px]">
+                                        @else
+                                            🎵
+                                        @endif    
+                                    </div>
                                     <div>
                                         <h4
                                             class="text-sm font-bold text-text-main group-hover:text-secondary transition-colors">
