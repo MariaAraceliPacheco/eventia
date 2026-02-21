@@ -44,12 +44,10 @@ class ResetPasswordNotification extends Notification
 
         return (new MailMessage)
             ->subject(Lang::get('Recuperación de contraseña - Eventia'))
-            ->greeting('¡Hola, ' . $notifiable->nombre . '!')
-            ->line(Lang::get('Recibiste este correo porque solicitaste restablecer la contraseña de tu cuenta en Eventia.'))
-            ->action(Lang::get('Restablecer Contraseña'), $url)
-            ->line(Lang::get('Este enlace de restablecimiento de contraseña caducará en :count minutos.', ['count' => config('auth.passwords.' . config('auth.defaults.passwords') . '.expire')]))
-            ->line(Lang::get('Si no solicitaste un restablecimiento de contraseña, no es necesario realizar ninguna otra acción.'))
-            ->salutation('Saludos, el equipo de Eventia');
+            ->view('emails.reset-password', [
+                'user' => $notifiable,
+                'url' => $url,
+            ]);
     }
 
     /**
