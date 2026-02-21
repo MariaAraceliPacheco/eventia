@@ -73,7 +73,11 @@ class PaymentCheckout extends Component
             ]);
         }
 
-        session()->flash('message', '¡Pago procesado con éxito! Ya puedes ver tus entradas en tu área.');
+        session()->flash('notificar', [
+            'titulo' => '¡Pago Procesado!',
+            'mensaje' => 'Tus entradas han sido compradas con éxito.',
+            'tipo' => 'success'
+        ]);
         return redirect()->route('public.area');
     }
 

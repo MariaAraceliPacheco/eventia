@@ -14,7 +14,7 @@
                         Simplificamos la gestión, centralizamos la logística y mejoramos la experiencia para todos.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="#events"
+                        <a href="{{ route('public.event-list') }}"
                             class="px-8 py-4 bg-primary text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:bg-primary/90 transition transform hover:-translate-y-1">
                             Explorar Eventos
                         </a>
@@ -69,7 +69,8 @@
                     <h2 class="text-3xl md:text-4xl font-bold font-heading mb-2">Eventos Destacados</h2>
                     <p class="text-text-secondary">Descubre los mejores conciertos y festivales cerca de ti.</p>
                 </div>
-                <a href="#" class="hidden md:flex items-center text-primary font-medium hover:underline">
+                <a href="{{ route('public.event-list') }}"
+                    class="hidden md:flex items-center text-primary font-medium hover:underline">
                     Ver todos <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" class="w-4 h-4 ml-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
@@ -246,7 +247,7 @@
                                 Merchandising digital y VIP
                             </li>
                         </ul>
-                        <button 
+                        <button
                             class="cursor-pointer w-full py-3 bg-gradient-to-r from-primary to-secondary text-white font-bold rounded-xl shadow-md hover:shadow-lg transform hover:-translate-y-1 transition">Suscribirse</button>
                     </div>
                     <div

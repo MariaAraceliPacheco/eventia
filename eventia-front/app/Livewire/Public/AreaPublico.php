@@ -233,8 +233,10 @@ class AreaPublico extends Component
         $pdf = Pdf::loadView('pdf.ticket', ['ticket' => $ticket]);
 
         // Use stream or download
+        $filename = 'Entrada-' . \Illuminate\Support\Str::slug($ticket->evento->nombre_evento) . '-' . time() . '.pdf';
+
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->output();
-        }, 'Entrada-' . $ticket->evento->nombre_evento . '.pdf');
+        }, $filename);
     }
 }

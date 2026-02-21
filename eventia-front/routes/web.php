@@ -19,6 +19,7 @@ use App\Livewire\Public\TownHallList;
 use App\Livewire\Public\ArtistList;
 use App\Livewire\Admin\Admin;
 use App\Http\Controllers\PublicoController;
+use App\Livewire\Public\EventList;
 
 Route::get('/', HomePage::class)->name('home');
 
@@ -33,6 +34,7 @@ Route::get('/preguntas-ayuntamiento', TownHallQuestions::class)->name('town-hall
 Route::get('/evento/{id}', EventDetail::class)->name('public.event-detail');
 Route::get('/ayuntamiento/{id}', TownHallProfile::class)->name('public.town-hall-profile');
 Route::get('/ayuntamientos', TownHallList::class)->name('public.town-hall-list');
+Route::get('/eventos', EventList::class)->name('public.event-list');
 Route::get('/artistas', ArtistList::class)->name('public.artist-list');
 Route::get('/artista/{id}', \App\Livewire\Public\ArtistProfile::class)->name('public.artist-profile');
 
