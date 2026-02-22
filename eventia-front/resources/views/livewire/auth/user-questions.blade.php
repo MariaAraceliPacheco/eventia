@@ -41,7 +41,7 @@
                     <label class="block text-sm font-medium text-text-main">Preferencias musicales</label>
                     <div class="relative">
                         <select wire:model="gustos_musicales"
-                            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-32">
+                            class="w-full px-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-12">
                             <option value="pop">Pop</option>
                             <option value="rock">Rock</option>
                             <option value="reggaeton">Reggaeton</option>
@@ -57,7 +57,7 @@
                 <div class="space-y-1">
                     <label class="block text-sm font-medium text-text-main">Tipo de eventos preferidos</label>
                     <select wire:model="tipo_eventos_favoritos"
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-32">
+                        class="w-full px-4 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all appearance-none cursor-pointer h-12">
                         <option value="festivales">Festivales</option>
                         <option value="ferias">Ferias</option>
                         <option value="conciertos">Conciertos</option>

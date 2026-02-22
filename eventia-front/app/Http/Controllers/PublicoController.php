@@ -11,24 +11,20 @@ class PublicoController extends Controller
 {
 
     //guardar datos del perfil
-    public function store(Request $request)
+    public function store(\App\Http\Requests\StorePublicoRequest $request)
     {
         //se obtiene el usuario que ha iniciado sesion, para asi poder acceder a su id
         $user = auth()->user();
 
-        //validacion de los campos del formulario
-        $validated = $request->validate([
-            'comunidad_autonoma' => 'required|string',
-            'localidad' => 'required|string',
-            'provincia' => 'required|string',
-            'gustos_musicales' => 'required|string',
-            'tipo_eventos_favoritos' => 'required|string',
-            'notificaciones' => 'sometimes|boolean',
-        ]);
+        // Los datos ya están validados gracias al Form Request
+        $validated = $request->validated();
 
-        self::createProfile($validated, $user->id);
-
-        return redirect()->route('public.area')->with('success', 'Perfil creado correctamente');
+        try {
+            self::createProfile($validated, $user->id);
+            return redirect()->route('public.area')->with('success', 'Perfil creado correctamente');
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', 'Error al guardar el perfil: ' . $e->getMessage());
+        }
     }
 
     /**
