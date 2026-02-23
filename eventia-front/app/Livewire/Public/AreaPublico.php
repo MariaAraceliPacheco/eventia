@@ -10,6 +10,7 @@ class AreaPublico extends Component
 {
     public $searchEvent = '';
     public $selectedTickets = [];
+    public $cartCount = 0;
 
     // Profile Edit Modal properties
     public $showProfileModal = false;
@@ -56,6 +57,19 @@ class AreaPublico extends Component
         } else {
             $this->user = $authUser;
             $this->publico = $this->user->perfilPublico;
+        }
+
+        // Load cart from database
+        $this->loadCart();
+    }
+
+    public function loadCart()
+    {
+        if (auth()->check()) {
+            $this->selectedTickets = \App\Models\Carrito::where('id_usuario', auth()->id())
+                ->pluck('id_evento')
+                ->toArray();
+            $this->cartCount = count($this->selectedTickets);
         }
     }
 
@@ -188,10 +202,14 @@ class AreaPublico extends Component
             }
         }
 
-        // Fetch real items "in cart" (selected tickets)
+        // Fetch cart items from database
         $cartItems = [];
-        if (!empty($this->selectedTickets)) {
-            $cartItems = \App\Models\Evento::whereIn('id', $this->selectedTickets)->get();
+        if (auth()->check()) {
+            $cartItems = \App\Models\Carrito::with('evento')
+                ->where('id_usuario', auth()->id())
+                ->get()
+                ->pluck('evento')
+                ->filter();
         }
 
         return view('livewire.public.area-publico', [
@@ -204,11 +222,24 @@ class AreaPublico extends Component
 
     public function toggleSelection($eventId)
     {
-        if (in_array($eventId, $this->selectedTickets)) {
-            $this->selectedTickets = array_diff($this->selectedTickets, [$eventId]);
-        } else {
-            $this->selectedTickets[] = $eventId;
+        if (!auth()->check()) {
+            return;
         }
+
+        $existing = \App\Models\Carrito::where('id_usuario', auth()->id())
+            ->where('id_evento', $eventId)
+            ->first();
+
+        if ($existing) {
+            $existing->delete();
+        } else {
+            \App\Models\Carrito::create([
+                'id_usuario' => auth()->id(),
+                'id_evento' => $eventId,
+            ]);
+        }
+
+        $this->loadCart();
     }
 
     public function goToPurchase()
