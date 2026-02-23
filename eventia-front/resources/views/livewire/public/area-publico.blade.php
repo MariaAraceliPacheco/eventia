@@ -62,12 +62,12 @@
                                     <div class="flex items-center gap-5 relative">
                                         <div
                                             class="w-16 h-16 rounded-xl bg-white shadow-sm flex items-center justify-center text-2xl group-hover:rotate-12 transition-transform">
-                                                @if ($event->foto)
-                                                    <img src="{{ asset('storage/profiles/eventos/' . $event->foto) }}"
-                                                        class="w-full h-full object-cover rounded-2xl">
-                                                @else
-                                                    🎟️
-                                                @endif
+                                            @if ($event->foto)
+                                                <img src="{{ asset('storage/profiles/eventos/' . $event->foto) }}"
+                                                    class="w-full h-full object-cover rounded-2xl">
+                                            @else
+                                                🎟️
+                                            @endif
                                         </div>
                                         <div class="flex-1">
                                             <div class="flex items-center gap-2">
@@ -108,7 +108,7 @@
                                             <span
                                                 class="cursor-pointer text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
                                             <button wire:click.prevent="toggleSelection({{ $event->id }})"
-                                                class="cursor-pointer px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'bg-gray-100 text-text-secondary hover:bg-gray-200' : 'bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
+                                                class="cursor-pointer px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'cursor-pointer bg-gray-100 text-text-secondary hover:bg-gray-200' : 'cursor-pointer bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
                                                 {{ in_array($event->id, $selectedTickets) ? 'Eliminar del Carrito' : 'Añadir al Carrito' }}
                                             </button>
                                         </div>
@@ -141,32 +141,51 @@
                     <!-- Próximos Eventos (Highlighted) -->
                     @if(count($upcomingEvents) > 0)
                         <div>
-                            <h4 class="text-xs font-black text-primary uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
+                            <h4
+                                class="text-xs font-black text-primary uppercase tracking-[0.2em] mb-4 flex items-center gap-3">
                                 <span class="flex h-2 w-2 relative">
-                                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                                    <span
+                                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
                                 </span>
                                 Próximos Eventos (Esta semana)
                             </h4>
                             <div class="grid grid-cols-1 gap-4">
                                 @foreach($upcomingEvents as $upEvent)
-                                    <a href="{{ route('public.event-detail', $upEvent->id) }}" class="group relative bg-gradient-to-br from-primary/5 to-white border border-primary/20 p-5 rounded-3xl transition-all hover:shadow-lg hover:shadow-primary/5">
+                                    <a href="{{ route('public.event-detail', $upEvent->id) }}"
+                                        class="group relative bg-gradient-to-br from-primary/5 to-white border border-primary/20 p-5 rounded-3xl transition-all hover:shadow-lg hover:shadow-primary/5">
                                         <div class="flex items-center gap-5">
-                                            <div class="w-14 h-14 bg-white rounded-2xl shadow-sm flex flex-col items-center justify-center border border-primary/10">
-                                                <span class="text-[10px] font-black text-primary uppercase">{{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->translatedFormat('M') }}</span>
-                                                <span class="text-xl font-black text-text-main -mt-1">{{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->format('d') }}</span>
+                                            <div
+                                                class="w-14 h-14 bg-white rounded-2xl shadow-sm flex flex-col items-center justify-center border border-primary/10">
+                                                <span
+                                                    class="text-[10px] font-black text-primary uppercase">{{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->translatedFormat('M') }}</span>
+                                                <span
+                                                    class="text-xl font-black text-text-main -mt-1">{{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->format('d') }}</span>
                                             </div>
                                             <div class="flex-1">
-                                                <h5 class="text-sm font-black text-text-main group-hover:text-primary transition-colors">{{ $upEvent->nombre_evento }}</h5>
+                                                <h5
+                                                    class="text-sm font-black text-text-main group-hover:text-primary transition-colors">
+                                                    {{ $upEvent->nombre_evento }}</h5>
                                                 <div class="flex items-center gap-2 mt-1">
-                                                    <span class="text-[10px] font-bold text-text-secondary flex items-center gap-1">
-                                                        <svg class="w-3 h-3 text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                                                        Quedan {{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->diffForHumans(null, true) }}
+                                                    <span
+                                                        class="text-[10px] font-bold text-text-secondary flex items-center gap-1">
+                                                        <svg class="w-3 h-3 text-secondary" fill="none" viewBox="0 0 24 24"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                        </svg>
+                                                        Quedan
+                                                        {{ \Carbon\Carbon::parse($upEvent->fecha_inicio)->diffForHumans(null, true) }}
                                                     </span>
                                                 </div>
                                             </div>
-                                            <div class="p-2 bg-white rounded-xl shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
-                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                                            <div
+                                                class="p-2 bg-white rounded-xl shadow-sm group-hover:bg-primary group-hover:text-white transition-all">
+                                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M9 5l7 7-7 7" />
+                                                </svg>
                                             </div>
                                         </div>
                                     </a>
@@ -193,9 +212,11 @@
                                         </div>
                                         <div>
                                             <h5 class="text-sm font-bold text-text-main">
-                                                {{ $ticket->evento->nombre_evento }}</h5>
+                                                {{ $ticket->evento->nombre_evento }}
+                                            </h5>
                                             <p class="text-[11px] text-text-secondary">{{ $ticket->categoria }} • ID:
-                                                {{ $ticket->codigo_ticket }}</p>
+                                                {{ $ticket->codigo_ticket }}
+                                            </p>
                                         </div>
                                     </div>
                                     <button wire:click="downloadTicket({{ $ticket->id }})"
@@ -222,29 +243,53 @@
                             <span class="w-2 h-2 bg-accent rounded-full"></span>
                             En el carrito
                         </h4>
-                        <div class="space-y-3 max-h-[220px] overflow-y-auto pr-2 custom-scrollbar">
+                        <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
                             @forelse($cartItems as $item)
-                                <div
-                                    class="p-4 bg-primary/5 border-primary shadow-md border rounded-2xl flex items-center justify-between transition-all">
-                                    <div class="flex items-center gap-4">
-                                        <div
-                                            class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm">
-                                            🛒</div>
-                                        <div>
-                                            <h5 class="text-sm font-bold text-text-main">{{ $item->nombre_evento }}</h5>
-                                            <p class="text-[11px] text-primary">
-                                                Seleccionada
-                                            </p>
+                                <div wire:click="$set('selectedCartEventId', {{ $item->id }})"
+                                    class="group relative p-4 rounded-2xl border-2 transition-all cursor-pointer {{ $selectedCartEventId == $item->id ? 'bg-primary/5 border-primary shadow-lg shadow-primary/5' : 'bg-gray-50 border-transparent hover:border-gray-200' }}">
+
+                                    <div class="flex items-center justify-between gap-4">
+                                        <div class="flex items-center gap-4">
+                                            <!-- Selection Indicator -->
+                                            <div
+                                                class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all {{ $selectedCartEventId == $item->id ? 'border-primary bg-primary' : 'border-gray-300' }}">
+                                                @if($selectedCartEventId == $item->id)
+                                                    <div class="w-2 h-2 rounded-full bg-white"></div>
+                                                @endif
+                                            </div>
+
+                                            <div
+                                                class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                                                🛒
+                                            </div>
+                                            <div>
+                                                <h5
+                                                    class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
+                                                    {{ $item->nombre_evento }}
+                                                </h5>
+                                                <p
+                                                    class="text-[10px] {{ $selectedCartEventId == $item->id ? 'text-primary font-bold' : 'text-text-secondary' }}">
+                                                    {{ $selectedCartEventId == $item->id ? 'Seleccionada para comprar' : 'En el carrito' }}
+                                                </p>
+                                            </div>
                                         </div>
+
+                                        <button wire:click.stop="toggleSelection({{ $item->id }})"
+                                            class="p-2 text-gray-400 hover:text-accent transition-colors"
+                                            title="Eliminar del carrito"
+                                            onmouseover="this.querySelector('svg').style.transform='rotate(90deg)'"
+                                            onmouseout="this.querySelector('svg').style.transform='rotate(0deg)'">
+                                            <svg class="w-5 h-5 transition-transform duration-300" fill="none"
+                                                viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
                                     </div>
-                                    <button wire:click="toggleSelection({{ $item->id }})"
-                                        class="cursor-pointer p-1 px-3 bg-accent text-white text-[10px] font-bold rounded-lg hover:opacity-90 transition-all">
-                                        Eliminar del Carrito
-                                    </button>
                                 </div>
                             @empty
-                                <div class="text-center py-10 text-gray-400">
-                                    <p class="text-[11px] italic">No tienes entradas seleccionadas.</p>
+                                <div class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                    <p class="text-[11px] italic text-gray-400">No tienes entradas en tu carrito.</p>
                                 </div>
                             @endforelse
                         </div>
@@ -252,8 +297,8 @@
                 </div>
 
                 <!-- Final Button -->
-                <button wire:click="goToPurchase" @if(count($selectedTickets) === 0) disabled @endif
-                    class="cursor-pointer w-full mt-10 inline-flex items-center justify-center gap-3 {{ count($selectedTickets) > 0 ? 'bg-gradient-to-r from-primary via-secondary to-accent shadow-primary/20 hover:shadow-primary/40' : 'bg-gray-200 cursor-not-allowed opacity-50' }} text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform {{ count($selectedTickets) > 0 ? 'hover:-translate-y-1' : '' }} group">
+                <button wire:click="goToPurchase" @if(!$selectedCartEventId) disabled @endif
+                    class="cursor-pointer w-full mt-10 inline-flex items-center justify-center gap-3 {{ $selectedCartEventId ? 'bg-gradient-to-r from-primary via-secondary to-accent shadow-primary/20 hover:shadow-primary/40' : 'bg-gray-200 cursor-not-allowed opacity-50' }} text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform {{ $selectedCartEventId ? 'hover:-translate-y-1' : '' }} group">
                     <span>Ir a Comprar Entradas</span>
                     <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">

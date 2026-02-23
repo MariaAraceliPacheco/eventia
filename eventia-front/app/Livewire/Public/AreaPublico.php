@@ -11,6 +11,7 @@ class AreaPublico extends Component
     public $searchEvent = '';
     public $selectedTickets = [];
     public $cartCount = 0;
+    public $selectedCartEventId = null;
 
     // Profile Edit Modal properties
     public $showProfileModal = false;
@@ -70,6 +71,14 @@ class AreaPublico extends Component
                 ->pluck('id_evento')
                 ->toArray();
             $this->cartCount = count($this->selectedTickets);
+
+            if ($this->cartCount > 0) {
+                if (!$this->selectedCartEventId || !in_array($this->selectedCartEventId, $this->selectedTickets)) {
+                    $this->selectedCartEventId = $this->selectedTickets[0];
+                }
+            } else {
+                $this->selectedCartEventId = null;
+            }
         }
     }
 
@@ -244,9 +253,8 @@ class AreaPublico extends Component
 
     public function goToPurchase()
     {
-        if (count($this->selectedTickets) > 0) {
-            // Redirect to the first selected event for now
-            return redirect()->route('public.buy-ticket', ['eventId' => $this->selectedTickets[0]]);
+        if ($this->selectedCartEventId) {
+            return redirect()->route('public.buy-ticket', ['eventId' => $this->selectedCartEventId]);
         }
     }
 
