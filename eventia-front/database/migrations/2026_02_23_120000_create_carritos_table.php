@@ -10,9 +10,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::create('carritos', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+            $table->charset = 'utf8mb4';
+            $table->collation = 'utf8mb4_general_ci';
+
             $table->id();
-            $table->unsignedBigInteger('id_usuario');
+            $table->integer('id_usuario');
             $table->integer('id_evento');
             $table->timestamps();
 
@@ -21,6 +27,8 @@ return new class extends Migration {
             $table->foreign('id_usuario')->references('id')->on('usuarios')->onDelete('cascade');
             $table->foreign('id_evento')->references('id')->on('eventos')->onDelete('cascade');
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -28,6 +36,8 @@ return new class extends Migration {
      */
     public function down(): void
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('carritos');
+        Schema::enableForeignKeyConstraints();
     }
 };
