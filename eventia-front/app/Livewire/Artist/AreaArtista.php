@@ -144,7 +144,7 @@ class AreaArtista extends Component
             ->when($this->searchEvent, function ($query) {
                 $query->where('nombre_evento', 'like', '%' . $this->searchEvent . '%');
             })
-            ->orderBy('fecha_inicio', 'desc')
+            ->orderBy('fecha_inicio', 'desc')->where('estado', 'ABIERTO')
             ->get();
 
         // Only events where this artist participated for "Trabajos realizados"
