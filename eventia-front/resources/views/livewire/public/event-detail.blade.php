@@ -161,21 +161,42 @@
                         </div>
                     </div>
                 @else
-                    <div
-                        class="flex items-center justify-between p-8 bg-gradient-to-r from-secondary to-accent rounded-[32px] text-white shadow-xl shadow-secondary/20 group cursor-pointer hover:-translate-y-1 transition-all">
-                        <div>
-                            <h3 class="text-2xl font-black font-heading italic">¿Quieres actuar aquí?</h3>
-                            <p class="text-sm font-bold opacity-80">Envía tu propuesta al ayuntamiento para este evento</p>
+                    @if ($evento->estado == 'ABIERTO')
+                        <!-- Solicitar participación (Visible only if ABIERTO) -->
+                        <div
+                            class="flex items-center justify-between p-8 bg-gradient-to-r from-secondary to-accent rounded-[32px] text-white shadow-xl shadow-secondary/20 group cursor-pointer hover:-translate-y-1 transition-all">
+                            <div>
+                                <h3 class="text-2xl font-black font-heading italic">¿Quieres actuar aquí?</h3>
+                                <p class="text-sm font-bold opacity-80">Envía tu propuesta al ayuntamiento para este evento</p>
+                            </div>
+                            <button wire:click="solicitarEvento"
+                                class="cursor-pointer bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
+                                Solicitar participación
+                                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                                </svg>
+                            </button>
                         </div>
-                        <button wire:click="solicitarEvento"
-                            class="cursor-pointer bg-white text-text-main px-8 py-4 rounded-2xl font-black shadow-lg hover:scale-105 active:scale-95 transition-all flex items-center gap-3">
-                            Solicitar participación
-                            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                            </svg>
-                        </button>
-                    </div>
+                    @else
+                        <!-- Cupo lleno / Cerrado (Visible if NOT ABIERTO) -->
+                        <div
+                            class="flex items-center justify-between p-8 bg-gray-50 border border-gray-100 rounded-[32px] text-text-secondary shadow-sm transition-all sm:flex-row flex-col gap-6">
+                            <div class="flex items-center gap-6">
+                                <div class="w-16 h-16 rounded-2xl bg-gray-200/50 flex items-center justify-center text-gray-400 text-2xl">
+                                    🔒
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-black font-heading text-text-main opacity-80">Convocatoria cerrada</h3>
+                                    <p class="text-xs font-bold opacity-60">Este evento ya no acepta nuevas solicitudes de artistas</p>
+                                </div>
+                            </div>
+                            <div class="bg-white px-6 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-gray-400 border border-gray-200 shadow-sm flex items-center gap-2">
+                                <span class="w-2 h-2 bg-gray-300 rounded-full"></span>
+                                Cupo completo
+                            </div>
+                        </div>
+                    @endif
                 @endif
             @endif
 
@@ -367,8 +388,13 @@
                             class="bg-white rounded-3xl p-6 border border-secondary/30 flex flex-col gap-4 transition-all hover:shadow-lg shadow-sm">
                             <div class="flex items-center justify-between">
                                 <span class="text-lg font-black text-secondary">Solicitud</span>
-                                <span
-                                    class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">Abierto</span>
+                                @if ($evento->estado == 'ABIERTO')
+                                    <span
+                                        class="px-3 py-1 bg-secondary/10 text-secondary text-[10px] font-bold rounded-full uppercase">Abierto</span>
+                                @else
+                                    <span
+                                        class="px-3 py-1 bg-gray-100 text-gray-400 text-[10px] font-bold rounded-full uppercase">Cerrado</span>
+                                @endif
                             </div>
                             @if($solicitudPendiente)
                                 <div
@@ -385,10 +411,17 @@
                                     @endif
                                 </div>
                             @else
-                                <button wire:click="solicitarEvento"
-                                    class="w-full py-4 bg-secondary text-white rounded-2xl font-black shadow-lg hover:bg-secondary-dark transition-all">
-                                    Enviar propuesta
-                                </button>
+                                @if ($evento->estado == 'ABIERTO')
+                                    <button wire:click="solicitarEvento"
+                                        class="w-full py-4 bg-secondary text-white rounded-2xl font-black shadow-lg hover:bg-secondary-dark transition-all">
+                                        Enviar propuesta
+                                    </button>
+                                @else
+                                    <div
+                                        class="w-full py-4 bg-gray-100 text-gray-400 rounded-2xl font-black text-center border border-gray-200 cursor-not-allowed">
+                                        No disponible
+                                    </div>
+                                @endif
                             @endif
                         </div>
                     @endif

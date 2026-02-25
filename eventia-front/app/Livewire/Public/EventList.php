@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Public;
 
+use Auth;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
@@ -55,10 +56,22 @@ class EventList extends Component
 
         // Visibility logic: Public users don't see ABIERTO events unless they have enough data
         // For this list, we might want to show everything that is published/ready
-        $query->where(function ($q) {
-            $q->whereIn('estado', ['CERRADO', 'FINALIZADO', 'AGOTADO', 'AGOTADO'])
-                ->orWhere('estado', 'CERRADO');
-        });
+
+        if(Auth::user()->tipo_usuario == 'publico'){
+            $query->where(function ($q) {
+                $q->whereIn('estado', ['CERRADO', 'FINALIZADO', 'AGOTADO', 'AGOTADO'])
+                    ->orWhere('estado', 'CERRADO');
+            });
+        } else if (Auth::user()->tipo_usuario == 'artista') {
+            $query->where(function ($q) {
+                $q->whereIn('estado', ['CERRADO', 'FINALIZADO', 'AGOTADO', 'AGOTADO'])
+                    ->orWhere('estado', 'ABIERTO');
+            });
+        } else {
+             $query->where(function ($q) {
+                $q->whereIn('estado', ['CERRADO', 'FINALIZADO', 'AGOTADO', 'AGOTADO']);
+            });
+        }
 
         $eventos = $query->orderBy('fecha_inicio', 'desc')->paginate(9);
 
