@@ -333,6 +333,8 @@
                                     Artístico</label>
                                 <input type="text" wire:model="nombre_artistico"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                @error('nombre_artistico') <span class="text-red-500 text-xs">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- Logo -->
@@ -381,7 +383,8 @@
                                         <option value="{{ $g }}">{{ ucfirst($g) }}</option>
                                     @endforeach
                                 </select>
-                                @error('genero_musical') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
+                                @error('genero_musical') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Descripción -->
@@ -435,7 +438,8 @@
                                         <option value="{{ $rf }}">{{ ucfirst($rf) }}</option>
                                     @endforeach
                                 </select>
-                                @error('recibir_facturas') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
+                                @error('recibir_facturas') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
