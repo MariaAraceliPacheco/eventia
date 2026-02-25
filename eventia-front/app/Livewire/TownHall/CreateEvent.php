@@ -28,7 +28,7 @@ class CreateEvent extends Component
     public $locality = '';
     public $province = '';
     public $foto = '';
-    public $max_entradas = 0;
+    public $max_entradas = null;
     public $isEdit = false;
 
     public function mount($id = null)

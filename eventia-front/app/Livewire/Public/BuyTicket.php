@@ -29,11 +29,20 @@ class BuyTicket extends Component
 
             // If already sold out, don't allow buying
             if ($this->evento->isSoldOut()) {
-                return redirect()->route('public.event-detail', $this->eventId)
-                    ->with('error', 'Lo sentimos, las entradas para este evento se han agotado.');
+                session()->flash('notificar', [
+                    'titulo' => 'Entradas agotadas',
+                    'mensaje' => 'Lo sentimos, las entradas para este evento se han agotado.',
+                    'tipo' => 'error'
+                ]);
+                return redirect()->route('public.event-detail', $this->eventId);
             }
         } else {
-            return redirect()->route('public.area')->with('error', 'Selecciona un evento para comprar entradas.');
+            session()->flash('notificar', [
+                'titulo' => 'Error',
+                'mensaje' => 'Selecciona un evento para comprar entradas.',
+                'tipo' => 'error'
+            ]);
+            return redirect()->route('public.area');
         }
     }
 
@@ -92,8 +101,12 @@ class BuyTicket extends Component
     {
         // Final validation of availability
         if ($this->quantity > $this->getDisponibles()) {
-            return redirect()->route('public.event-detail', $this->eventId)
-                ->with('error', 'Lo sentimos, ya no quedan suficientes entradas disponibles.');
+            session()->flash('notificar', [
+                'titulo' => 'Sin disponibilidad',
+                'mensaje' => 'Lo sentimos, ya no quedan suficientes entradas disponibles.',
+                'tipo' => 'error'
+            ]);
+            return redirect()->route('public.event-detail', $this->eventId);
         }
 
         // Redirect to payment checkout page with query parameters

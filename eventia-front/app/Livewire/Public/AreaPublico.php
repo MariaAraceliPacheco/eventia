@@ -180,7 +180,7 @@ class AreaPublico extends Component
         $query->where(function ($q) {
             $q->whereIn('estado', ['CERRADO', 'FINALIZADO'])
                 ->orWhere(function ($sq) {
-                    $sq->where('estado', 'ABIERTO')
+                    $sq->where('estado', 'CERRADO')
                         ->whereNotNull('entradas_maximas')
                         ->whereColumn('entradas_vendidas', '>=', 'entradas_maximas');
                 });
