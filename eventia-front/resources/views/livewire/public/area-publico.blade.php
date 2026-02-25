@@ -423,6 +423,8 @@
                                     <input type="text" wire:model="localidad"
                                         class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                                         placeholder="Ej: Madrid">
+                                    @error('localidad') <span class="text-xs text-red-500 font-bold mt-1">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <!-- Gustos Musicales -->
