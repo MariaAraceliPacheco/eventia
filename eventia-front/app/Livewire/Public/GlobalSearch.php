@@ -39,8 +39,8 @@ class GlobalSearch extends Component
      */
     public function updatedQuery()
     {
-        // Solo buscamos si el usuario ha escrito al menos 2 caracteres
-        if (strlen($this->query) < 2) {
+        // Solo buscamos si el usuario ha escrito al menos 1 caracter
+        if (strlen($this->query) < 1) {
             $this->results = [
                 'artistas' => [],
                 'ayuntamientos' => [],
@@ -62,10 +62,10 @@ class GlobalSearch extends Component
             ->get();
 
         // Búsqueda en el modelo Evento
-        $eventQuery = Evento::where(function($q) {
-                $q->where('nombre_evento', 'like', '%' . $this->query . '%')
-                  ->orWhere('localidad', 'like', '%' . $this->query . '%');
-            });
+        $eventQuery = Evento::where(function ($q) {
+            $q->where('nombre_evento', 'like', '%' . $this->query . '%')
+                ->orWhere('localidad', 'like', '%' . $this->query . '%');
+        });
 
         // Visibility logic: Public users don't see ABIERTO events
         if (!auth()->check() || (auth()->user()->tipo_usuario !== 'artista' && auth()->user()->tipo_usuario !== 'ayuntamiento' && auth()->user()->tipo_usuario !== 'admin')) {
