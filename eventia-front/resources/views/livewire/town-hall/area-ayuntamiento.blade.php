@@ -190,7 +190,7 @@
                                             </a>
                                             <span
                                                 class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
-                                                                                                                {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
+                                                                                                                    {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                                                 {{ $evento->estado }}
                                             </span>
                                         </div>
@@ -305,69 +305,71 @@
 
     <!-- Edit Profile Modal -->
     @if($showProfileModal)
-            <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                    <!-- Backdrop -->
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
+                <!-- Backdrop -->
+                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true"
+                    wire:click="cancelProfileEdit"></div>
 
-                    <!-- Trick to center contents -->
-                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <!-- Modal Panel -->
+                <div
+                    class="inline-flex flex-col w-full sm:max-w-2xl bg-white rounded-[32px] text-left shadow-xl transform transition-all relative z-10 overflow-hidden border border-gray-100 max-h-[90vh]">
+                    <!-- Fixed Header -->
+                    <div class="bg-white px-8 pt-8 pb-4 flex-shrink-0 border-b border-gray-50">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil de
+                                Ayuntamiento</h3>
+                            <button wire:click="cancelProfileEdit"
+                                class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
 
-                    <!-- Modal Panel -->
-                    <div
-                        class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                        <div class="bg-white px-8 pt-8 pb-8">
-                            <div class="flex items-center justify-between mb-6">
-                                <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil de
-                                    Ayuntamiento</h3>
-                                <button wire:click="cancelProfileEdit"
-                                    class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
-                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                </button>
+                    <!-- Scrollable Content -->
+                    <div class="flex-1 overflow-y-auto px-8 py-6 custom-scrollbar">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Nombre Institución -->
+                            <div class="md:col-span-2">
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre
+                                    de la Institución</label>
+                                <input type="text" wire:model="nombre_institucion"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                             </div>
 
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Nombre Institución -->
-                                <div class="md:col-span-2">
-                                    <label
-                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre
-                                        de la Institución</label>
-                                    <input type="text" wire:model="nombre_institucion"
-                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                            <!-- Imagen -->
+                            <div class="md:col-span-2">
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Imagen
+                                    / Escudo</label>
+                                <div class="flex items-center gap-4">
+                                    @if($editImagen)
+                                        <img src="{{ $editImagen->temporaryUrl() }}"
+                                            class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+                                    @elseif($ayuntamiento->imagen)
+                                        <img src="{{ asset('storage/profiles/ayuntamientos/' . $ayuntamiento->imagen) }}"
+                                            class="w-20 h-20 rounded-xl object-cover border border-gray-200">
+                                    @endif
+                                    <input type="file" wire:model="editImagen"
+                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all"
+                                        accept=".jpg,.jpeg,.png,.webp">
                                 </div>
+                                @error('editImagen') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
+                            </div>
 
-                                <!-- Imagen -->
-                                <div class="md:col-span-2">
-                                    <label
-                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Imagen
-                                        / Escudo</label>
-                                    <div class="flex items-center gap-4">
-                                        @if($editImagen)
-                                            <img src="{{ $editImagen->temporaryUrl() }}"
-                                                class="w-20 h-20 rounded-xl object-cover border border-gray-200">
-                                        @elseif($ayuntamiento->imagen)
-                                            <img src="{{ asset('storage/profiles/ayuntamientos/' . $ayuntamiento->imagen) }}"
-                                                class="w-20 h-20 rounded-xl object-cover border border-gray-200">
-                                        @else @endif
-                                        <input type="file" wire:model="editImagen"
-                                            class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all"
-                                            accept=".jpg,.jpeg,.png,.webp">
-                                    </div>
-                                    @error('editImagen') <span
-                                    class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
-                                </div>
-
-                                <!-- Teléfono -->
-                                <div>
-                                    <label
-                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Teléfono</label>
-                                    <input type="text" wire:model="telefono"
-                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    @error('telefono') <span
-                                    class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
-                                </div>
+                            <!-- Teléfono -->
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Teléfono</label>
+                                <input type="text" wire:model="telefono"
+                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('telefono') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Comunidad Autónoma -->
@@ -413,7 +415,8 @@
 
                             <!-- Tipo Evento -->
                             <div>
-                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
                                     de Eventos</label>
                                 <select wire:model="tipo_evento"
                                     class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
@@ -443,7 +446,8 @@
 
                             <!-- Tipo Espacio -->
                             <div>
-                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
                                     de Espacio</label>
                                 <select wire:model="tipo_espacio"
                                     class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
@@ -492,111 +496,114 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
-                    <button wire:click="saveProfile"
-                        class="cursor-pointer flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
-                        Cambios</button>
-                    <button wire:click="cancelProfileEdit"
-                        class="cursor-pointer flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+
+                    <!-- Fixed Footer -->
+                    <div
+                        class="bg-gray-50 px-8 py-8 flex flex-col md:flex-row gap-3 border-t border-gray-100 flex-shrink-0">
+                        <button wire:click="saveProfile"
+                            class="cursor-pointer flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
+                            Cambios</button>
+                        <button wire:click="cancelProfileEdit"
+                            class="cursor-pointer flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                    </div>
                 </div>
             </div>
         </div>
     @endif
 
-<!-- Cerrar Evento Modal -->
-@if($showCerrarModal)
-    <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true"
-                wire:click="cancelCerrarEvento"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                <div class="bg-white px-8 pt-8 pb-8">
-                    <div class="flex items-center justify-between mb-6">
-                        <h3 class="text-xl font-black text-text-main font-heading" id="modal-title">Finalizar Captación
-                        </h3>
-                        <button wire:click="cancelCerrarEvento"
-                            class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
-                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <!-- Cerrar Evento Modal -->
+    @if($showCerrarModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true"
+                    wire:click="cancelCerrarEvento"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div
+                    class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                    <div class="bg-white px-8 pt-8 pb-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-black text-text-main font-heading" id="modal-title">Finalizar Captación
+                            </h3>
+                            <button wire:click="cancelCerrarEvento"
+                                class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="space-y-4">
+                            <p class="text-sm text-text-secondary">Al cerrar el evento, este pasará a ser visible para el
+                                público general. Indica cuántas entradas quieres poner a la venta.</p>
+
+                            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100 mb-4">
+                                <p class="text-xs text-amber-700 font-bold italic">Nota: Una vez cerrado, no podrás volver a
+                                    abrir la captación de artistas.</p>
+                            </div>
+
+                            <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Número
+                                    de Entradas</label>
+                                <input type="number" wire:model="total_entradas"
+                                    class="w-full px-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-xl font-black text-center">
+                                @error('total_entradas') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex flex-col gap-3">
+                            <button wire:click="confirmCerrarEvento"
+                                class="cursor-pointer w-full bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                                Guardar y Publicar Evento
+                            </button>
+                            <button wire:click="cancelCerrarEvento"
+                                class="cursor-pointer w-full bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Delete Confirmation Modal -->
+    @if($showDeleteModal)
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true"
+                    wire:click="cancelDelete"></div>
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+                <div
+                    class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                    <div class="bg-white px-8 pt-10 pb-8 text-center">
+                        <div
+                            class="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl bg-red-100 text-red-600 mb-6">
+                            <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
-                        </button>
-                    </div>
-
-                    <div class="space-y-4">
-                        <p class="text-sm text-text-secondary">Al cerrar el evento, este pasará a ser visible para el
-                            público general. Indica cuántas entradas quieres poner a la venta.</p>
-
-                        <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100 mb-4">
-                            <p class="text-xs text-amber-700 font-bold italic">Nota: Una vez cerrado, no podrás volver a
-                                abrir la captación de artistas.</p>
                         </div>
 
-                        <div>
-                            <label
-                                class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Número
-                                de Entradas</label>
-                            <input type="number" wire:model="total_entradas"
-                                class="w-full px-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-xl font-black text-center">
-                            @error('total_entradas') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
+                        <h3 class="text-2xl font-black text-text-main mb-2">¿Eliminar evento?</h3>
+                        <p class="text-sm text-text-secondary px-4 mb-8">
+                            Esta acción no se puede deshacer. Se cancelarán todas las solicitudes e invitaciones asociadas.
+                        </p>
 
-                    <div class="mt-8 flex flex-col gap-3">
-                        <button wire:click="confirmCerrarEvento"
-                            class="cursor-pointer w-full bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">
-                            Guardar y Publicar Evento
-                        </button>
-                        <button wire:click="cancelCerrarEvento"
-                            class="cursor-pointer w-full bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
-                            Cancelar
-                        </button>
+                        <div class="flex flex-col gap-3">
+                            <button wire:click="deleteEvent"
+                                class="cursor-pointer w-full bg-red-600 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-200 hover:scale-[1.02] active:scale-95 transition-all">
+                                Sí, eliminar permanentemente
+                            </button>
+                            <button wire:click="cancelDelete"
+                                class="cursor-pointer w-full bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
+                                Cancelar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-@endif
-
-<!-- Delete Confirmation Modal -->
-@if($showDeleteModal)
-    <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true"
-                wire:click="cancelDelete"></div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div
-                class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                <div class="bg-white px-8 pt-10 pb-8 text-center">
-                    <div
-                        class="mx-auto flex items-center justify-center h-20 w-20 rounded-2xl bg-red-100 text-red-600 mb-6">
-                        <svg class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                    </div>
-
-                    <h3 class="text-2xl font-black text-text-main mb-2">¿Eliminar evento?</h3>
-                    <p class="text-sm text-text-secondary px-4 mb-8">
-                        Esta acción no se puede deshacer. Se cancelarán todas las solicitudes e invitaciones asociadas.
-                    </p>
-
-                    <div class="flex flex-col gap-3">
-                        <button wire:click="deleteEvent"
-                            class="cursor-pointer w-full bg-red-600 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-200 hover:scale-[1.02] active:scale-95 transition-all">
-                            Sí, eliminar permanentemente
-                        </button>
-                        <button wire:click="cancelDelete"
-                            class="cursor-pointer w-full bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endif
+    @endif
 </div>
