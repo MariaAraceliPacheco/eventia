@@ -60,11 +60,6 @@ class AreaAyuntamiento extends Component
         'Melilla' => ['Melilla'],
     ];
 
-    // Cerrar event modal properties
-    public $showCerrarModal = false;
-    public $closingEventId = null;
-    public $total_entradas = 100;
-
     // Deletion Modal properties
     public $showDeleteModal = false;
     public $eventToDeleteId = null;
@@ -203,36 +198,22 @@ class AreaAyuntamiento extends Component
 
     public function cerrarEvento($eventId)
     {
-        $this->closingEventId = $eventId;
-        $this->showCerrarModal = true;
-    }
+        $evento = Evento::findOrFail($eventId);
 
-    public function confirmCerrarEvento()
-    {
-        $this->validate([
-            'total_entradas' => 'required|integer|min:1'
-        ]);
+        // Ensure this town hall owns the event
+        if ($evento->id_ayuntamiento !== $this->ayuntamiento->id) {
+            return;
+        }
 
-        $evento = Evento::findOrFail($this->closingEventId);
         $evento->update([
-            'estado' => 'CERRADO',
-            'entradas_maximas' => $this->total_entradas
+            'estado' => 'CERRADO'
         ]);
-
-        $this->showCerrarModal = false;
-        $this->closingEventId = null;
 
         $this->dispatch('notificar', [
             'titulo' => 'Evento cerrado',
-            'mensaje' => 'El evento ahora es visible para el público y se han habilitado las entradas.',
+            'mensaje' => 'El evento ahora es visible para el público y se han habilitado las entradas según el cupo preestablecido.',
             'tipo' => 'success'
         ]);
-    }
-
-    public function cancelCerrarEvento()
-    {
-        $this->showCerrarModal = false;
-        $this->closingEventId = null;
     }
 
     public function editProfile()

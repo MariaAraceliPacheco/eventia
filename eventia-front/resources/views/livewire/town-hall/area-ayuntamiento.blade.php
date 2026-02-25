@@ -190,7 +190,7 @@
                                             </a>
                                             <span
                                                 class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
-                                                                                                                    {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
+                                                                                                                        {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                                                 {{ $evento->estado }}
                                             </span>
                                         </div>
@@ -340,8 +340,7 @@
                                 <input type="text" wire:model="nombre_institucion"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                 @error('nombre_institucion')
-                                    <span
-                                        class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span>
+                                    <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span>
                                 @enderror
                             </div>
 
@@ -515,62 +514,6 @@
         </div>
     @endif
 
-    <!-- Cerrar Evento Modal -->
-    @if($showCerrarModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true"
-                    wire:click="cancelCerrarEvento"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-                <div
-                    class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                    <div class="bg-white px-8 pt-8 pb-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-xl font-black text-text-main font-heading" id="modal-title">Finalizar Captación
-                            </h3>
-                            <button wire:click="cancelCerrarEvento"
-                                class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
-                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="space-y-4">
-                            <p class="text-sm text-text-secondary">Al cerrar el evento, este pasará a ser visible para el
-                                público general. Indica cuántas entradas quieres poner a la venta.</p>
-
-                            <div class="bg-amber-50 p-4 rounded-2xl border border-amber-100 mb-4">
-                                <p class="text-xs text-amber-700 font-bold italic">Nota: Una vez cerrado, no podrás volver a
-                                    abrir la captación de artistas.</p>
-                            </div>
-
-                            <div>
-                                <label
-                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Número
-                                    de Entradas</label>
-                                <input type="number" wire:model="total_entradas"
-                                    class="w-full px-4 py-4 bg-gray-50 border border-gray-200 rounded-2xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all text-xl font-black text-center">
-                                @error('total_entradas') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                            </div>
-                        </div>
-
-                        <div class="mt-8 flex flex-col gap-3">
-                            <button wire:click="confirmCerrarEvento"
-                                class="cursor-pointer w-full bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">
-                                Guardar y Publicar Evento
-                            </button>
-                            <button wire:click="cancelCerrarEvento"
-                                class="cursor-pointer w-full bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
-                                Cancelar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
 
     <!-- Delete Confirmation Modal -->
     @if($showDeleteModal)
