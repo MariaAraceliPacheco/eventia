@@ -57,7 +57,8 @@
                             <div class="flex flex-col sm:flex-row sm:items-center gap-2 justify-center sm:justify-start">
                                 <h2
                                     class="text-3xl font-black font-heading text-text-main tracking-tight group-hover:text-{{ $artist['color'] }} transition-colors">
-                                    {{ $artist['name'] }}</h2>
+                                    {{ $artist['name'] }}
+                                </h2>
                                 <span
                                     class="px-3 py-1 bg-{{ $artist['color'] }}/10 text-[10px] font-bold text-{{ $artist['color'] }} rounded-full uppercase tracking-widest inline-block self-center sm:self-auto">Pro</span>
                             </div>
@@ -112,32 +113,34 @@
     </div>
 
     <!-- CTA Section -->
-    <div
-        class="mt-20 relative rounded-[50px] p-1 shadow-2xl overflow-hidden bg-gradient-to-r from-secondary via-accent to-primary animate-gradient-x">
-        <div class="bg-text-main rounded-[49px] p-12 sm:p-20 text-center text-white relative overflow-hidden">
-            <div
-                class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=2070')] bg-cover bg-center opacity-10 mix-blend-overlay">
-            </div>
+    @if (!Auth::check())
+        <div
+            class="mt-20 relative rounded-[50px] p-1 shadow-2xl overflow-hidden bg-gradient-to-r from-secondary via-accent to-primary animate-gradient-x">
+            <div class="bg-text-main rounded-[49px] p-12 sm:p-20 text-center text-white relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=2070')] bg-cover bg-center opacity-10 mix-blend-overlay">
+                </div>
 
-            <div class="relative z-10 max-w-3xl mx-auto space-y-6">
-                <h2 class="text-3xl sm:text-5xl font-black font-heading tracking-tighter italic">¿Eres un artista o
-                    banda?</h2>
-                <p class="text-gray-400 text-lg sm:text-xl">Forma parte del catálogo más exclusivo y conecta con
-                    ayuntamientos de todo el país.</p>
-                <div class="pt-8">
-                    <a href="{{ route('register') }}"
-                        class="inline-flex items-center gap-3 bg-white text-text-main font-black px-12 py-5 rounded-2xl shadow-xl hover:scale-105 hover:shadow-secondary/20 transition-all group">
-                        Crear Perfil Artista
-                        <svg class="w-6 h-6 text-secondary group-hover:rotate-12 transition-transform" fill="none"
-                            viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
-                        </svg>
-                    </a>
+                <div class="relative z-10 max-w-3xl mx-auto space-y-6">
+                    <h2 class="text-3xl sm:text-5xl font-black font-heading tracking-tighter italic">¿Eres un artista o
+                        banda?</h2>
+                    <p class="text-gray-400 text-lg sm:text-xl">Forma parte del catálogo más exclusivo y conecta con
+                        ayuntamientos de todo el país.</p>
+                    <div class="pt-8">
+                        <a href="{{ route('register') }}"
+                            class="inline-flex items-center gap-3 bg-white text-text-main font-black px-12 py-5 rounded-2xl shadow-xl hover:scale-105 hover:shadow-secondary/20 transition-all group">
+                            Crear Perfil Artista
+                            <svg class="w-6 h-6 text-secondary group-hover:rotate-12 transition-transform" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+                            </svg>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endif
     <style>
         @keyframes gradient-x {
             0% {

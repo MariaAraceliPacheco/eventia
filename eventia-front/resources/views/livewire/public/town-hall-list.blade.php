@@ -87,6 +87,7 @@
     </div>
 
     <!-- CTA Section -->
+     @if (!Auth::check())
     <div class="mt-20 bg-gradient-to-tr from-text-main to-gray-800 rounded-[50px] p-12 sm:p-20 text-center text-white relative overflow-hidden shadow-2xl">
         <div class="absolute top-0 left-0 w-64 h-64 bg-primary/10 rounded-full -ml-32 -mt-32"></div>
         <div class="absolute bottom-0 right-0 w-64 h-64 bg-secondary/10 rounded-full -mr-32 -mb-32"></div>
@@ -102,4 +103,5 @@
             </div>
         </div>
     </div>
+    @endif
 </div>
