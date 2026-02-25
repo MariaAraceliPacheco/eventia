@@ -366,6 +366,8 @@
                                         <option value="{{ $t }}">{{ ucfirst($t) }}</option>
                                     @endforeach
                                 </select>
+                                @error('tipo') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- Género Musical -->
@@ -379,6 +381,7 @@
                                         <option value="{{ $g }}">{{ ucfirst($g) }}</option>
                                     @endforeach
                                 </select>
+                                @error('genero_musical') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Descripción -->
@@ -388,6 +391,8 @@
                                     / Biografía</label>
                                 <textarea wire:model="descripcion" rows="3"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"></textarea>
+                                @error('descripcion') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Teléfono -->
@@ -397,6 +402,8 @@
                                     de contacto</label>
                                 <input type="text" wire:model="telefono"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                @error('telefono') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Precio Referencia -->
@@ -406,6 +413,8 @@
                                     de Referencia</label>
                                 <input type="text" wire:model="precio_referencia"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                @error('precio_referencia') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Equipo Propio -->
@@ -426,6 +435,7 @@
                                         <option value="{{ $rf }}">{{ ucfirst($rf) }}</option>
                                     @endforeach
                                 </select>
+                                @error('recibir_facturas') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>

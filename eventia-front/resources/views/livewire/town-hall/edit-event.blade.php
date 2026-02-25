@@ -33,9 +33,10 @@
                     <!-- Title -->
                     <div class="space-y-1">
                         <label class="block text-sm font-bold text-text-main">Título del evento</label>
-                        <input type="text" wire:model="title" required
+                        <input type="text" wire:model="title"
                             class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all font-heading text-lg" 
                             placeholder="Ej: Festival de Jazz 2026">
+                        @error('title') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Invited Artists Selection -->
@@ -136,6 +137,7 @@
                                 <label class="block text-sm font-bold text-text-main">Hora</label>
                                 <input type="time" wire:model="time"
                                     class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
+                                @error('time') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
@@ -154,6 +156,7 @@
                             <option value="feria">Feria</option>
                             <option value="otro">Otro</option>
                         </select>
+                        @error('category') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
                     </div>
 
                     <!-- Description -->
@@ -162,6 +165,7 @@
                         <textarea wire:model="description" rows="4"
                             class="w-full px-4 py-3 bg-white border border-gray-100 rounded-2xl focus:ring-2 focus:ring-accent/20 focus:border-accent outline-none transition-all resize-none" 
                             placeholder="Describe el evento, horarios, accesos..."></textarea>
+                        @error('description') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -171,6 +175,7 @@
                             <input type="text" wire:model="locality"
                                 class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
                                 placeholder="Ej: Madrid">
+                            @error('locality') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
                         </div>
                         <!-- Province -->
                         <div class="space-y-1 text-sm">
@@ -178,12 +183,14 @@
                             <input type="text" wire:model="province"
                                 class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
                                 placeholder="Ej: Madrid">
+                            @error('province') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
                         </div>
                          <div class="space-y-1 text-sm">
                             <label class="block font-bold text-text-main">Numero de entradas máximas</label>
                             <input type="number" wire:model="max_entradas" min="0" step="1"
                                 class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
                                 placeholder="Ej: 1000">
+                            @error('max_entradas') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
                         </div>
                     </div>
                 </div>

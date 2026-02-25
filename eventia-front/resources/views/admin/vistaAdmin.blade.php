@@ -372,95 +372,98 @@
         </div>
     </div>
 
+    <!-- Edit Publico Modal -->
     @if($showEditPublicoModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-publico-title" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
                 <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="cancelEditPublico"></div>
 
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-                <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                    <div class="bg-white px-8 pt-8 pb-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Modificar Usuario Público</h3>
+                <!-- Modal Panel -->
+                <div class="inline-flex flex-col w-full sm:max-w-2xl bg-white rounded-[32px] text-left shadow-xl transform transition-all relative z-10 overflow-hidden border border-gray-100 max-h-[90vh]">
+                    <!-- Fixed Header -->
+                    <div class="bg-white px-8 pt-8 pb-4 flex-shrink-0 border-b border-gray-50">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-2xl font-black text-text-main font-heading" id="modal-publico-title">Modificar Usuario Público</h3>
                             <button wire:click="cancelEditPublico" class="text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
+                    </div>
 
-                        <form wire:submit.prevent="updatePublico" class="space-y-6">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                <!-- Account Info -->
-                                <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
-                                    <div class="md:col-span-2 px-1">
-                                        <span class="text-[10px] font-black uppercase tracking-widest text-primary">Información de Cuenta</span>
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre</label>
-                                        <input type="text" wire:model="editNombre" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Email</label>
-                                        <input type="email" wire:model="editEmail" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    </div>
-                                </div>
-
-                                <!-- Location -->
-                                <div>
-                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad Autónoma</label>
-                                    <input type="text" wire:model="editComunidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                    <!-- Scrollable Content -->
+                    <div class="flex-1 overflow-y-auto px-8 py-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Account Info -->
+                            <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-2xl border border-gray-100">
+                                <div class="md:col-span-2 px-1">
+                                    <span class="text-[10px] font-black uppercase tracking-widest text-primary">Información de Cuenta</span>
                                 </div>
                                 <div>
-                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
-                                    <input type="text" wire:model="editProvincia" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre</label>
+                                    <input type="text" wire:model="editNombre" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    @error('editNombre') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                                 </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
-                                    <input type="text" wire:model="editLocalidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                </div>
-
-                                <!-- Preferences -->
-                                <div class="md:col-span-1">
-                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-3">Gustos Musicales</label>
-                                    <div class="space-y-2 max-h-40 overflow-y-auto p-2 bg-gray-50 rounded-xl border border-gray-100">
-                                        @foreach($allGustos as $gusto)
-                                            <label class="flex items-center gap-2 cursor-pointer group">
-                                                <input type="checkbox" value="{{ $gusto }}" wire:model="editGustos" class="rounded border-gray-300 text-primary focus:ring-primary/20">
-                                                <span class="text-sm text-text-main group-hover:text-primary transition-colors capitalize">{{ $gusto }}</span>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <div class="md:col-span-1">
-                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-3">Eventos Favoritos</label>
-                                    <div class="space-y-2 max-h-40 overflow-y-auto p-2 bg-gray-50 rounded-xl border border-gray-100">
-                                        @foreach($allFavoritos as $fav)
-                                            <label class="flex items-center gap-2 cursor-pointer group">
-                                                <input type="checkbox" value="{{ $fav }}" wire:model="editFavoritos" class="rounded border-gray-300 text-secondary focus:ring-secondary/20">
-                                                <span class="text-sm text-text-main group-hover:text-secondary transition-colors capitalize">{{ $fav }}</span>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                <!-- Notifications -->
-                                <div class="md:col-span-2 flex items-center gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/10">
-                                    <input type="checkbox" wire:model="editNotificaciones" id="editNotificaciones" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20">
-                                    <label for="editNotificaciones" class="text-sm font-bold text-text-main cursor-pointer">Recibir notificaciones comerciales</label>
+                                <div>
+                                    <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Email</label>
+                                    <input type="email" wire:model="editEmail" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    @error('editEmail') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                                 </div>
                             </div>
-                            
-                            <div class="flex flex-col md:flex-row gap-3 pt-4 border-t border-gray-100">
-                                <button type="submit" class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
-                                    Guardar Cambios
-                                </button>
-                                <button type="button" wire:click="cancelEditPublico" class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
-                                    Cancelar
-                                </button>
+
+                            <!-- Location -->
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad Autónoma</label>
+                                <input type="text" wire:model="editComunidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editComunidad') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
-                        </form>
+                            <div>
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
+                                <input type="text" wire:model="editProvincia" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editProvincia') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
+                                <input type="text" wire:model="editLocalidad" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editLocalidad') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
+                            </div>
+
+                            <!-- Preferences -->
+                            <div class="md:col-span-1">
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-3">Gustos Musicales</label>
+                                <select class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all" name="editGustos" id="" wire:model="editGustos">
+                                    @foreach($allGustos as $gusto)
+                                        <option value="{{ $gusto }}">{{ $gusto }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="md:col-span-1">
+                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-3">Eventos Favoritos</label>
+                                <select name="editFavoritos" id="" wire:model="editFavoritos" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                    @foreach($allFavoritos as $fav)
+                                        <option value="{{ $fav }}">{{ $fav }}</option>
+                                    @endforeach
+                                </select>
+
+                            </div>
+
+                            <!-- Notifications -->
+                            <div class="md:col-span-2 flex items-center gap-3 p-4 bg-primary/5 rounded-2xl border border-primary/10">
+                                <input type="checkbox" wire:model="editNotificaciones" id="editNotificaciones" class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary/20">
+                                <label for="editNotificaciones" class="text-sm font-bold text-text-main cursor-pointer">Recibir notificaciones comerciales</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fixed Footer -->
+                    <div class="bg-gray-50 px-8 py-8 flex flex-col md:flex-row gap-3 border-t border-gray-100 flex-shrink-0">
+                        <button wire:click="updatePublico" class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+                            Guardar Cambios
+                        </button>
+                        <button type="button" wire:click="cancelEditPublico" class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
+                            Cancelar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -470,15 +473,14 @@
     <!-- Edit Artista Modal -->
     @if($showEditArtistaModal)
         <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-artista-title" role="dialog" aria-modal="true">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
                 <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="cancelEditArtista"></div>
 
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
                 <!-- Modal Panel -->
-                <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                    <div class="bg-white px-8 pt-8 pb-8">
-                        <div class="flex items-center justify-between mb-6">
+                <div class="inline-flex flex-col w-full sm:max-w-2xl bg-white rounded-[32px] text-left shadow-xl transform transition-all relative z-10 overflow-hidden border border-gray-100 max-h-[90vh]">
+                    <!-- Fixed Header -->
+                    <div class="bg-white px-8 pt-8 pb-4 flex-shrink-0 border-b border-gray-50">
+                        <div class="flex items-center justify-between">
                             <h3 class="text-2xl font-black text-text-main font-heading" id="modal-artista-title">Editar Perfil de Artista</h3>
                             <button wire:click="cancelEditArtista" class="text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -486,13 +488,19 @@
                                 </svg>
                             </button>
                         </div>
+                    </div>
 
+                    <!-- Scrollable Content -->
+                    <div class="flex-1 overflow-y-auto px-8 py-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Nombre Artístico -->
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre Artístico</label>
                                 <input type="text" wire:model="editNombreArtistico"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                @error('editNombreArtistico') 
+                                <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span>
+                                @enderror
                             </div>
 
                             <!-- Logo -->
@@ -527,6 +535,7 @@
                                         <option value="{{ $t }}">{{ ucfirst($t) }}</option>
                                     @endforeach
                                 </select>
+                                @error('editTipo') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Género Musical -->
@@ -538,6 +547,7 @@
                                         <option value="{{ $g }}">{{ ucfirst($g) }}</option>
                                     @endforeach
                                 </select>
+                                @error('editGeneroMusical') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Descripción -->
@@ -545,6 +555,7 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Descripción / Biografía</label>
                                 <textarea wire:model="editDescripcion" rows="3"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all resize-none"></textarea>
+                                @error('editDescripcion') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Teléfono -->
@@ -552,6 +563,7 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Teléfono de contacto</label>
                                 <input type="text" wire:model="editTelefono"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                @error('editTelefono') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Precio Referencia -->
@@ -559,13 +571,14 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Precio de Referencia</label>
                                 <input type="text" wire:model="editPrecioReferencia"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-secondary/20 focus:border-secondary outline-none transition-all">
+                                @error('editPrecioReferencia') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Equipo Propio -->
                             <div class="flex items-center gap-3 bg-secondary/5 p-4 rounded-2xl border border-secondary/10">
                                 <input type="checkbox" wire:model="editEquipoPropio"
                                     class="w-5 h-5 text-secondary rounded border-gray-300 focus:ring-secondary">
-                                <label class="text-sm font-bold text-text-main">Dispongo de equipo propio</label>
+                                <label class="text-sm font-bold text-text-main cursor-pointer">Dispongo de equipo propio</label>
                             </div>
 
                             <!-- Recibir Facturas -->
@@ -577,10 +590,13 @@
                                         <option value="{{ $rf }}">{{ ucfirst($rf) }}</option>
                                     @endforeach
                                 </select>
+                                @error('editRecibirFacturas') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
+
+                    <!-- Fixed Footer -->
+                    <div class="bg-gray-50 px-8 py-8 flex flex-col md:flex-row gap-3 border-t border-gray-100 flex-shrink-0">
                         <button wire:click="updateArtista"
                             class="flex-1 bg-secondary text-white font-black py-4 rounded-2xl shadow-lg shadow-secondary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar Cambios</button>
                         <button wire:click="cancelEditArtista"
@@ -594,15 +610,14 @@
     <!-- Edit Ayuntamiento Modal -->
     @if($showEditAyuntamientoModal)
         <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-ayuntamiento-title" role="dialog" aria-modal="true">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center">
                 <div class="fixed inset-0 bg-black/20 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="cancelEditAyuntamiento"></div>
 
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
                 <!-- Modal Panel -->
-                <div class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                    <div class="bg-white px-8 pt-8 pb-8">
-                        <div class="flex items-center justify-between mb-6">
+                <div class="inline-flex flex-col w-full sm:max-w-2xl bg-white rounded-[32px] text-left shadow-xl transform transition-all relative z-10 overflow-hidden border border-gray-100 max-h-[90vh]">
+                    <!-- Fixed Header -->
+                    <div class="bg-white px-8 pt-8 pb-4 flex-shrink-0 border-b border-gray-50">
+                        <div class="flex items-center justify-between">
                             <h3 class="text-2xl font-black text-text-main font-heading" id="modal-ayuntamiento-title">Editar Perfil de Ayuntamiento</h3>
                             <button wire:click="cancelEditAyuntamiento" class="text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -610,13 +625,17 @@
                                 </svg>
                             </button>
                         </div>
+                    </div>
 
+                    <!-- Scrollable Content -->
+                    <div class="flex-1 overflow-y-auto px-8 py-6">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Nombre Institución -->
                             <div class="md:col-span-2">
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre de la Institución</label>
                                 <input type="text" wire:model="editNombreInstitucion"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editNombreInstitucion') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Imagen -->
@@ -647,6 +666,7 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Teléfono</label>
                                 <input type="text" wire:model="editAyuntamientoTelefono"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editAyuntamientoTelefono') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Comunidad Autónoma -->
@@ -659,6 +679,7 @@
                                         <option value="{{ $region }}">{{ $region }}</option>
                                     @endforeach
                                 </select>
+                                @error('editAyuntamientoComunidad') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Provincia -->
@@ -671,6 +692,7 @@
                                         <option value="{{ $prov }}">{{ $prov }}</option>
                                     @endforeach
                                 </select>
+                                @error('editAyuntamientoProvincia') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Localidad -->
@@ -678,6 +700,7 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
                                 <input type="text" wire:model="editAyuntamientoLocalidad"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editAyuntamientoLocalidad') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Tipo Evento -->
@@ -691,6 +714,7 @@
                                         <option value="{{ $tipo }}">{{ ucfirst($tipo) }}</option>
                                     @endforeach
                                 </select>
+                                @error('editTipoEvento') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Frecuencia -->
@@ -704,6 +728,7 @@
                                         <option value="{{ $f }}">{{ ucfirst(str_replace('_', ' ', $f)) }}</option>
                                     @endforeach
                                 </select>
+                                @error('editFrecuencia') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Tipo Espacio -->
@@ -716,6 +741,7 @@
                                         <option value="{{ $espacio }}">{{ ucfirst(str_replace('_', ' ', $espacio)) }}</option>
                                     @endforeach
                                 </select>
+                                @error('editTipoEspacio') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Accesibilidad -->
@@ -723,6 +749,7 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Accesibilidad</label>
                                 <input type="text" wire:model="editOpcionesAccesibilidad"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editOpcionesAccesibilidad') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Facturación -->
@@ -733,6 +760,7 @@
                                     <option value="plataforma">Plataforma</option>
                                     <option value="correo">Correo</option>
                                 </select>
+                                @error('editTipoFacturacion') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Logística -->
@@ -740,10 +768,13 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Logística Propia</label>
                                 <input type="text" wire:model="editLogisticaPropia"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                @error('editLogisticaPropia') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
+
+                    <!-- Fixed Footer -->
+                    <div class="bg-gray-50 px-8 py-8 flex flex-col md:flex-row gap-3 border-t border-gray-100 flex-shrink-0">
                         <button wire:click="updateAyuntamiento"
                             class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar Cambios</button>
                         <button wire:click="cancelEditAyuntamiento"
