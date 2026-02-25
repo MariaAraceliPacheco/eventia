@@ -200,7 +200,12 @@ class Admin extends Component
 
         $this->showEditArtistaModal = false;
         $this->editingArtistaId = null;
-        session()->flash('message', 'Artista actualizado correctamente.');
+
+        $this->dispatch('notificar', [
+            'titulo' => '¡Artista Actualizado!',
+            'mensaje' => 'Los cambios en el perfil del artista se han guardado correctamente.',
+            'tipo' => 'success'
+        ]);
     }
 
     public function cancelEditArtista()
@@ -267,7 +272,12 @@ class Admin extends Component
 
         $this->showEditAyuntamientoModal = false;
         $this->editingAyuntamientoId = null;
-        session()->flash('message', 'Ayuntamiento actualizado correctamente.');
+
+        $this->dispatch('notificar', [
+            'titulo' => '¡Ayuntamiento Actualizado!',
+            'mensaje' => 'Los datos de la institución se han actualizado correctamente.',
+            'tipo' => 'success'
+        ]);
     }
 
     public function cancelEditAyuntamiento()
@@ -361,7 +371,12 @@ class Admin extends Component
         ]);
 
         $this->showEditPublicoModal = false;
-        session()->flash('message', 'Público actualizado correctamente.');
+
+        $this->dispatch('notificar', [
+            'titulo' => '¡Usuario Actualizado!',
+            'mensaje' => 'El perfil del usuario público ha sido actualizado con éxito.',
+            'tipo' => 'success'
+        ]);
     }
 
     public function cancelEditPublico()
