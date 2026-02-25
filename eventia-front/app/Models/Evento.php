@@ -36,12 +36,13 @@ class Evento extends Model
 
     public function isSoldOut()
     {
-        if ($this->entradas_maximas === null) return false;
+        if ($this->entradas_maximas === null)
+            return false;
         return $this->entradas_vendidas >= $this->entradas_maximas;
     }
 
     protected $casts = [
-        'fecha_inicio' => 'date',
+        'fecha_inicio' => 'datetime',
         'tipos_entrada' => 'array'
     ];
 

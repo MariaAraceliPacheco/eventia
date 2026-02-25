@@ -124,11 +124,19 @@
                             @endforeach
                         </div>
                         
-                        <!-- Date -->
-                        <div class="pt-4 space-y-1">
-                            <label class="block text-sm font-bold text-text-main">Fecha del evento</label>
-                            <input type="date" wire:model="date"
-                                class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
+                        <!-- Date and Time -->
+                        <div class="pt-4 grid grid-cols-2 gap-4">
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-text-main">Fecha</label>
+                                <input type="date" wire:model="date" min="{{ date('Y-m-d') }}"
+                                    class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
+                                @error('date') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-text-main">Hora</label>
+                                <input type="time" wire:model="time"
+                                    class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all">
+                            </div>
                         </div>
                     </div>
                 </div>

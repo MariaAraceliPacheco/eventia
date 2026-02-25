@@ -53,7 +53,7 @@
                                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg></span>
                                 <span
-                                    class="font-bold text-sm">{{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y • H:i\h') }}</span>
+                                    class="font-bold text-sm">{{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y - H:i') }}</span>
                             </div>
                         </div>
                     </div>

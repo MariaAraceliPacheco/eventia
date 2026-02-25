@@ -21,6 +21,7 @@ class CreateEvent extends Component
     public $price = '';
     public $tipos_entrada = [['nombre' => 'General', 'precio' => '']];
     public $date = '';
+    public $time = '20:00';
     public $category = '';
     public $description = '';
     public $locality = '';
@@ -46,6 +47,7 @@ class CreateEvent extends Component
             $this->eventId = $evento->id;
             $this->title = $evento->nombre_evento;
             $this->date = \Carbon\Carbon::parse($evento->fecha_inicio)->format('Y-m-d');
+            $this->time = \Carbon\Carbon::parse($evento->fecha_inicio)->format('H:i');
             $this->locality = $evento->localidad;
             $this->province = $evento->provincia;
             $this->category = $evento->categoria ?? $evento->category;
@@ -116,7 +118,8 @@ class CreateEvent extends Component
     {
         $this->validate([
             'title' => 'required',
-            'date' => 'required|date',
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required',
             'locality' => 'required',
             'category' => 'required',
             'price' => 'nullable|numeric|min:0',
@@ -130,7 +133,7 @@ class CreateEvent extends Component
         try {
             $data = [
                 'nombre_evento' => $this->title,
-                'fecha_inicio' => $this->date,
+                'fecha_inicio' => $this->date . ' ' . $this->time . ':00',
                 'localidad' => $this->locality,
                 'provincia' => $this->province,
                 'category' => $this->category,

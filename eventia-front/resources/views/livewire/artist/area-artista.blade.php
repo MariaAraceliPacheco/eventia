@@ -32,9 +32,11 @@
                                 </div>
                                 <div class="flex-1 min-w-0">
                                     <h4 class="text-sm font-bold text-text-main truncate">
-                                        {{ $invitacion->evento->ayuntamiento->nombre_institucion }}</h4>
+                                        {{ $invitacion->evento->ayuntamiento->nombre_institucion }}
+                                    </h4>
                                     <p class="text-[10px] text-text-secondary truncate">Te invita a:
-                                        <b>{{ $invitacion->evento->nombre_evento }}</b></p>
+                                        <b>{{ $invitacion->evento->nombre_evento }}</b>
+                                    </p>
                                 </div>
                             </div>
                             <div class="flex gap-2">
@@ -97,7 +99,7 @@
                                         {{ $evento->nombre_evento }}
                                     </h4>
                                     <p class="text-xs text-text-secondary">
-                                        {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
+                                        {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y - H:i') }} •
                                         {{ $evento->localidad }}
                                     </p>
                                 </div>
@@ -215,7 +217,7 @@
                                     <div>
                                         <h4 class="text-sm font-bold text-text-main">{{ $evento->nombre_evento }}</h4>
                                         <p class="text-[11px] text-text-secondary">
-                                            {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
+                                            {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y - H:i') }} •
                                             {{ $evento->localidad }}
                                         </p>
                                     </div>

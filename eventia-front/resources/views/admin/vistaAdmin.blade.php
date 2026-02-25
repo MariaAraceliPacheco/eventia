@@ -327,7 +327,7 @@
                                         #{{ $evento->id }} - {{ $evento->nombre_evento }}
                                     </h4>
                                     <p class="text-[10px] text-primary font-bold tracking-widest uppercase">
-                                        {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
+                                        {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y - H:i') }} •
                                         {{ $evento->localidad }}
                                     </p>
                                 </div>
