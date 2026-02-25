@@ -188,38 +188,38 @@ class AreaPublico extends Component
 
         $events = $query->orderBy('fecha_inicio', 'desc')->take(10)->get();
 
-        // Fetch purchased tickets for the current user
+        // Fetch purchased tickets for the viewed user
         $purchasedTickets = [];
         $upcomingEvents = [];
-        if (auth()->check()) {
-            $purchasedTickets = \App\Models\Entrada::with('evento')
-                ->where('id_usuario', auth()->id())
-                ->orderBy('fecha_compra', 'desc')
-                ->get();
 
-            // Upcoming Events Logic (only if notifications are enabled)
-            if ($this->publico && $this->publico->notificaciones) {
-                $upcomingEvents = \App\Models\Entrada::with('evento')
-                    ->where('id_usuario', auth()->id())
-                    ->whereHas('evento', function ($q) {
-                        $q->where('fecha_inicio', '>=', now())
-                            ->where('fecha_inicio', '<=', now()->addDays(7));
-                    })
-                    ->get()
-                    ->pluck('evento')
-                    ->unique('id');
-            }
-        }
+        // Use the ID of the user being viewed ($this->user->id)
+        $viewedUserId = $this->user->id;
 
-        // Fetch cart items from database
-        $cartItems = [];
-        if (auth()->check()) {
-            $cartItems = \App\Models\Carrito::with('evento')
-                ->where('id_usuario', auth()->id())
+        $purchasedTickets = \App\Models\Entrada::with('evento')
+            ->where('id_usuario', $viewedUserId)
+            ->orderBy('fecha_compra', 'desc')
+            ->get();
+
+        // Upcoming Events Logic (only if notifications are enabled)
+        if ($this->publico && $this->publico->notificaciones) {
+            $upcomingEvents = \App\Models\Entrada::with('evento')
+                ->where('id_usuario', $viewedUserId)
+                ->whereHas('evento', function ($q) {
+                    $q->where('fecha_inicio', '>=', now())
+                        ->where('fecha_inicio', '<=', now()->addDays(7));
+                })
                 ->get()
                 ->pluck('evento')
-                ->filter();
+                ->unique('id');
         }
+
+        // Fetch cart items for the viewed user
+        $cartItems = [];
+        $cartItems = \App\Models\Carrito::with('evento')
+            ->where('id_usuario', $viewedUserId)
+            ->get()
+            ->pluck('evento')
+            ->unique('id');
 
         return view('livewire.public.area-publico', [
             'events' => $events,

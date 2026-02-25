@@ -107,10 +107,13 @@
                                         <div class="text-right flex flex-col items-end gap-2">
                                             <span
                                                 class="cursor-pointer text-lg font-black text-primary">{{ number_format($event->precio, 2) }}€</span>
-                                            <button wire:click.prevent="toggleSelection({{ $event->id }})"
-                                                class="cursor-pointer px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'cursor-pointer bg-gray-100 text-text-secondary hover:bg-gray-200' : 'cursor-pointer bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
-                                                {{ in_array($event->id, $selectedTickets) ? 'Eliminar del Carrito' : 'Añadir al Carrito' }}
-                                            </button>
+
+                                            @if($user->id === auth()->id())
+                                                <button wire:click.prevent="toggleSelection({{ $event->id }})"
+                                                    class="cursor-pointer px-3 py-1 text-[10px] font-bold rounded-lg transition-all {{ in_array($event->id, $selectedTickets) ? 'cursor-pointer bg-gray-100 text-text-secondary hover:bg-gray-200' : 'cursor-pointer bg-accent text-white hover:bg-accent/90 shadow-sm shadow-accent/20' }}">
+                                                    {{ in_array($event->id, $selectedTickets) ? 'Eliminar del Carrito' : 'Añadir al Carrito' }}
+                                                </button>
+                                            @endif
                                         </div>
                                     </div>
                                 </a>
@@ -129,7 +132,13 @@
         <div class="space-y-8">
             <div class="bg-white rounded-[32px] shadow-sm border border-gray-100/50 p-8">
                 <div class="flex items-center justify-between mb-8">
-                    <h3 class="text-2xl font-bold text-text-main font-heading">Mis Entradas</h3>
+                    <h3 class="text-2xl font-bold text-text-main font-heading">
+                        @if($user->id === auth()->id())
+                            Mis Entradas
+                        @else
+                            Entradas de {{ $user->nombre }}
+                        @endif
+                    </h3>
                     <div class="flex gap-2">
                         <span
                             class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold rounded-full uppercase">Ticket
@@ -165,7 +174,8 @@
                                             <div class="flex-1">
                                                 <h5
                                                     class="text-sm font-black text-text-main group-hover:text-primary transition-colors">
-                                                    {{ $upEvent->nombre_evento }}</h5>
+                                                    {{ $upEvent->nombre_evento }}
+                                                </h5>
                                                 <div class="flex items-center gap-2 mt-1">
                                                     <span
                                                         class="text-[10px] font-bold text-text-secondary flex items-center gap-1">
@@ -230,221 +240,237 @@
                                 </div>
                             @empty
                                 <div class="text-center py-10 text-gray-400">
-                                    <p class="text-[11px] italic">Aún no has comprado ninguna entrada.</p>
+                                    <p class="text-[11px] italic">
+                                        @if($user->id === auth()->id())
+                                            Aún no has comprado ninguna entrada.
+                                        @else
+                                            Este usuario aún no tiene entradas compradas.
+                                        @endif
+                                    </p>
                                 </div>
                             @endforelse
                         </div>
                     </div>
 
-                    <!-- En el carrito -->
-                    <div class="pt-6 border-t border-gray-50">
-                        <h4
-                            class="text-sm font-bold text-text-secondary uppercase tracking-widest mb-4 flex items-center gap-2">
-                            <span class="w-2 h-2 bg-accent rounded-full"></span>
-                            En el carrito
-                        </h4>
-                        <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
-                            @forelse($cartItems as $item)
-                                <div wire:click="$set('selectedCartEventId', {{ $item->id }})"
-                                    class="group relative p-4 rounded-2xl border-2 transition-all cursor-pointer {{ $selectedCartEventId == $item->id ? 'bg-primary/5 border-primary shadow-lg shadow-primary/5' : 'bg-gray-50 border-transparent hover:border-gray-200' }}">
+                    @if($user->id === auth()->id())
+                        <!-- En el carrito -->
+                        <div class="pt-6 border-t border-gray-50">
+                            <h4
+                                class="text-sm font-bold text-text-secondary uppercase tracking-widest mb-4 flex items-center gap-2">
+                                <span class="w-2 h-2 bg-accent rounded-full"></span>
+                                En el carrito
+                            </h4>
+                            <div class="space-y-4 max-h-[300px] overflow-y-auto pr-2 custom-scrollbar">
+                                @forelse($cartItems as $item)
+                                    <div wire:click="$set('selectedCartEventId', {{ $item->id }})"
+                                        class="group relative p-4 rounded-2xl border-2 transition-all cursor-pointer {{ $selectedCartEventId == $item->id ? 'bg-primary/5 border-primary shadow-lg shadow-primary/5' : 'bg-gray-50 border-transparent hover:border-gray-200' }}">
 
-                                    <div class="flex items-center justify-between gap-4">
-                                        <div class="flex items-center gap-4">
-                                            <!-- Selection Indicator -->
-                                            <div
-                                                class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all {{ $selectedCartEventId == $item->id ? 'border-primary bg-primary' : 'border-gray-300' }}">
-                                                @if($selectedCartEventId == $item->id)
-                                                    <div class="w-2 h-2 rounded-full bg-white"></div>
-                                                @endif
+                                        <div class="flex items-center justify-between gap-4">
+                                            <div class="flex items-center gap-4">
+                                                <!-- Selection Indicator -->
+                                                <div
+                                                    class="w-5 h-5 rounded-full border-2 flex items-center justify-center transition-all {{ $selectedCartEventId == $item->id ? 'border-primary bg-primary' : 'border-gray-300' }}">
+                                                    @if($selectedCartEventId == $item->id)
+                                                        <div class="w-2 h-2 rounded-full bg-white"></div>
+                                                    @endif
+                                                </div>
+
+                                                <div
+                                                    class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
+                                                    🛒
+                                                </div>
+                                                <div>
+                                                    <h5
+                                                        class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
+                                                        {{ $item->nombre_evento }}
+                                                    </h5>
+                                                    <p
+                                                        class="text-[10px] {{ $selectedCartEventId == $item->id ? 'text-primary font-bold' : 'text-text-secondary' }}">
+                                                        {{ $selectedCartEventId == $item->id ? 'Seleccionada para comprar' : 'En el carrito' }}
+                                                    </p>
+                                                </div>
                                             </div>
 
-                                            <div
-                                                class="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-xl shadow-sm group-hover:scale-110 transition-transform">
-                                                🛒
-                                            </div>
-                                            <div>
-                                                <h5
-                                                    class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
-                                                    {{ $item->nombre_evento }}
-                                                </h5>
-                                                <p
-                                                    class="text-[10px] {{ $selectedCartEventId == $item->id ? 'text-primary font-bold' : 'text-text-secondary' }}">
-                                                    {{ $selectedCartEventId == $item->id ? 'Seleccionada para comprar' : 'En el carrito' }}
-                                                </p>
-                                            </div>
+                                            <button wire:click.stop="toggleSelection({{ $item->id }})"
+                                                class="p-2 text-gray-400 hover:text-accent transition-colors"
+                                                title="Eliminar del carrito"
+                                                onmouseover="this.querySelector('svg').style.transform='rotate(90deg)'"
+                                                onmouseout="this.querySelector('svg').style.transform='rotate(0deg)'">
+                                                <svg class="w-5 h-5 transition-transform duration-300" fill="none"
+                                                    viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
                                         </div>
-
-                                        <button wire:click.stop="toggleSelection({{ $item->id }})"
-                                            class="p-2 text-gray-400 hover:text-accent transition-colors"
-                                            title="Eliminar del carrito"
-                                            onmouseover="this.querySelector('svg').style.transform='rotate(90deg)'"
-                                            onmouseout="this.querySelector('svg').style.transform='rotate(0deg)'">
-                                            <svg class="w-5 h-5 transition-transform duration-300" fill="none"
-                                                viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
                                     </div>
+                                @empty
+                                    <div class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
+                                        <p class="text-[11px] italic text-gray-400">No tienes entradas en tu carrito.</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+
+                        <!-- Final Button -->
+                        <button wire:click="goToPurchase" @if(!$selectedCartEventId) disabled @endif
+                            class="cursor-pointer w-full mt-10 inline-flex items-center justify-center gap-3 {{ $selectedCartEventId ? 'bg-gradient-to-r from-primary via-secondary to-accent shadow-primary/20 hover:shadow-primary/40' : 'bg-gray-200 cursor-not-allowed opacity-50' }} text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform {{ $selectedCartEventId ? 'hover:-translate-y-1' : '' }} group">
+                            <span>Ir a Comprar Entradas</span>
+                            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </button>
+                    @else
+                        <!-- Espacio adicional o info para admin -->
+                        <div class="mt-10 p-6 bg-gray-50 rounded-[28px] border border-gray-100">
+                            <p class="text-xs text-text-secondary font-medium leading-relaxed italic">
+                                Estas visualizando el panel de usuario de <strong>{{ $user->nombre }}</strong> como
+                                administrador. Tienes acceso a sus tickets y compras activas.
+                            </p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <style>
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 6px;
+            }
+
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: transparent;
+            }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #e5e7eb;
+                border-radius: 10px;
+            }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #d1d5db;
+            }
+        </style>
+
+        <!-- Edit Profile Modal -->
+        @if($showProfileModal)
+            <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <!-- Trick to center contents -->
+                    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                    <!-- Modal panel, show/hide based on modal state. -->
+                    <div
+                        class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                        <div class="bg-white px-8 pt-8 pb-8">
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil
+                                </h3>
+                                <button wire:click="cancelEdit" class="text-gray-400 hover:text-gray-500 transition-colors">
+                                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div class="space-y-6">
+                                <!-- Nombre de usuario -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre
+                                        de usuario</label>
+                                    <input type="text" wire:model="nombre"
+                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                        placeholder="Tu nombre de usuario">
+                                    @error('nombre') <span class="text-xs text-red-500 font-bold mt-1">{{ $message }}</span>
+                                    @enderror
                                 </div>
-                            @empty
-                                <div class="text-center py-10 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
-                                    <p class="text-[11px] italic text-gray-400">No tienes entradas en tu carrito.</p>
+
+                                <!-- Comunidad Autónoma -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad
+                                        Autónoma</label>
+                                    <select wire:model.live="comunidad_autonoma"
+                                        class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                        <option value="">Selecciona una comunidad</option>
+                                        @foreach(array_keys($regions_data) as $region)
+                                            <option value="{{ $region }}">{{ $region }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            @endforelse
+
+                                <!-- Provincia -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
+                                    <select wire:model.live="provincia"
+                                        class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                        <option value="">Selecciona una provincia</option>
+                                        @foreach($this->provinces as $prov)
+                                            <option value="{{ $prov }}">{{ $prov }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Localidad -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
+                                    <input type="text" wire:model="localidad"
+                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                                        placeholder="Ej: Madrid">
+                                </div>
+
+                                <!-- Gustos Musicales -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Gustos
+                                        Musicales</label>
+                                    <select wire:model="gustos_musicales"
+                                        class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                        <option value="">¿Qué música te gusta?</option>
+                                        @foreach(\App\Models\Publico::GUSTOS_MUSICALES as $gusto)
+                                            <option value="{{ $gusto }}">{{ ucfirst($gusto) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Tipo de Eventos -->
+                                <div>
+                                    <label
+                                        class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
+                                        de Eventos Favoritos</label>
+                                    <select wire:model="tipo_eventos_favoritos"
+                                        class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                        <option value="">¿A qué eventos sueles ir?</option>
+                                        @foreach(\App\Models\Publico::TIPO_EVENTOS_FAVORITOS as $tipo)
+                                            <option value="{{ $tipo }}">{{ ucfirst($tipo) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Notificaciones -->
+                                <div class="flex items-center gap-3 bg-primary/5 p-4 rounded-2xl border border-primary/10">
+                                    <input type="checkbox" wire:model="notificaciones"
+                                        class="cursor-pointer w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary">
+                                    <label class="text-sm font-bold text-text-main">Recibir notificaciones de eventos
+                                        similares</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
+                            <button wire:click="saveProfile"
+                                class="cursor-pointer flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
+                                Cambios</button>
+                            <button wire:click="cancelEdit"
+                                class="cursor-pointer flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
                         </div>
                     </div>
                 </div>
-
-                <!-- Final Button -->
-                <button wire:click="goToPurchase" @if(!$selectedCartEventId) disabled @endif
-                    class="cursor-pointer w-full mt-10 inline-flex items-center justify-center gap-3 {{ $selectedCartEventId ? 'bg-gradient-to-r from-primary via-secondary to-accent shadow-primary/20 hover:shadow-primary/40' : 'bg-gray-200 cursor-not-allowed opacity-50' }} text-white font-bold py-5 rounded-2xl shadow-xl transition-all transform {{ $selectedCartEventId ? 'hover:-translate-y-1' : '' }} group">
-                    <span>Ir a Comprar Entradas</span>
-                    <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </button>
             </div>
-        </div>
+        @endif
     </div>
-
-    <style>
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #e5e7eb;
-            border-radius: 10px;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: #d1d5db;
-        }
-    </style>
-
-    <!-- Edit Profile Modal -->
-    @if($showProfileModal)
-        <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                <!-- Trick to center contents -->
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-
-                <!-- Modal panel, show/hide based on modal state. -->
-                <div
-                    class="inline-block align-middle bg-white rounded-[32px] text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-2xl sm:w-full relative z-10 overflow-hidden border border-gray-100">
-                    <div class="bg-white px-8 pt-8 pb-8">
-                        <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil</h3>
-                            <button wire:click="cancelEdit" class="text-gray-400 hover:text-gray-500 transition-colors">
-                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M6 18L18 6M6 6l12 12" />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <div class="space-y-6">
-                            <!-- Nombre de usuario -->
-                            <div>
-                                <label
-                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Nombre
-                                    de usuario</label>
-                                <input type="text" wire:model="nombre"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                                    placeholder="Tu nombre de usuario">
-                                @error('nombre') <span class="text-xs text-red-500 font-bold mt-1">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-                            <!-- Comunidad Autónoma -->
-                            <div>
-                                <label
-                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad
-                                    Autónoma</label>
-                                <select wire:model.live="comunidad_autonoma"
-                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">Selecciona una comunidad</option>
-                                    @foreach(array_keys($regions_data) as $region)
-                                        <option value="{{ $region }}">{{ $region }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Provincia -->
-                            <div>
-                                <label
-                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
-                                <select wire:model.live="provincia"
-                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">Selecciona una provincia</option>
-                                    @foreach($this->provinces as $prov)
-                                        <option value="{{ $prov }}">{{ $prov }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Localidad -->
-                            <div>
-                                <label
-                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Localidad</label>
-                                <input type="text" wire:model="localidad"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
-                                    placeholder="Ej: Madrid">
-                            </div>
-
-                            <!-- Gustos Musicales -->
-                            <div>
-                                <label
-                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Gustos
-                                    Musicales</label>
-                                <select wire:model="gustos_musicales"
-                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">¿Qué música te gusta?</option>
-                                    @foreach(\App\Models\Publico::GUSTOS_MUSICALES as $gusto)
-                                        <option value="{{ $gusto }}">{{ ucfirst($gusto) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Tipo de Eventos -->
-                            <div>
-                                <label
-                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo
-                                    de Eventos Favoritos</label>
-                                <select wire:model="tipo_eventos_favoritos"
-                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">¿A qué eventos sueles ir?</option>
-                                    @foreach(\App\Models\Publico::TIPO_EVENTOS_FAVORITOS as $tipo)
-                                        <option value="{{ $tipo }}">{{ ucfirst($tipo) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <!-- Notificaciones -->
-                            <div class="flex items-center gap-3 bg-primary/5 p-4 rounded-2xl border border-primary/10">
-                                <input type="checkbox" wire:model="notificaciones"
-                                    class="cursor-pointer w-5 h-5 text-primary rounded border-gray-300 focus:ring-primary">
-                                <label class="text-sm font-bold text-text-main">Recibir notificaciones de eventos
-                                    similares</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-50 px-8 py-6 flex flex-col md:flex-row gap-3">
-                        <button wire:click="saveProfile"
-                            class="cursor-pointer flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar
-                            Cambios</button>
-                        <button wire:click="cancelEdit"
-                            class="cursor-pointer flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endif
-</div>
