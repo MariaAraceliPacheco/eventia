@@ -121,7 +121,7 @@
                                             placeholder="Ej: General, VIP, Pista...">
                                     </div>
                                     <div class="w-32 relative">
-                                        <input type="number" wire:model="tipos_entrada.{{ $index }}.precio" min="0" step="0.01"
+                                        <input type="number" wire:model="tipos_entrada.{{ $index }}.precio" min="1" step="0.01"
                                             class="w-full pl-4 pr-8 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all text-sm" 
                                             placeholder="0.00">
                                         <span class="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-gray-400">€</span>
@@ -197,7 +197,7 @@
                         </div>
                          <div class="space-y-1 text-sm">
                             <label class="block font-bold text-text-main">Numero de entradas máximas</label>
-                            <input type="number" wire:model="max_entradas" min="0" step="1"
+                            <input type="number" wire:model="max_entradas" min="1" step="1"
                                 class="w-full px-5 py-3 bg-gray-50 border border-gray-200 rounded-[20px] focus:ring-2 focus:ring-primary/20 focus:border-primary focus:bg-white outline-none transition-all" 
                                 placeholder="Ej: 1000">
                             @error('max_entradas') <span class="text-red-500 text-[10px] font-bold block mt-1">{{ $message }}</span> @enderror
