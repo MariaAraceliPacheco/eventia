@@ -24,7 +24,7 @@
                         <span class="text-[10px] uppercase tracking-widest text-text-secondary font-bold">Próximo
                             Evento</span>
                         <p class="text-sm font-bold text-secondary mt-1">
-                            {{ $eventos->first()->nombre_evento ?? 'Sin eventos programados' }}
+                            {{ $proximosEventos->first()->nombre_evento ?? 'Sin eventos programados' }}
                         </p>
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                     </p>
                 </div>
 
-                <!-- Eventos Organizados -->
+                <!-- Próximos Eventos -->
                 <div class="mt-12">
                     <div class="flex items-center justify-between mb-8">
                         <div class="flex items-center gap-4">
@@ -93,7 +93,7 @@
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        @forelse($eventos as $evento)
+                        @forelse($proximosEventos as $evento)
                             <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}"
                                 class="flex items-center justify-between p-5 bg-white border border-gray-100 rounded-2xl hover:bg-gray-50 hover:shadow-lg hover:-translate-y-1 transition-all group">
                                 <div class="flex items-center gap-4">
@@ -108,7 +108,7 @@
                                     </div>
                                     <div>
                                         <h4
-                                            class="text-sm font-bold text-text-main group-hover:text-primary transition-colors">
+                                            class="text-sm font-bold text-text-main group-hover:text-primary transition-colors line-clamp-1">
                                             {{ $evento->nombre_evento }}</h4>
                                         <p class="text-[10px] text-text-secondary font-medium">
                                             {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
@@ -124,11 +124,57 @@
                             </a>
                         @empty
                             <div class="col-span-full py-10 text-center text-gray-400 italic text-sm">
-                                Este ayuntamiento aún no tiene eventos programados.
+                                No hay eventos programados próximamente.
                             </div>
                         @endforelse
                     </div>
                 </div>
+
+                <!-- Eventos Realizados (Historical) -->
+                @if($eventosPasados->count() > 0)
+                    <div class="mt-16 pt-12 border-t border-gray-100">
+                        <div class="flex items-center justify-between mb-8">
+                            <div class="flex items-center gap-4">
+                                <div class="h-8 w-1.5 bg-gray-300 rounded-full"></div>
+                                <h3 class="text-2xl font-black text-text-main font-heading tracking-tight opacity-70">
+                                    Eventos Realizados</h3>
+                            </div>
+                            <span class="text-xs font-bold text-gray-400 bg-gray-100 px-4 py-1.5 rounded-full">Archivo
+                                Histórico</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @foreach($eventosPasados as $evento)
+                                <a href="{{ route('public.event-detail', ['id' => $evento->id]) }}"
+                                    class="flex items-center justify-between p-5 bg-gray-50/50 border border-gray-100 rounded-2xl hover:bg-white hover:shadow-md hover:-translate-y-0.5 transition-all group grayscale-[0.5] hover:grayscale-0">
+                                    <div class="flex items-center gap-4">
+                                        <div
+                                            class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-xl overflow-hidden">
+                                            @if($evento->foto)
+                                                <img src="{{ asset('/profiles/eventos/' . $evento->foto) }}"
+                                                    alt="{{ $evento->nombre_evento }}" class="w-full h-full object-cover">
+                                            @else
+                                                🎞️
+                                            @endif
+                                        </div>
+                                        <div>
+                                            <h4 class="text-sm font-bold text-text-main opacity-80 line-clamp-1">
+                                                {{ $evento->nombre_evento }}</h4>
+                                            <p class="text-[10px] text-text-secondary font-medium">
+                                                {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="p-2 text-gray-300 group-hover:text-primary transition-colors">
+                                        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                        </svg>
+                                    </div>
+                                </a>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
