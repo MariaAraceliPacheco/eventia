@@ -134,7 +134,7 @@ class EventDetail extends Component
             return "El evento tendrá lugar en **{$this->evento->localidad}**, {$this->evento->provincia}. ¡Te esperamos allí! 📍";
         }
 
-        if (str_contains($input, 'cuándo') || str_contains($input, 'cuando') || str_contains($input, 'fecha') || str_contains($input, 'día')) {
+        if (str_contains($input, 'cuándo') || str_contains($input, 'cuando') || str_contains($input, 'fecha') || str_contains($input, 'día') || str_contains($input, 'hora')) {
             return "El evento está programado para el día **" . \Carbon\Carbon::parse($this->evento->fecha_inicio)->format('d M Y') . "** a las **" . \Carbon\Carbon::parse($this->evento->fecha_inicio)->format('H:i') . "**. 📅";
         }
 

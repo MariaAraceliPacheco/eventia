@@ -84,6 +84,11 @@ class Admin extends Component
     public $editFavoritos = [];
     public $editNotificaciones = false;
 
+    // Delete Confirmation properties
+    public $showDeleteConfirmation = false;
+    public $itemToDeleteId = null;
+    public $itemToDeleteType = null;
+
 
     //esta funcion sirve para obtener el usuario y el artista
     public function mount()
@@ -96,22 +101,54 @@ class Admin extends Component
         return redirect()->route('town-hall.edit-event', ['id' => $id]);
     }
 
-    public function deleteEvent($id)
+    public function confirmDelete($id, $type)
     {
-        $evento = Evento::destroy($id);
-        session()->flash('message', 'Evento eliminado correctamente.');
+        $this->itemToDeleteId = $id;
+        $this->itemToDeleteType = $type;
+        $this->showDeleteConfirmation = true;
     }
 
-    public function deletePublico($id)
+    public function cancelDelete()
     {
-        $publico = Publico::destroy($id);
-        session()->flash('message', 'Publico eliminado correctamente.');
+        $this->showDeleteConfirmation = false;
+        $this->itemToDeleteId = null;
+        $this->itemToDeleteType = null;
     }
 
-    public function deleteArtista($id)
+    public function deleteEvent()
     {
-        $artista = Artista::destroy($id);
-        session()->flash('message', 'Artista eliminado correctamente.');
+        Evento::destroy($this->itemToDeleteId);
+        $this->cancelDelete();
+
+        $this->dispatch('notificar', [
+            'titulo' => '¡Evento Eliminado!',
+            'mensaje' => 'El evento ha sido eliminado permanentemente del sistema.',
+            'tipo' => 'success'
+        ]);
+    }
+
+    public function deletePublico()
+    {
+        Publico::destroy($this->itemToDeleteId);
+        $this->cancelDelete();
+
+        $this->dispatch('notificar', [
+            'titulo' => '¡Usuario Eliminado!',
+            'mensaje' => 'El perfil de usuario público ha sido eliminado correctamente.',
+            'tipo' => 'success'
+        ]);
+    }
+
+    public function deleteArtista()
+    {
+        Artista::destroy($this->itemToDeleteId);
+        $this->cancelDelete();
+
+        $this->dispatch('notificar', [
+            'titulo' => '¡Artista Eliminado!',
+            'mensaje' => 'El perfil del artista ha sido eliminado del sistema.',
+            'tipo' => 'success'
+        ]);
     }
 
     public function editArtista($id)
@@ -266,10 +303,16 @@ class Admin extends Component
         }
     }
 
-    public function deleteAyuntamiento($id)
+    public function deleteAyuntamiento()
     {
-        $ayuntamiento = Ayuntamiento::destroy($id);
-        session()->flash('message', 'Ayuntamiento eliminado correctamente.');
+        Ayuntamiento::destroy($this->itemToDeleteId);
+        $this->cancelDelete();
+
+        $this->dispatch('notificar', [
+            'titulo' => '¡Ayuntamiento Eliminado!',
+            'mensaje' => 'El ayuntamiento y sus datos han sido eliminados correctamente.',
+            'tipo' => 'success'
+        ]);
     }
 
     public function editPublico($id)

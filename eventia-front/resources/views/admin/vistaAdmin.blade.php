@@ -99,7 +99,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button wire:click="deleteArtista({{ $artista->id }})" title="Eliminar"
+                                <button wire:click="confirmDelete({{ $artista->id }}, 'artista')" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -184,7 +184,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button wire:click="deleteAyuntamiento({{ $ayuntamiento->id }})" title="Eliminar"
+                                <button wire:click="confirmDelete({{ $ayuntamiento->id }}, 'ayuntamiento')" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -268,7 +268,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button wire:click="deletePublico({{ $publico->id }})" title="Eliminar"
+                                <button wire:click="confirmDelete({{ $publico->id }}, 'publico')" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -353,7 +353,7 @@
                                             d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                     </svg>
                                 </button>
-                                <button wire:click="deleteEvent({{ $evento->id }})" title="Eliminar"
+                                <button wire:click="confirmDelete({{ $evento->id }}, 'evento')" title="Eliminar"
                                     class="p-2 text-gray-400 hover:text-red-500 transition rounded-lg hover:bg-white shadow-none hover:shadow-sm border border-transparent hover:border-gray-100">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                         stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
@@ -371,14 +371,6 @@
             </div>
         </div>
     </div>
-
-
-    @if (session()->has('message'))
-        <div class="fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-xl shadow-lg font-bold animate-bounce"
-            x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 3000)">
-            {{ session('message') }}
-        </div>
-    @endif
 
     @if($showEditPublicoModal)
         <div class="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
@@ -705,7 +697,7 @@
                              <div>
                                 <label
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Frecuencia</label>
-                                <select wire:model="frecuencia"
+                                <select wire:model="editFrecuencia"
                                     class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
                                     <option value="" disabled>Selecciona la frecuencia</option>
                                     @foreach(\App\Models\Ayuntamiento::FRECUENCIA as $f)
@@ -756,6 +748,44 @@
                             class="flex-1 bg-primary text-white font-black py-4 rounded-2xl shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">Guardar Cambios</button>
                         <button wire:click="cancelEditAyuntamiento"
                             class="flex-1 bg-white text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <!-- Delete Confirmation Modal -->
+    @if($showDeleteConfirmation)
+        <div class="fixed inset-0 z-[60] overflow-y-auto" role="dialog" aria-modal="true">
+            <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                <div class="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" aria-hidden="true" wire:click="cancelDelete"></div>
+
+                <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+                <div class="inline-block align-middle bg-white rounded-[40px] text-left shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-md sm:w-full relative z-10 overflow-hidden border border-gray-100">
+                    <div class="bg-white p-10 text-center">
+                        <div class="w-20 h-20 bg-red-100 text-red-600 rounded-3xl flex items-center justify-center mx-auto mb-6 text-4xl">
+                            🗑️
+                        </div>
+                        
+                        <h3 class="text-2xl font-black text-text-main font-heading mb-3">¿Confirmar eliminación?</h3>
+                        <p class="text-sm text-text-secondary leading-relaxed mb-10">
+                            Estás a punto de eliminar este registro permanentemente. Esta acción no se puede deshacer. ¿Deseas continuar?
+                        </p>
+
+                        <div class="flex flex-col gap-3">
+                            <button 
+                                @if($itemToDeleteType === 'artista') wire:click="deleteArtista" @endif
+                                @if($itemToDeleteType === 'ayuntamiento') wire:click="deleteAyuntamiento" @endif
+                                @if($itemToDeleteType === 'publico') wire:click="deletePublico" @endif
+                                @if($itemToDeleteType === 'evento') wire:click="deleteEvent" @endif
+                                class="w-full bg-red-600 text-white font-black py-4 rounded-2xl shadow-lg shadow-red-200 hover:scale-[1.02] active:scale-95 transition-all">
+                                Sí, Eliminar Permanentemente
+                            </button>
+                            <button wire:click="cancelDelete" class="w-full bg-gray-50 text-text-secondary font-bold py-4 rounded-2xl border border-gray-200 hover:bg-gray-100 transition-all">
+                                Cancelar
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
