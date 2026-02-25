@@ -41,7 +41,17 @@
 
                     <!-- Invited Artists Selection -->
                     <div class="space-y-3">
-                        <label class="block text-sm font-bold text-text-main">Artistas invitados (Selecciona uno o varios)</label>
+                        <div class="flex items-center justify-between">
+                            <label class="block text-sm font-bold text-text-main">Artistas invitados</label>
+                            <div class="relative w-48">
+                                <input type="text" wire:model.live="searchArtist" 
+                                    class="w-full pl-8 pr-4 py-1.5 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-[10px] font-bold" 
+                                    placeholder="Buscar artista o género...">
+                                <svg class="w-3.5 h-3.5 absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                        </div>
                         <div class="space-y-2 max-h-64 overflow-y-auto pr-2 custom-scrollbar bg-gray-50/50 p-4 rounded-[24px] border border-gray-100">
                             @forelse($allArtists as $artist)
                                 <div class="flex items-center justify-between p-3 bg-white rounded-xl border {{ in_array($artist->id, $selectedArtists) ? 'border-primary ring-1 ring-primary/20 shadow-sm' : 'border-gray-100' }} transition-all">

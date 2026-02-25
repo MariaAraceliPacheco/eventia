@@ -29,6 +29,7 @@ class CreateEvent extends Component
     public $province = '';
     public $foto = '';
     public $max_entradas = null;
+    public $searchArtist = ''; // Real-time search for artists
     public $isEdit = false;
 
     public function mount($id = null)
@@ -111,8 +112,15 @@ class CreateEvent extends Component
                 ->toArray();
         }
 
+        $artistsQuery = Artista::query();
+
+        if (!empty($this->searchArtist)) {
+            $artistsQuery->where('nombre_artistico', 'like', '%' . $this->searchArtist . '%')
+                ->orWhere('genero_musical', 'like', '%' . $this->searchArtist . '%');
+        }
+
         return view($view, [
-            'allArtists' => Artista::all(),
+            'allArtists' => $artistsQuery->get(),
             'invitaciones' => $invitaciones
         ]);
     }
@@ -120,6 +128,13 @@ class CreateEvent extends Component
     public function submit()
     {
         $dateRule = $this->isEdit ? 'required|date' : 'required|date|after_or_equal:today';
+
+        // Sanitize prices: default to 0 if empty
+        foreach ($this->tipos_entrada as $index => $tipo) {
+            if (empty($tipo['precio']) && $tipo['precio'] !== 0 && $tipo['precio'] !== '0') {
+                $this->tipos_entrada[$index]['precio'] = 0;
+            }
+        }
 
         $this->validate([
             'title' => 'required',
@@ -130,7 +145,7 @@ class CreateEvent extends Component
             'price' => 'nullable|numeric|min:0',
             'tipos_entrada' => 'required|array|min:1',
             'tipos_entrada.*.nombre' => 'required',
-            'tipos_entrada.*.precio' => 'required|numeric|min:0',
+            'tipos_entrada.*.precio' => 'nullable|numeric|min:0',
             'image' => 'nullable|image|mimes:jpeg,png,webp|max:10240', // 10MB
             'max_entradas' => 'nullable|numeric|min:0',
         ]);
@@ -143,7 +158,7 @@ class CreateEvent extends Component
                 'provincia' => $this->province,
                 'category' => $this->category,
                 'categoria' => $this->category,
-                'precio' => count($this->tipos_entrada) > 0 ? $this->tipos_entrada[0]['precio'] : $this->price,
+                'precio' => count($this->tipos_entrada) > 0 ? $this->tipos_entrada[0]['precio'] : 0,
                 'tipos_entrada' => $this->tipos_entrada,
                 'descripcion' => $this->description,
                 'estado' => 'ABIERTO',
