@@ -28,6 +28,7 @@ class CreateEvent extends Component
     public $province = '';
     public $foto = '';
     public $max_entradas = 0;
+    public $isEdit = false;
 
     public function mount($id = null)
     {
@@ -37,6 +38,7 @@ class CreateEvent extends Component
         }
 
         if ($id) {
+            $this->isEdit = true;
             $evento = Evento::with('artistas')->findOrFail($id);
 
             // Verify ownership (unless admin)
@@ -116,9 +118,11 @@ class CreateEvent extends Component
 
     public function submit()
     {
+        $dateRule = $this->isEdit ? 'required|date' : 'required|date|after_or_equal:today';
+
         $this->validate([
             'title' => 'required',
-            'date' => 'required|date|after_or_equal:today',
+            'date' => $dateRule,
             'time' => 'required',
             'locality' => 'required',
             'category' => 'required',
