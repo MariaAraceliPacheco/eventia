@@ -2,6 +2,7 @@
 
 namespace App\Livewire\TownHall;
 
+use Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Layout;
@@ -215,7 +216,7 @@ class CreateEvent extends Component
                 ]);
             }
 
-            if (auth()->user()->tipo_usuario === 'admin') {
+            if (Auth::user()->tipo_usuario === 'admin') {
                 return redirect()->route('admin.vistaAdmin');
             }
 
