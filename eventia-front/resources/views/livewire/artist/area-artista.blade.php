@@ -3,7 +3,7 @@
 
         <!-- Left Column: Invitaciones + Info Eventos -->
         <div class="lg:col-span-1 space-y-6">
-            
+
             <!-- Pending Invitations -->
             <div class="bg-white rounded-3xl shadow-sm border border-gray-100/50 overflow-hidden">
                 <div class="p-6 border-b border-gray-50 flex items-center justify-between bg-primary/5">
@@ -21,7 +21,8 @@
                     @forelse($invitaciones as $invitacion)
                         <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
                             <div class="flex items-center gap-3">
-                                <div class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-xl">
+                                <div
+                                    class="w-10 h-10 rounded-xl bg-white shadow-sm flex items-center justify-center text-xl">
                                     @if ($invitacion->evento->ayuntamiento->imagen)
                                         <img src="{{ asset('storage/profiles/ayuntamientos/' . $invitacion->evento->ayuntamiento->imagen) }}"
                                             class="w-full h-full object-cover rounded-2xl">
@@ -30,16 +31,18 @@
                                     @endif
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <h4 class="text-sm font-bold text-text-main truncate">{{ $invitacion->evento->ayuntamiento->nombre_institucion }}</h4>
-                                    <p class="text-[10px] text-text-secondary truncate">Te invita a: <b>{{ $invitacion->evento->nombre_evento }}</b></p>
+                                    <h4 class="text-sm font-bold text-text-main truncate">
+                                        {{ $invitacion->evento->ayuntamiento->nombre_institucion }}</h4>
+                                    <p class="text-[10px] text-text-secondary truncate">Te invita a:
+                                        <b>{{ $invitacion->evento->nombre_evento }}</b></p>
                                 </div>
                             </div>
                             <div class="flex gap-2">
-                                <button wire:click="aceptarInvitacion({{ $invitacion->id }})" 
+                                <button wire:click="aceptarInvitacion({{ $invitacion->id }})"
                                     class="cursor-pointer flex-1 py-2 bg-primary text-white text-xs font-bold rounded-xl hover:bg-primary-dark transition-colors shadow-sm">
                                     Aceptar
                                 </button>
-                                <button wire:click="rechazarInvitacion({{ $invitacion->id }})" 
+                                <button wire:click="rechazarInvitacion({{ $invitacion->id }})"
                                     class="cursor-pointer flex-1 py-2 bg-white text-gray-400 text-xs font-bold rounded-xl border border-gray-200 hover:bg-gray-50 transition-colors">
                                     Rechazar
                                 </button>
@@ -207,13 +210,14 @@
                                                 class="w-full h-full object-cover rounded-[22px]">
                                         @else
                                             🎵
-                                        @endif    
+                                        @endif
                                     </div>
                                     <div>
                                         <h4 class="text-sm font-bold text-text-main">{{ $evento->nombre_evento }}</h4>
                                         <p class="text-[11px] text-text-secondary">
                                             {{ \Carbon\Carbon::parse($evento->fecha_inicio)->format('d M Y') }} •
-                                            {{ $evento->localidad }}</p>
+                                            {{ $evento->localidad }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="p-2 text-text-secondary group-hover:text-accent transition-colors">
@@ -310,7 +314,8 @@
                         <div class="flex items-center justify-between mb-6">
                             <h3 class="text-2xl font-black text-text-main font-heading" id="modal-title">Editar Perfil de
                                 Artista</h3>
-                            <button wire:click="cancelEdit" class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
+                            <button wire:click="cancelEdit"
+                                class="cursor-pointer text-gray-400 hover:text-gray-500 transition-colors">
                                 <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12" />
@@ -342,8 +347,11 @@
                                             class="w-20 h-20 rounded-xl object-cover border border-gray-200">
                                     @endif
                                     <input type="file" wire:model="editImgLogo"
-                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 transition-all">
+                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 transition-all"
+                                        accept=".jpg,.jpeg,.png,.webp">
                                 </div>
+                                @error('editImgLogo') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Tipo -->

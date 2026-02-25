@@ -33,6 +33,7 @@ class ArtistQuestions extends Component
     {
         $validated = $this->validate([
             'nombre_artistico' => 'required|string',
+            'img_logo' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
             'descripcion' => 'required|string',
             'tipo' => 'required|in:' . implode(',', Artista::TIPO),
             'genero_musical' => 'required|in:' . implode(',', Artista::GENERO_MUSICAL),

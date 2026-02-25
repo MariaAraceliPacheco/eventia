@@ -18,9 +18,12 @@
                     <span class="text-xs text-text-secondary mt-1">Recomendado: 1200x480px</span>
                 </div>
             @endif
-            <input type="file" wire:model="image" class="absolute inset-0 opacity-0 cursor-pointer">
+            <input type="file" wire:model="image" class="absolute inset-0 opacity-0 cursor-pointer" accept=".jpg,.jpeg,.png,.webp">
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary via-secondary to-accent"></div>
         </div>
+        @error('image')
+            <div class="px-8 mt-2 text-red-500 text-xs font-bold">{{ $message }}</div>
+        @enderror
 
         <form wire:submit.prevent="submit" class="p-8 sm:p-12">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">

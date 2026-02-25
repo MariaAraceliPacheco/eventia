@@ -55,7 +55,7 @@
                                     </svg>
                                     <span>Seleccionar imagen</span>
                                     <input type="file" wire:model="img_logo" id="img_logo" class="hidden"
-                                        accept="image/*">
+                                        accept=".jpg,.jpeg,.png,.webp">
                                 </label>
                                 @if ($img_logo)
                                     <div class="w-12 h-12 rounded-lg bg-gray-100 overflow-hidden border border-gray-200">

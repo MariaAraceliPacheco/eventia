@@ -139,7 +139,7 @@ class Admin extends Component
             'editDescripcion' => 'nullable|string',
             'editTelefono' => 'nullable|string|max:20',
             'editPrecioReferencia' => 'nullable|string|max:100',
-            'editImgLogoArtista' => 'nullable|image|max:2048',
+            'editImgLogoArtista' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
         ]);
 
         $artista = Artista::findOrFail($this->editingArtistaId);
@@ -203,7 +203,7 @@ class Admin extends Component
             'editTipoEvento' => 'required|string',
             'editFrecuencia' => 'required|string',
             'editTipoEspacio' => 'required|string',
-            'editAyuntamientoImagen' => 'nullable|image|max:2048',
+            'editAyuntamientoImagen' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
         ]);
 
         $ayuntamiento = Ayuntamiento::findOrFail($this->editingAyuntamientoId);

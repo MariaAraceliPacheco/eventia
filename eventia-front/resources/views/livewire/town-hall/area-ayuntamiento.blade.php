@@ -190,7 +190,7 @@
                                             </a>
                                             <span
                                                 class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
-                                                                    {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
+                                                                        {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                                                 {{ $evento->estado }}
                                             </span>
                                         </div>
@@ -352,8 +352,11 @@
                                             class="w-20 h-20 rounded-xl object-cover border border-gray-200">
                                     @else @endif
                                     <input type="file" wire:model="editImagen"
-                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all"
+                                        accept=".jpg,.jpeg,.png,.webp">
                                 </div>
+                                @error('editImagen') <span
+                                class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Teléfono -->

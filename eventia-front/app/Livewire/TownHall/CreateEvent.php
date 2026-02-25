@@ -123,7 +123,7 @@ class CreateEvent extends Component
             'tipos_entrada' => 'required|array|min:1',
             'tipos_entrada.*.nombre' => 'required',
             'tipos_entrada.*.precio' => 'required|numeric|min:0',
-            'image' => 'nullable|image|max:10240', // 10MB
+            'image' => 'nullable|image|mimes:jpeg,png,webp|max:10240', // 10MB
             'max_entradas' => 'nullable|numeric|min:0',
         ]);
 

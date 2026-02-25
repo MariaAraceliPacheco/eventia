@@ -99,6 +99,7 @@ class TownHallQuestions extends Component
     {
         $validated = $this->validate([
             'nombre_institucion' => 'required|string',
+            'imagen' => 'nullable|image|mimes:jpeg,png,webp|max:2048',
             'telefono' => 'required|string',
             'comunidad_autonoma' => 'required|string',
             'provincia' => 'required|string',

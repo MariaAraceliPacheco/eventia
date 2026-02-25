@@ -520,8 +520,10 @@
                                         @endif
                                     @endif
                                     <input type="file" wire:model="editImgLogoArtista"
-                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 transition-all">
+                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-secondary/10 file:text-secondary hover:file:bg-secondary/20 transition-all"
+                                        accept=".jpg,.jpeg,.png,.webp">
                                 </div>
+                                @error('editImgLogoArtista') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Tipo -->
@@ -642,8 +644,10 @@
                                         @endif
                                     @endif
                                     <input type="file" wire:model="editAyuntamientoImagen"
-                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all">
+                                        class="text-xs text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-bold file:bg-primary/10 file:text-primary hover:file:bg-primary/20 transition-all"
+                                        accept=".jpg,.jpeg,.png,.webp">
                                 </div>
+                                @error('editAyuntamientoImagen') <span class="text-red-500 text-xs mt-1 block font-bold">{{ $message }}</span> @enderror
                             </div>
 
                             <!-- Teléfono -->
