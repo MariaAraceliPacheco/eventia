@@ -14,7 +14,7 @@
                         Simplificamos la gestión, centralizamos la logística y mejoramos la experiencia para todos.
                     </p>
                     <div class="flex flex-wrap gap-4">
-                        <a href="{{ route('public.event-list') }}"
+                        <a href="#eventosDestacados"
                             class="px-8 py-4 bg-primary text-white font-bold rounded-full shadow-lg hover:shadow-xl hover:bg-primary/90 transition transform hover:-translate-y-1">
                             Explorar Eventos
                         </a>
@@ -63,7 +63,7 @@
 
     <!-- Featured Events Section -->
     <section id="events" class="bg-surface py-24 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div id="eventosDestacados" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="flex justify-between items-end mb-12">
                 <div>
                     <h2 class="text-3xl md:text-4xl font-bold font-heading mb-2">Eventos Destacados</h2>

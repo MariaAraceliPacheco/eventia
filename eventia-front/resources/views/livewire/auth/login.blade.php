@@ -54,19 +54,6 @@
                     </svg>
                     <span class="text-sm">Iniciar sesión con Spotify</span>
                 </button>
-
-                <button type="button"
-                    class="cursor-pointer group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
-                    <!-- Amazon SVG -->
-                    <svg class="w-5 h-5 text-text-main transition-transform group-hover:scale-110" role="img"
-                        viewBox="0 0 24 24" fill="currentColor">
-                        <title>Amazon</title>
-                        <path
-                            d="M13.9 13.6c-0.3-2.5-2.6-3.9-5.1-3.9-2.6 0-4.4 1.7-4.4 3.9 0 2.2 1.8 3.5 4.1 3.5 2.5 0 4-1.3 4.8-1.8 0 0.1 0 0.2 0 0.4 0 2-1.6 2.8-3.6 2.8-1.9 0-3.3-0.7-3.9-1.3 -0.1-0.1-0.3-0.1-0.4 0l-1.3 1.1c-0.1 0.1-0.1 0.3 0 0.4 1.1 1.1 3.2 2 5.7 2 3.6 0 6-2.5 6-7.1 0-0.1 0-0.2 0-0.2L13.9 13.6zM10.9 15.5c-0.9 0-1.6-0.6-1.6-1.7 0-1.1 0.8-1.7 1.7-1.7 0.9 0 1.6 0.6 1.6 1.7C12.5 14.8 11.7 15.5 10.9 15.5zM22.8 14.1c-0.6-1.1-1.4-1.6-1.4-1.6 -0.1-0.1-0.3-0.1-0.4 0l-0.7 0.6c-0.1 0.1-0.1 0.3 0 0.4 0.3 0.3 0.6 0.7 0.8 1.1 0.6 1.1 0.4 2.5-0.3 3.6 -0.1 0.1-0.1 0.3 0 0.4l0 0c0.6 0.4 1.2 0.8 1.9 1.1 0 0 0.1 0 0.1-0.1C23.5 18.2 23.7 15.7 22.8 14.1z" />
-                    </svg>
-                    <span class="text-sm">Iniciar sesión con Amazon Music</span>
-                </button>
-
                 <button type="button"
                     class="cursor-pointer group flex items-center justify-center gap-3 w-full px-4 py-3 border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 text-text-main font-medium bg-white shadow-sm hover:shadow-md">
                     <svg class="w-5 h-5 text-text-secondary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
