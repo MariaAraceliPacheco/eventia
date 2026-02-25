@@ -111,7 +111,6 @@
                             </div>
                         @endforelse
                     </div>
-                    {{ $artistas->links() }}
                 </div>
             </div>
         </div>
@@ -190,7 +189,7 @@
                                             </a>
                                             <span
                                                 class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
-                                                                                                                        {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
+                                                                                                                            {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                                                 {{ $evento->estado }}
                                             </span>
                                         </div>

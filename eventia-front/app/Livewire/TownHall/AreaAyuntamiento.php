@@ -82,7 +82,7 @@ class AreaAyuntamiento extends Component
             ->when($this->searchArtist, function ($query) {
                 $query->where('nombre_artistico', 'like', '%' . $this->searchArtist . '%');
             })
-            ->paginate(5);
+            ->get();
 
         return view('livewire.town-hall.area-ayuntamiento', [
             'eventos' => $eventos,
