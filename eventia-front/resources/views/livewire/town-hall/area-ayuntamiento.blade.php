@@ -190,7 +190,7 @@
                                             </a>
                                             <span
                                                 class="text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-tighter
-                                                                            {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
+                                                                                {{ $evento->estado === 'ABIERTO' ? 'bg-amber-100 text-amber-600' : ($evento->estado === 'CERRADO' ? 'bg-green-100 text-green-600' : 'bg-gray-100 text-gray-400') }}">
                                                 {{ $evento->estado }}
                                             </span>
                                         </div>
@@ -374,7 +374,7 @@
                                     Autónoma</label>
                                 <select wire:model.live="comunidad_autonoma"
                                     class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">Selecciona una comunidad</option>
+                                    <option value="" disabled>Selecciona una comunidad</option>
                                     @foreach(array_keys($regions_data) as $region)
                                         <option value="{{ $region }}">{{ $region }}</option>
                                     @endforeach
@@ -387,7 +387,7 @@
                                     class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
                                 <select wire:model.live="provincia"
                                     class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">Selecciona una provincia</option>
+                                    <option value="" disabled>Selecciona una provincia</option>
                                     @foreach($this->provinces as $prov)
                                         <option value="{{ $prov }}">{{ $prov }}</option>
                                     @endforeach

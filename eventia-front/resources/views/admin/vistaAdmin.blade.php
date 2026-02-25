@@ -662,7 +662,7 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Comunidad Autónoma</label>
                                 <select wire:model.live="editAyuntamientoComunidad"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">Selecciona una comunidad</option>
+                                    <option value="" disabled>Selecciona una comunidad</option>
                                     @foreach(array_keys($regions_data) as $region)
                                         <option value="{{ $region }}">{{ $region }}</option>
                                     @endforeach
@@ -674,7 +674,7 @@
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Provincia</label>
                                 <select wire:model.live="editAyuntamientoProvincia"
                                     class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
-                                    <option value="">Selecciona una provincia</option>
+                                    <option value="" disabled>Selecciona una provincia</option>
                                     @foreach($this->provinces as $prov)
                                         <option value="{{ $prov }}">{{ $prov }}</option>
                                     @endforeach
@@ -691,15 +691,27 @@
                             <!-- Tipo Evento -->
                             <div>
                                 <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Tipo de Eventos</label>
-                                <input type="text" wire:model="editTipoEvento"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                          
+                                <select wire:model="editTipoEvento"
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="" disabled>Selecciona el tipo de evento</option>
+                                    @foreach(\App\Models\Ayuntamiento::TIPO_EVENTO as $tipo)
+                                        <option value="{{ $tipo }}">{{ ucfirst($tipo) }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <!-- Frecuencia -->
-                            <div>
-                                <label class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Frecuencia</label>
-                                <input type="text" wire:model="editFrecuencia"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                             <div>
+                                <label
+                                    class="block text-xs font-black text-text-secondary uppercase tracking-widest mb-2">Frecuencia</label>
+                                <select wire:model="frecuencia"
+                                    class="cursor-pointer w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all">
+                                    <option value="" disabled>Selecciona la frecuencia</option>
+                                    @foreach(\App\Models\Ayuntamiento::FRECUENCIA as $f)
+                                        <option value="{{ $f }}">{{ ucfirst(str_replace('_', ' ', $f)) }}</option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <!-- Tipo Espacio -->
