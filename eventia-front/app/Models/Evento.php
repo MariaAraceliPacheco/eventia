@@ -46,16 +46,19 @@ class Evento extends Model
         'tipos_entrada' => 'array'
     ];
 
+    // Relación: El evento pertenece a un ayuntamiento
     public function ayuntamiento()
     {
         return $this->belongsTo(Ayuntamiento::class, 'id_ayuntamiento');
     }
 
+    // Relación: El evento tiene muchos artistas
     public function artistas()
     {
         return $this->belongsToMany(Artista::class, 'artista_evento', 'id_evento', 'id_artista');
     }
 
+    // Relación: El evento tiene muchas entradas
     public function entradas()
     {
         return $this->hasMany(Entrada::class, 'id_evento', 'id');

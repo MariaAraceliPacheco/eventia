@@ -28,11 +28,13 @@ class Entrada extends Model
         'precio_total' => 'float'
     ];
 
+    // Relación: La entrada pertenece a un usuario
     public function usuario()
     {
         return $this->belongsTo(User::class, 'id_usuario', 'id');
     }
 
+    // Relación: La entrada pertenece a un evento
     public function evento()
     {
         return $this->belongsTo(Evento::class, 'id_evento', 'id');

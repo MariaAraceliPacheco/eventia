@@ -118,6 +118,7 @@ class Admin extends Component
 
     public function deleteEvent()
     {
+        // Busca el evento por ID
         $evento = Evento::find($this->itemToDeleteId);
 
         if (!$evento) {
@@ -125,7 +126,7 @@ class Admin extends Component
             return;
         }
 
-        // Check if there are purchased tickets
+        // Verifica si hay entradas vendidas
         if ($evento->entradas()->count() > 0) {
             $this->dispatch('notificar', [
                 'titulo' => 'Acción bloqueada',
@@ -136,7 +137,7 @@ class Admin extends Component
             return;
         }
 
-        // Check if there are items in carritos
+        // Verifica si está en carritos de usuarios
         if (Carrito::where('id_evento', $this->itemToDeleteId)->count() > 0) {
             $this->dispatch('notificar', [
                 'titulo' => 'Acción bloqueada',
@@ -147,6 +148,7 @@ class Admin extends Component
             return;
         }
 
+        // Procede a la eliminación
         $evento->delete();
         $this->cancelDelete();
 

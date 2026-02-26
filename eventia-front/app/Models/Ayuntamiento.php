@@ -38,13 +38,13 @@ class Ayuntamiento extends Model
 
     public $timestamps = false;
 
+    // Relación: El ayuntamiento pertenece a un usuario
     public function usuario()
     {
-        //esto sirve para que el ayuntamiento tenga un usuario asignado
-        //es como una relacion
         return $this->belongsTo(User::class, 'id_usuario');
     }
 
+    // Relación: El ayuntamiento organiza muchos eventos
     public function eventos()
     {
         return $this->hasMany(Evento::class, 'id_ayuntamiento');

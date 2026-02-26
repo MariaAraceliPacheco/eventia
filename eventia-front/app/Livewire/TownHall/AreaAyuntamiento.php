@@ -24,7 +24,7 @@ class AreaAyuntamiento extends Component
     public $user;
     public $ayuntamiento;
 
-    // Profile Edit Modal properties
+    // Propiedades del modal de edición de perfil
     public $showProfileModal = false;
     public $nombre_institucion = '';
     public $editImagen;
@@ -74,11 +74,14 @@ class AreaAyuntamiento extends Component
         $this->ayuntamiento = $this->user->perfilAyuntamiento;
     }
 
+    // Renderiza la vista del componente
     #[Layout('components.layouts.app')]
     public function render()
     {
+        // Obtiene los eventos del ayuntamiento ordenados por fecha
         $eventos = $this->ayuntamiento->eventos()->orderBy('fecha_inicio', 'desc')->get();
 
+        // Filtra artistas por búsqueda
         $artistas = Artista::query()
             ->when($this->searchArtist, function ($query) {
                 $query->where('nombre_artistico', 'like', '%' . $this->searchArtist . '%');
@@ -170,11 +173,13 @@ class AreaAyuntamiento extends Component
 
     public function deleteEvent()
     {
+        // Si no hay ID seleccionado, no hace nada
         if (!$this->eventToDeleteId)
             return;
 
         $evento = Evento::find($this->eventToDeleteId);
         if ($evento) {
+            // Bloquea la eliminación si el evento ha finalizado
             if ($evento->estado === 'FINALIZADO') {
                 $this->dispatch('notificar', [
                     'titulo' => 'Acción bloqueada',
@@ -185,7 +190,7 @@ class AreaAyuntamiento extends Component
                 return;
             }
 
-            // Check if there are purchased tickets
+            // Bloquea si hay entradas vendidas
             if ($evento->entradas()->count() > 0) {
                 $this->dispatch('notificar', [
                     'titulo' => 'Acción bloqueada',
@@ -196,7 +201,7 @@ class AreaAyuntamiento extends Component
                 return;
             }
 
-            // Check if there are items in carritos
+            // Bloquea si está en el carrito de algún usuario
             if (Carrito::where('id_evento', $this->eventToDeleteId)->count() > 0) {
                 $this->dispatch('notificar', [
                     'titulo' => 'Acción bloqueada',
@@ -207,6 +212,7 @@ class AreaAyuntamiento extends Component
                 return;
             }
 
+            // Elimina el evento
             $evento->delete();
 
             $this->dispatch('notificar', [

@@ -1,6 +1,6 @@
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     <div class="bg-white rounded-[40px] shadow-2xl overflow-hidden border border-gray-100/50 relative">
-
+        {{-- Encabezado: Imagen de fondo e información del evento --}}
         <!-- Header: Background Image & Event Info -->
         <div class="relative h-80 overflow-hidden group">
             <!-- Blurred Background (Placeholder simulation) -->
@@ -29,7 +29,8 @@
                             @endif
                         </div>
                         <h1 class="text-4xl md:text-5xl font-black font-heading leading-tight tracking-tight">
-                            {{ $evento->nombre_evento }}</h1>
+                            {{ $evento->nombre_evento }}
+                        </h1>
 
                         <div class="flex flex-wrap items-center gap-6 justify-center md:justify-start">
                             <div class="flex items-center gap-2">
@@ -73,9 +74,11 @@
             </div>
         </div>
 
+        {{-- Sección de compra --}}
         <!-- Purchase Section -->
         <div class="p-8 sm:p-12 space-y-10">
 
+            {{-- Paso 1: Selección de cantidad --}}
             <!-- Step 1: Quantity -->
             <div
                 class="bg-gray-50 border border-gray-100 rounded-[30px] p-8 flex flex-col md:flex-row items-center justify-between gap-6 hover:shadow-xl hover:shadow-gray-200/20 transition-all group">
@@ -97,6 +100,7 @@
                 </div>
             </div>
 
+            {{-- Paso 2: Categoría y precio --}}
             <!-- Step 2: Category & Price -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 <div class="space-y-6">
@@ -128,6 +132,7 @@
                     </div>
                 </div>
 
+                {{-- Paso 3: Resumen y pago --}}
                 <!-- Step 3: Summary / Checkout -->
                 <div
                     class="bg-gradient-to-br from-text-main to-gray-800 rounded-[35px] p-10 text-white flex flex-col justify-between relative overflow-hidden shadow-2xl">

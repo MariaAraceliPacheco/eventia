@@ -16,11 +16,13 @@ class Carrito extends Model
         'id_evento',
     ];
 
+    // Relación: El carrito pertenece a un usuario
     public function usuario()
     {
         return $this->belongsTo(User::class, 'id_usuario');
     }
 
+    // Relación: El carrito pertenece a un evento
     public function evento()
     {
         return $this->belongsTo(Evento::class, 'id_evento');

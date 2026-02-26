@@ -70,6 +70,7 @@ class User extends Authenticatable implements MustVerifyEmail
             ->implode('');
     }
 
+    // Relación: Un usuario puede tener un perfil de artista
     public function perfilArtista()
     {
         //aqui es como si se preguntara
@@ -87,12 +88,13 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function perfilAyuntamiento()
     {
-        return $this->hasOne(Ayuntamiento::class, 'id_usuario', 'id');
+        return $this->hasOne(Ayuntamiento::class, 'id_usuario');
     }
 
+    // Relación: Un usuario puede tener un perfil de público
     public function perfilPublico()
     {
-        return $this->hasOne(Publico::class, 'id_usuario', 'id');
+        return $this->hasOne(Publico::class, 'id_usuario');
     }
 
     public function entradas()
