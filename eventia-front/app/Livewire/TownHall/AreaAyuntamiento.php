@@ -11,6 +11,7 @@ use App\Models\Evento;
 use App\Models\Artista;
 use App\Models\Ayuntamiento;
 use App\Models\Solicitud;
+use App\Models\Carrito;
 
 class AreaAyuntamiento extends Component
 {
@@ -178,6 +179,28 @@ class AreaAyuntamiento extends Component
                 $this->dispatch('notificar', [
                     'titulo' => 'Acción bloqueada',
                     'mensaje' => 'No se puede eliminar un evento finalizado.',
+                    'tipo' => 'error'
+                ]);
+                $this->cancelDelete();
+                return;
+            }
+
+            // Check if there are purchased tickets
+            if ($evento->entradas()->count() > 0) {
+                $this->dispatch('notificar', [
+                    'titulo' => 'Acción bloqueada',
+                    'mensaje' => 'No se puede eliminar el evento porque ya hay usuarios con entradas compradas.',
+                    'tipo' => 'error'
+                ]);
+                $this->cancelDelete();
+                return;
+            }
+
+            // Check if there are items in carritos
+            if (Carrito::where('id_evento', $this->eventToDeleteId)->count() > 0) {
+                $this->dispatch('notificar', [
+                    'titulo' => 'Acción bloqueada',
+                    'mensaje' => 'No se puede eliminar el evento porque hay usuarios con este evento en su carrito.',
                     'tipo' => 'error'
                 ]);
                 $this->cancelDelete();
